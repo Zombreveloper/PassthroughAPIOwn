@@ -14,6 +14,7 @@ namespace PassthroughCameraSamples.CameraViewer
         [SerializeField] private WebCamTextureManager m_webCamTextureManager;
         [SerializeField] private Text m_debugText;
         [SerializeField] private RawImage m_image;
+        [SerializeField] private Material m_imageMat;
 
         private IEnumerator Start()
         {
@@ -24,6 +25,10 @@ namespace PassthroughCameraSamples.CameraViewer
             m_debugText.text += "\nWebCamTexture Object ready and playing.";
             // Set WebCamTexture GPU texture to the RawImage Ui element
             m_image.texture = m_webCamTextureManager.WebCamTexture;
+            if (m_imageMat != null)
+            {
+                m_imageMat.SetTexture("Passthrough Texture", m_image.texture);
+            }
         }
 
         private void Update() => m_debugText.text = PassthroughCameraPermissions.HasCameraPermission == true ? "Permission granted." : "No permission granted.";

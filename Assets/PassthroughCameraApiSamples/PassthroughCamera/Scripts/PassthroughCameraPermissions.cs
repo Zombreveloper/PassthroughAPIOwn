@@ -1,4 +1,4 @@
-// Copyright (c) Meta Platforms, Inc. and affiliates.
+/*// Copyright (c) Meta Platforms, Inc. and affiliates.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -53,12 +53,16 @@ namespace PassthroughCameraSamples
                 {
                     // We do not have permission to use the microphone.
                     // Check whether you need to display the rationale for requesting permission
-                    if (Permission.ShouldShowRequestPermissionRationale(Permission.Microphone))
+                    foreach (var permission in CameraPermissions)
                     {
-                        // Show a message or inform the user in other ways why your application needs the microphone permission.
+
+                        if (Permission.ShouldShowRequestPermissionRationale(permission))
+                        {
+                            // Show a message or inform the user in other ways why your application needs the microphone permission.
+                        }
+                        // Ask for permission or proceed without the functionality enabled.
+                        Permission.RequestUserPermission(permission);
                     }
-                    // Ask for permission or proceed without the functionality enabled.
-                    Permission.RequestUserPermission(Permission.Microphone);
                 }
                 else
                 {
@@ -104,12 +108,13 @@ namespace PassthroughCameraSamples
         private static bool IsAllCameraPermissionsGranted() => CameraPermissions.All(Permission.HasUserAuthorizedPermission);
 #endif
     }
-}
+}*/
 
 
-/*
- * Meta Approved Version but throws a warning. Otherwise functional. I really wanna keep this as fallback
- * // Copyright (c) Meta Platforms, Inc. and affiliates.
+
+/* Meta Approved Version but throws a warning. Otherwise functional. I really wanna keep this as fallback.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ */
 
 using System.Collections.Generic;
 using System.Linq;
@@ -202,4 +207,3 @@ namespace PassthroughCameraSamples
 #endif
     }
 }
-*/

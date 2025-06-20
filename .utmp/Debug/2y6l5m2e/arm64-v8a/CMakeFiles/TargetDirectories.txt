@@ -1,0 +1,8 @@
+C:/Users/Marvin.Stickan/Documents/UnityProjects/PassthroughAPIOwn/.utmp/Debug/2y6l5m2e/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/Users/Marvin.Stickan/Documents/UnityProjects/PassthroughAPIOwn/.utmp/Debug/2y6l5m2e/arm64-v8a/CMakeFiles/rebuild_cache.dir
+C:/Users/Marvin.Stickan/Documents/UnityProjects/PassthroughAPIOwn/.utmp/Debug/2y6l5m2e/arm64-v8a/GameActivity/CMakeFiles/game.dir
+C:/Users/Marvin.Stickan/Documents/UnityProjects/PassthroughAPIOwn/.utmp/Debug/2y6l5m2e/arm64-v8a/GameActivity/CMakeFiles/edit_cache.dir
+C:/Users/Marvin.Stickan/Documents/UnityProjects/PassthroughAPIOwn/.utmp/Debug/2y6l5m2e/arm64-v8a/GameActivity/CMakeFiles/rebuild_cache.dir
+C:/Users/Marvin.Stickan/Documents/UnityProjects/PassthroughAPIOwn/.utmp/Debug/2y6l5m2e/arm64-v8a/FramePacing/CMakeFiles/swappywrapper.dir
+C:/Users/Marvin.Stickan/Documents/UnityProjects/PassthroughAPIOwn/.utmp/Debug/2y6l5m2e/arm64-v8a/FramePacing/CMakeFiles/edit_cache.dir
+C:/Users/Marvin.Stickan/Documents/UnityProjects/PassthroughAPIOwn/.utmp/Debug/2y6l5m2e/arm64-v8a/FramePacing/CMakeFiles/rebuild_cache.dir

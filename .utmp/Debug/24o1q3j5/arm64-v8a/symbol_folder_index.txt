@@ -1,1 +1,0 @@
-C:\Users\Marvin.Stickan\UnityProjekte\PassthroughAPIOwn\Library\PramData\AndroidApplicationController\Cache\com.StickimediaProductions.ColorblindSample\gradle-project\unityLibrary\build\intermediates\cxx\Debug\24o1q3j5\obj\arm64-v8a

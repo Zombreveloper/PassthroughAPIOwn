@@ -1,12 +1,12 @@
 /* Used to toggle between LUT enabled and disabled.
  */
 
-using Meta.XR.BuildingBlocks;
-using Meta.XR.Samples;
+//using Meta.XR.BuildingBlocks;
+//using Meta.XR.Samples;
 using PassthroughCameraSamples.StartScene;
 using UnityEngine;
-using static Oculus.Interaction.Samples.MRPassthrough;
-using ColorMapType = OVRPlugin.InsightPassthroughColorMapType;
+//using static Oculus.Interaction.Samples.MRPassthrough;
+//using ColorMapType = OVRPlugin.InsightPassthroughColorMapType;
 
 public class LUTToggle : MonoBehaviour
 {
@@ -45,12 +45,8 @@ public class LUTToggle : MonoBehaviour
                 m_passthroughLayer.colorMapEditorType = OVRPassthroughLayer.ColorMapEditorType.ColorLut;
             }
 
-            //OVRPassthroughColorLut currColorLUT = 
-
-            //ovrpcl = new OVRPassthroughColorLut(_2dColorLUT, flipY: false);
-            //m_passthroughLayer.SetColorLut(ovrpcl, weight: 1);
         }
-         //Ab hier nur noch cooler Code um den Tooltip anzuzeigen. Hat nichts mit der eigentlichen Funktion zu tun. Und sollte hier vllt auch eigentlich gar nicht hin. Aber erstmal egal
+        //Ab hier nur noch cooler Code um den Tooltip anzuzeigen. Hat nichts mit der eigentlichen Funktion zu tun. Und sollte hier vllt auch eigentlich gar nicht hin. Aber erstmal egal
         if (ShowStartButtonTooltip)
         {
             var finalRotation = OVRInput.GetLocalControllerRotation(OVRInput.Controller.RTouch) *

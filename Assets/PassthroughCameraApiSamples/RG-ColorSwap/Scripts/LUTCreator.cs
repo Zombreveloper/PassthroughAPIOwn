@@ -1,5 +1,6 @@
 using UnityEngine;
 using Meta.XR.Samples;
+using System;
 
 public class LUTCreator : MonoBehaviour
 {
@@ -31,8 +32,15 @@ public class LUTCreator : MonoBehaviour
     {
         if (OVRInput.GetUp(OVRInput.Button.Two))
         {
-            BuildLut("RedBlue");
-            //m_lutRBSwap = new OVRPassthroughColorLut(new Color[] = BuildLut("RedBlue"), OVRPassthroughColorLut.ColorChannels.Rgb);
+            if (CurrentLUT == "RBSwap")
+            {
+                BuildLut("RedGreen");
+                //m_lutRBSwap = new OVRPassthroughColorLut(new Color[] = BuildLut("RedBlue"), OVRPassthroughColorLut.ColorChannels.Rgb);
+            }
+            else if (CurrentLUT == "RGSwap")
+            {
+                BuildLut2("RedBlue");
+            }
         }
     }
     #endregion
@@ -42,7 +50,7 @@ public class LUTCreator : MonoBehaviour
     //private Color[] rbLut = [m_red, m_green, m_blue ];
     private void BuildLut(string switchtype, int resolution = 16)
     {
-        Color[] lut = new Color[resolution*resolution*resolution];
+        Color[] lut = new Color[resolution * resolution * resolution];
         //Debug.Log("the non filled Color lut is" , lut[0]);
         for(int blue = 0; blue < resolution; blue++)        
         {
@@ -63,8 +71,40 @@ public class LUTCreator : MonoBehaviour
         }
         var colorLut = new OVRPassthroughColorLut(lut, OVRPassthroughColorLut.ColorChannels.Rgb);
         m_passthroughLayer.SetColorLut(colorLut);
+        CurrentLUT = "RGSwap";
     }
 
+    private void BuildLut2(string switchtype, int resolution = 16)
+    {
+        Color[] lut = new Color[resolution * resolution * resolution];
+        //Debug.Log("the non filled Color lut is" , lut[0]);
+        for (int blue = 0; blue < resolution; blue++)
+        {
+            for (int green = 0; green < resolution; green++)
+            {
+                for (int red = 0; red < resolution; red++)
+                {
+                    int index = red + green * resolution + blue * resolution * resolution;
 
+                    // Farbwerte skalieren (0–1)
+                    float redValue = red / (float)(resolution - 1);
+                    float greenValue = green / (float)(resolution - 1);
+                    float blueValue = blue / (float)(resolution - 1);
+
+                    // Rot <-> Blau tauschen
+                    lut[index] = new Color(blueValue, greenValue, redValue);
+                }
+            }
+        }
+
+        var colorLut = new OVRPassthroughColorLut(lut, OVRPassthroughColorLut.ColorChannels.Rgb);
+        m_passthroughLayer.SetColorLut(colorLut);
+        CurrentLUT = "RBSwap";
+    }
+    #endregion
+
+    #region properties
+
+    public string CurrentLUT { get; set; } = new(value: "RBSwap");
+    #endregion
 }
-#endregion

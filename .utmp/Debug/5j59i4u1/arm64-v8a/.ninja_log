@@ -1,12 +1,12 @@
 # ninja log v5
-33	486	7721558036476157	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	eb459656c9acb8ef
-487	659	7721558038206646	E:/UnityProjects/PassthroughAPIOwn/Library/PramData/AndroidApplicationController/Cache/com.StickimediaProductions.ColorblindSample/gradle-project/unityLibrary/build/intermediates/cxx/Debug/5j59i4u1/obj/arm64-v8a/libswappywrapper.so	5e6384cdad0c1df8
-16	1896	7721558050585764	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	c459ec50bece4582
-5	1922	7721558050846056	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	316c2366f036c14b
-12	1928	7721558050906099	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	f5b5b9a090c7819d
-28	1930	7721558050916108	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	8f28a03373ebe9be
-1	1967	7721558051284329	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	f887c8451004a6e9
-20	2053	7721558052130949	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	ad27bb9ebcef600a
-8	2104	7721558052647748	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	6aa1fa0babbcd1da
-24	2183	7721558053458580	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	e0f88d3d941ac2f1
-2184	2283	7721558054450849	E:/UnityProjects/PassthroughAPIOwn/Library/PramData/AndroidApplicationController/Cache/com.StickimediaProductions.ColorblindSample/gradle-project/unityLibrary/build/intermediates/cxx/Debug/5j59i4u1/obj/arm64-v8a/libgame.so	3ad6b883d8bdbfa2
+27	158	7759533867386724	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	eb459656c9acb8ef
+159	266	7759533868492687	E:/UnityProjects/PassthroughAPIOwn/Library/PramData/AndroidApplicationController/Cache/com.StickimediaProductions.ColorblindSample/gradle-project/unityLibrary/build/intermediates/cxx/Debug/5j59i4u1/obj/arm64-v8a/libswappywrapper.so	5e6384cdad0c1df8
+10	1071	7759533876478080	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	f5b5b9a090c7819d
+16	1078	7759533876503139	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	c459ec50bece4582
+7	1079	7759533876552104	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	316c2366f036c14b
+19	1095	7759533876762304	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	8f28a03373ebe9be
+4	1107	7759533876884069	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	f887c8451004a6e9
+23	1181	7759533877619821	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	e0f88d3d941ac2f1
+13	1192	7759533877739995	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	ad27bb9ebcef600a
+1	1236	7759533878155494	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	6aa1fa0babbcd1da
+1236	1324	7759533879061741	E:/UnityProjects/PassthroughAPIOwn/Library/PramData/AndroidApplicationController/Cache/com.StickimediaProductions.ColorblindSample/gradle-project/unityLibrary/build/intermediates/cxx/Debug/5j59i4u1/obj/arm64-v8a/libgame.so	3ad6b883d8bdbfa2

@@ -772,6 +772,7 @@ GameObject:
   m_Component:
   - component: {fileID: 702859462}
   - component: {fileID: 702859463}
+  - component: {fileID: 702859464}
   m_Layer: 0
   m_Name: LUT Manager
   m_TagString: Untagged
@@ -801,11 +802,24 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 702859461}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 10b08c39136275749a168ce88ea265a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &702859464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 702859461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24f824f89d95db541a4287f13cfc76b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DeficiencyMatrix: {fileID: 11400000, guid: 87f2225007e56ec4b876b58e4f6439b0, type: 2}
 --- !u!1 &761574436
 GameObject:
   m_ObjectHideFlags: 0

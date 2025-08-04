@@ -1,0 +1,3 @@
+C:\UnityProjects\PassthroughAPIOwn\Library\PramData\AndroidApplicationController\Cache\com.StickimediaProductions.ColorblindSample\gradle-project\unityLibrary\src\main\cpp\CMakeLists.txt
+C:\UnityProjects\PassthroughAPIOwn\Library\PramData\AndroidApplicationController\Cache\com.StickimediaProductions.ColorblindSample\gradle-project\unityLibrary\src\main\cpp\FramePacing\CMakeLists.txt
+C:\UnityProjects\PassthroughAPIOwn\Library\PramData\AndroidApplicationController\Cache\com.StickimediaProductions.ColorblindSample\gradle-project\unityLibrary\src\main\cpp\GameActivity\CMakeLists.txt

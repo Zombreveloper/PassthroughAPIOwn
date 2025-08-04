@@ -5,6 +5,9 @@ public class MatrixToLUT : MonoBehaviour
     //public OVRPassthroughLayer passthroughLayer;
     private OVRPassthroughLayer m_passthroughLayer;
     public DeficiencyColorMatrixBase DeficiencyMatrix;
+    public DeficiencyList DList;
+
+    private int dlIndex;
 
     // Beispielmatrix: vertauscht Rot und Grün
     private readonly float[,] colorMatrix = new float[3, 3]
@@ -18,6 +21,8 @@ public class MatrixToLUT : MonoBehaviour
     {
         var passthrough = GameObject.Find("[BuildingBlock] Passthrough");
         m_passthroughLayer = passthrough.GetComponent<OVRPassthroughLayer>();
+        dlIndex = 0;
+        
 
     }
 
@@ -25,16 +30,33 @@ public class MatrixToLUT : MonoBehaviour
     {
         if (OVRInput.GetUp(OVRInput.Button.Two))
         {
-            CreateLUTFromMatrix();
+            
+            Matrix4x4 currentDef = GetDeficiencyMatrix();
+            CreateLUTFromMatrix(currentDef);
         }
     }
 
+    void UpdateListIndex()
+    {
+        if (dlIndex < DList.VisionTypes.Count - 1) { dlIndex++; }
+        else { dlIndex = 0; }
+    }
+
+    Matrix4x4 GetDeficiencyMatrix()
+    {
+        Matrix4x4 currentMatrix = DList.VisionTypes[dlIndex].GetMatrix();
+        UpdateListIndex();
+        
+
+            return currentMatrix;
+    }
+
     [ContextMenu("Create LUT from Matrix")]
-    void CreateLUTFromMatrix()
+    void CreateLUTFromMatrix(Matrix4x4 matrix)
     {
         const int resolution = 16;
         Color[] lutColors = new Color[resolution * resolution * resolution];
-        Matrix4x4 matrix = DeficiencyMatrix.GetMatrix();
+        //Matrix4x4 matrix = DeficiencyMatrix.GetMatrix();
 
         for (int blue = 0; blue < resolution; blue++)
         {

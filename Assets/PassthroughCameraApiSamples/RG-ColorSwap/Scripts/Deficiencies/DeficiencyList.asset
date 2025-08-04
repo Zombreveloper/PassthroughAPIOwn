@@ -9,16 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c76b57891255a2445ae7c13b33091c1f, type: 3}
-  m_Name: Protanopia
+  m_Script: {fileID: 11500000, guid: 12587eb43e9c89e47a25429501e75b40, type: 3}
+  m_Name: DeficiencyList
   m_EditorClassIdentifier: 
-  matrix:
-  - 0.152
-  - -0.077
-  - -0.179
-  - -0.078
-  - 0.931
-  - 0.148
-  - 0.005
-  - 0.691
-  - 0.394
+  <VisionTypes>k__BackingField:
+  - {fileID: 11400000, guid: 87f2225007e56ec4b876b58e4f6439b0, type: 2}
+  - {fileID: 11400000, guid: 1610c2c116e0ca94e96a1b88bc0bbd33, type: 2}

@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class MatrixToLUT : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class MatrixToLUT : MonoBehaviour
     public DeficiencyList DList;
 
     private int dlIndex;
+
+    private GameObject m_tooltip;
 
     // Beispielmatrix: vertauscht Rot und Grün
     private readonly float[,] colorMatrix = new float[3, 3]
@@ -22,18 +25,25 @@ public class MatrixToLUT : MonoBehaviour
         var passthrough = GameObject.Find("[BuildingBlock] Passthrough");
         m_passthroughLayer = passthrough.GetComponent<OVRPassthroughLayer>();
         dlIndex = 0;
-        
 
+        m_tooltip = GameObject.Find("InputManager/Tooltip");
     }
 
     private void Update()
     {
         if (OVRInput.GetUp(OVRInput.Button.Two))
         {
-            
+            ShowcurrentMatrixName();
             Matrix4x4 currentDef = GetDeficiencyMatrix();
             CreateLUTFromMatrix(currentDef);
+            
         }
+    }
+
+    void ShowcurrentMatrixName()
+    {
+        string myname = DList.VisionTypes[dlIndex].name;
+        m_tooltip.GetComponent<TextMesh>().text = "You now see " + myname;
     }
 
     void UpdateListIndex()

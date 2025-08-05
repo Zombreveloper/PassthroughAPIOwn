@@ -15,3 +15,4 @@ MonoBehaviour:
   <VisionTypes>k__BackingField:
   - {fileID: 11400000, guid: 87f2225007e56ec4b876b58e4f6439b0, type: 2}
   - {fileID: 11400000, guid: 1610c2c116e0ca94e96a1b88bc0bbd33, type: 2}
+  - {fileID: 11400000, guid: ec954c68321a4224ea5b594a40eeb4f8, type: 2}

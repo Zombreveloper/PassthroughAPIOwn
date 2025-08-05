@@ -17,7 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/PassthroughCameraApiSamples/BrightnessEstimation/BrightnessEstimation.unity
     guid: 8ea13e682474e1748965f8e21972f2b2
-  - enabled: 1
+  - enabled: 0
     path: Assets/PassthroughCameraApiSamples/MultiObjectDetection/MultiObjectDetection.unity
     guid: 20c230cce46443841b5727b1d6100bfc
   - enabled: 1

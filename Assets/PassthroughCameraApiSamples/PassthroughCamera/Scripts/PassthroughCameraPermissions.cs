@@ -116,6 +116,7 @@ namespace PassthroughCameraSamples
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  */
 
+
 using System.Collections.Generic;
 using System.Linq;
 using Meta.XR.Samples;
@@ -145,7 +146,7 @@ namespace PassthroughCameraSamples
 
         public static bool? HasCameraPermission { get; private set; }
         private static bool s_askedOnce;
-
+        
 #if UNITY_ANDROID
         /// <summary>
         /// Request camera permission if the permission is not authorized by the user.

@@ -11,30 +11,25 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/PassthroughCameraApiSamples/CameraViewer/CameraViewer.unity
     guid: ad5bb12b10679b840999aa322aa7a491
-  - enabled: 0
-    path: Assets/PassthroughCameraApiSamples/CameraToWorld/CameraToWorld.unity
-    guid: 756785b371a4f49438b7e2148816e892
   - enabled: 1
     path: Assets/PassthroughCameraApiSamples/BrightnessEstimation/BrightnessEstimation.unity
     guid: 8ea13e682474e1748965f8e21972f2b2
-  - enabled: 0
-    path: Assets/PassthroughCameraApiSamples/MultiObjectDetection/MultiObjectDetection.unity
-    guid: 20c230cce46443841b5727b1d6100bfc
-  - enabled: 0
-    path: Assets/PassthroughCameraApiSamples/ShaderSample/ShaderSample.unity
-    guid: 708e8dca6055146b28afe2481f141457
-  - enabled: 0
-    path: Assets/PassthroughCameraApiSamples/ShaderScene/ShaderScene.unity
-    guid: 385ce0031c2b9894ebfed9bf19168fe0
   - enabled: 1
     path: Assets/PassthroughCameraApiSamples/ColorPlate-Test/ColorPlate-Test.unity
     guid: 0480f58de6a865d45944897de22f1da6
   - enabled: 1
     path: Assets/PassthroughCameraApiSamples/MenuButtonTestScene/MenuButtonTest.unity
     guid: 6a5d513a0c48402479a942952f29a7de
+  - enabled: 1
+    path: Assets/PassthroughCameraApiSamples/MenuButtonTestScene/UI-Interaction2.unity
+    guid: 89f1faa15b31113468cdc3735e14245c
+  - enabled: 1
+    path: "Assets/Samples/Meta XR Interaction \u200BSDK/78.0.0/Example Scenes/RayExamples.unity"
+    guid: 1b2d3f90c0f50b94cb910c66c773d00d
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: f2bf97b3acdb64248a707c407c9fc54e, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 7aa650e3e1ae1264ebd5fa14d1f9ee00, type: 3}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: a971eac5e950046e586c5e153e32d05c, type: 2}
     com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 39afca50d7e4edf4ca8d540f9e8e5c2d, type: 2}
+    xr.sdk.mock-hmd.settings: {fileID: 11400000, guid: 34c1504d13903df47abdcafdd4792051, type: 2}
   m_UseUCBPForAssetBundles: 0

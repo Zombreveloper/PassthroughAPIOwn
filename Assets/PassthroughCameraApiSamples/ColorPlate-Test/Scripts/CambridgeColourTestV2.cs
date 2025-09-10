@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using System.Linq;
 
 public class CambridgeColourTestV2 : MonoBehaviour
@@ -9,9 +10,9 @@ public class CambridgeColourTestV2 : MonoBehaviour
     [Header("UI Components")]
     public Canvas testCanvas;
     public RectTransform stimulusContainer;
-    public Text instructionText;
+    public TMP_Text instructionText;
     public Button[] responseButtons; // 4 buttons for gap directions
-    public Text resultsText;
+    public TMP_Text resultsText;
 
     [Header("Test Configuration")]
     public int circlesCount = 150;

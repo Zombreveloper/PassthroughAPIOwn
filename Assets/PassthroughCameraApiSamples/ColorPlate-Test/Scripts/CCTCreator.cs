@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using System.Linq;
 
-public class CambridgeColourTest : MonoBehaviour
+public class CCTCreator : MonoBehaviour
 {
     [Header("UI Components")]
     public Canvas testCanvas;
     public RectTransform stimulusContainer;
-    public Text instructionText;
+    public TMP_Text instructionText;
     public Button[] responseButtons; // 4 buttons for gap directions
-    public Text resultsText;
+    public TMP_Text resultsText;
+    [SerializeField]
 
     [Header("Test Configuration")]
     public int circlesCount = 150;
@@ -99,7 +101,13 @@ public class CambridgeColourTest : MonoBehaviour
         resultsText.gameObject.SetActive(false);
 
         // Create circle pool
-        CreateCirclePool();
+        //CreateCirclePool();
+
+    }
+
+    void SetCircles()
+    {
+
     }
 
     void CreateCirclePool()

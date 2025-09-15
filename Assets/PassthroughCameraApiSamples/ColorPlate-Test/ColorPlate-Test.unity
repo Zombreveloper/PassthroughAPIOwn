@@ -1689,7 +1689,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 749426908}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 49309ae0385b66d42ba5847f9fcc441b, type: 3}
   m_Name: 
@@ -1733,7 +1733,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 749426908}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: af4898b453980274d986de59cfd552c9, type: 3}
   m_Name: 
@@ -1744,7 +1744,7 @@ MonoBehaviour:
   instructionText: {fileID: 2085832807}
   responseButtons: []
   resultsText: {fileID: 1951411629}
-  circlesCount: 150
+  circlesCount: 300
   circleMinSize: 0.02
   circleMaxSize: 0.08
   gapSize: 0.3

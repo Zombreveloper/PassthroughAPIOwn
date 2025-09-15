@@ -85,7 +85,7 @@ public class CCTCreator : MonoBehaviour
     {
         //circleReader = new SVGCircleReader();
         InitializeTest();
-        SetCircles();
+        //SetCircles();
     }
 
     void InitializeTest()

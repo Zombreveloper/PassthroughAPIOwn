@@ -3,14 +3,18 @@ using System.Globalization;
 using System.IO;
 using System.Xml.Linq;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
+//using static UnityEditor.PlayerSettings;
 
 public class SVGCircleReader : MonoBehaviour
 {
     public GameObject CircleAsset;
     //public Texture2D CircleAsset;
 
+    //private properties
     private XDocument originalSVG;
+    public CircleContainer testplate;
+
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -26,7 +30,7 @@ public class SVGCircleReader : MonoBehaviour
 
 
         List<CircleData> allCircles = ReadValues();
-        CreateGO(allCircles);
+        CreateGOwithParent(allCircles);
 
         
         
@@ -40,6 +44,45 @@ public class SVGCircleReader : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+    }
+
+    void CreateGOwithParent(List<CircleData> dat)
+    {
+        List<GameObject> children = new List<GameObject>();
+        var parentContainer = new GameObject("CCTPlate");
+        parentContainer.transform.position = Vector3.zero;
+        
+        //Punkte als Gameobjects erschaffen
+        foreach (var el in dat)
+        {
+            GameObject go = Instantiate(CircleAsset, el.Position, Quaternion.identity, parentContainer.transform);
+            go.transform.localScale = Vector3.one * el.Radius * 2f; // Durchmesser statt Radius
+            children.Add(go);
+        }
+
+        //Mittelpunkt herausfinden
+        //Erstmal BoundingBox aller Kreise zusammenfassen
+        Renderer[] renderers = parentContainer.GetComponentsInChildren<Renderer>();
+
+        if (renderers.Length == 0)
+        {
+            Debug.LogWarning("Keine Renderer in den Childs gefunden.");
+            return;
+        }
+
+        // Bounds der Child-Renderer zusammenfassen
+        Bounds bounds = renderers[0].bounds;
+        foreach (var rend in renderers)
+        {
+            bounds.Encapsulate(rend.bounds);
+        }
+
+        Vector3 center = bounds.center;
+
+        foreach (GameObject go in children)
+        {
+            go.transform.position = go.transform.position - center;
+        }
     }
 
     void CreateGO(List<CircleData> dat)
@@ -68,19 +111,55 @@ public class SVGCircleReader : MonoBehaviour
             CircleData currentCircle = new CircleData(cPos, r);
 
             myCircles.Add(currentCircle);
+
+            //neues Experiment: mit dem Struct Circle Container die Bounds direkt in mein Objekt backen
+            CreatePlateArea(currentCircle);
         }
+
+        Debug.Log("Die Kreise liegen im Bereich: Min " + testplate.Bounds2DMin + " und Max " + testplate.Bounds2DMax);
         return myCircles;
     }
 
-    struct CircleData
+    void CreatePlateArea(CircleData dat)
+    {
+        //update die Minimalwerte
+        testplate.Bounds2DMin.x = Mathf.Min(testplate.Bounds2DMin.x, dat.Position.x);
+        testplate.Bounds2DMin.y = Mathf.Min(testplate.Bounds2DMin.y, dat.Position.y);
+
+        //update die Maximalwerte
+        testplate.Bounds2DMax.x = Mathf.Max(testplate.Bounds2DMax.x, dat.Position.x);
+        testplate.Bounds2DMax.y = Mathf.Max(testplate.Bounds2DMax.y, dat.Position.y);
+    }
+
+
+    //sollte ich bald wenigstens teilweise wieder private schalten
+    public struct CircleData
     {
         public Vector3 Position;
         public float Radius;
 
+        //constructor
         public CircleData(Vector3 position, float radius)
         {
             Position = position;
             Radius = radius;
+        }
+    }
+
+    public struct CircleContainer
+    {
+        public List<CircleData> Circles { get; private set; }
+        public Vector2 Bounds2DMin;
+        public Vector2 Bounds2DMax;
+
+        //public CircleCollider2D Collider { get; private set; }
+        
+        //constructor
+        public CircleContainer(List<CircleData> circles, Vector2 bounds2DMin, Vector2 bounds2DMax)
+        {
+            Circles = circles;
+            Bounds2DMin = Vector2.zero;
+            Bounds2DMax = Vector2.zero;
         }
     }
 }

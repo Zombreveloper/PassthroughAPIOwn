@@ -7,13 +7,14 @@ using System.Linq;
 
 public class CCTCreator : MonoBehaviour
 {
+    public GameObject cctPlate;
+
     [Header("UI Components")]
     public Canvas testCanvas;
     public RectTransform stimulusContainer;
     public TMP_Text instructionText;
     public Button[] responseButtons; // 4 buttons for gap directions
     public TMP_Text resultsText;
-    [SerializeField]
 
     [Header("Test Configuration")]
     public int circlesCount = 150;
@@ -42,6 +43,12 @@ public class CCTCreator : MonoBehaviour
     // Results storage
     private Dictionary<ColorVector, float> thresholds;
     private List<CircleStimulus> circles;
+
+
+    //meine eigenen Properties
+    SVGCircleReader circleReader;
+
+    
 
     // Enums and data structures
     public enum TestPhase
@@ -76,7 +83,9 @@ public class CCTCreator : MonoBehaviour
 
     void Start()
     {
+        //circleReader = new SVGCircleReader();
         InitializeTest();
+        SetCircles();
     }
 
     void InitializeTest()
@@ -101,13 +110,50 @@ public class CCTCreator : MonoBehaviour
         resultsText.gameObject.SetActive(false);
 
         // Create circle pool
-        //CreateCirclePool();
+        CreateCirclePool();
 
     }
 
-    void SetCircles()
+    void SetCircles() //wird momentan missbraucht, um Plättchen dem Canvas anzupassen
     {
+        /*Vector2 bMax = circleReader.testplate.Bounds2DMax;
+        Vector2 bMin = circleReader.testplate.Bounds2DMin;*/
 
+        RectTransform containerRect = stimulusContainer.GetComponent<RectTransform>();
+        float width = containerRect.rect.width;
+        float height = containerRect.rect.height;
+
+        //Mittelpunkt des panels finden
+        float cx = width / 2;
+        float cy = height / 2;
+        Vector2 panelCenter = new Vector2 (cx, cy );
+
+
+        //ab hier arbeite ich mit dem Prefab
+        cctPlate.transform.SetParent(stimulusContainer);
+        cctPlate.transform.localPosition = containerRect.position;
+
+        //jetzt die Skalierung anpassen. Wird irgendwann mal ne eigene Methode werden. Aber alter... ich will nur noch dass der Scheiß funktioniert.
+        List<GameObject> children = new List<GameObject>();
+        Renderer[] renderers = cctPlate.GetComponentsInChildren<Renderer>();
+        Bounds bounds = renderers[0].bounds;
+
+        foreach (var rend in renderers)
+        {
+            bounds.Encapsulate(rend.bounds);
+        }
+
+        // Panel-Größe in Weltkoordinaten
+        Vector2 panelSize = stimulusContainer.rect.size * stimulusContainer.lossyScale;
+
+        //Objektgröße
+        var objSize = bounds.size;
+        float scaleX = panelSize.x / objSize.x;
+        float scaleY = panelSize.y / objSize.y;
+        float finalScale = Mathf.Min(scaleX, scaleY);
+
+        //tatsächlich skalieren
+        cctPlate.transform.localScale *= finalScale;
     }
 
     void CreateCirclePool()

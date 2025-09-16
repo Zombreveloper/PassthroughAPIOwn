@@ -600,6 +600,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CCTPlate
       objectReference: {fileID: 0}
+    - target: {fileID: 6057811883138938793, guid: 0c368f0a2c463864aa427cee317d6d7d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9032454302076611038, guid: 0c368f0a2c463864aa427cee317d6d7d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1281,6 +1285,67 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CircleAsset: {fileID: 8528845185449029175, guid: 36f9134bcb18ed04bbfe26d6ee7e1b52, type: 3}
+--- !u!1001 &495937915
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1768483705676418943, guid: c2cacb2eb3b758a4b825ebbc4846613a, type: 3}
+      propertyPath: m_Name
+      value: CCTPlateV2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1768483705676418943, guid: c2cacb2eb3b758a4b825ebbc4846613a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4033583340728958674, guid: c2cacb2eb3b758a4b825ebbc4846613a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4033583340728958674, guid: c2cacb2eb3b758a4b825ebbc4846613a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4033583340728958674, guid: c2cacb2eb3b758a4b825ebbc4846613a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4033583340728958674, guid: c2cacb2eb3b758a4b825ebbc4846613a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4033583340728958674, guid: c2cacb2eb3b758a4b825ebbc4846613a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4033583340728958674, guid: c2cacb2eb3b758a4b825ebbc4846613a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4033583340728958674, guid: c2cacb2eb3b758a4b825ebbc4846613a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4033583340728958674, guid: c2cacb2eb3b758a4b825ebbc4846613a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4033583340728958674, guid: c2cacb2eb3b758a4b825ebbc4846613a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4033583340728958674, guid: c2cacb2eb3b758a4b825ebbc4846613a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c2cacb2eb3b758a4b825ebbc4846613a, type: 3}
 --- !u!1 &587716630
 GameObject:
   m_ObjectHideFlags: 0
@@ -1689,7 +1754,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 749426908}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 49309ae0385b66d42ba5847f9fcc441b, type: 3}
   m_Name: 
@@ -1720,12 +1785,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 749426908}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c40e4bac1ae476f4188ba5f1febd2707, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CircleAsset: {fileID: 8528845185449029175, guid: 36f9134bcb18ed04bbfe26d6ee7e1b52, type: 3}
+  CircleAsset: {fileID: 941212708}
 --- !u!114 &749426913
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1733,12 +1798,11 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 749426908}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: af4898b453980274d986de59cfd552c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cctPlate: {fileID: 1679340778}
   testCanvas: {fileID: 1564881985}
   stimulusContainer: {fileID: 620199346}
   instructionText: {fileID: 2085832807}
@@ -1754,6 +1818,7 @@ MonoBehaviour:
   stepSizeFinal: 0.02
   backgroundColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   luminanceNoiseRange: 0.3
+  cctPlate: {fileID: 1428778637}
 --- !u!114 &777207911 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 229710696117312062, guid: 9fa0825d6b962924e8124b0b7d0595f8, type: 3}
@@ -2822,7 +2887,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7114770129336771054, guid: df64bf5efda75be4db0c812f9277d678, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7114770130731238579, guid: df64bf5efda75be4db0c812f9277d678, type: 3}
       propertyPath: m_AnchorMax.x
@@ -3056,6 +3121,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 938726977}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &941212708 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8528845185449029175, guid: 36f9134bcb18ed04bbfe26d6ee7e1b52, type: 3}
+  m_PrefabInstance: {fileID: 1190350758411851948}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &960599387
 GameObject:
   m_ObjectHideFlags: 0
@@ -3310,8 +3380,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 749426911}
-        m_TargetAssemblyTypeName: CambridgeColourTestV2, Assembly-CSharp
+      - m_Target: {fileID: 749426913}
+        m_TargetAssemblyTypeName: CCTCreator, Assembly-CSharp
         m_MethodName: StartTest
         m_Mode: 1
         m_Arguments:
@@ -3674,13 +3744,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 749426908}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
+      - m_Target: {fileID: 749426913}
+        m_TargetAssemblyTypeName: CCTCreator, Assembly-CSharp
+        m_MethodName: OnResponseButton
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3961,6 +4031,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2606bf2f0c914a7aba4390f29ba2eb6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1428778637 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1768483705676418943, guid: c2cacb2eb3b758a4b825ebbc4846613a, type: 3}
+  m_PrefabInstance: {fileID: 495937915}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1485642296
 GameObject:
   m_ObjectHideFlags: 0
@@ -4651,7 +4726,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1627327926}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 749426913}
+        m_TargetAssemblyTypeName: CCTCreator, Assembly-CSharp
+        m_MethodName: OnResponseButton
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1627327926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5085,11 +5172,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1668270723}
   m_CullTransparentMesh: 1
---- !u!1 &1679340778 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6057811883138938793, guid: 0c368f0a2c463864aa427cee317d6d7d, type: 3}
-  m_PrefabInstance: {fileID: 210254938}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1691678788
 GameObject:
   m_ObjectHideFlags: 0
@@ -5487,7 +5569,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1864473361}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 749426913}
+        m_TargetAssemblyTypeName: CCTCreator, Assembly-CSharp
+        m_MethodName: OnResponseButton
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1864473361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6728,7 +6822,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2103032214}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 749426913}
+        m_TargetAssemblyTypeName: CCTCreator, Assembly-CSharp
+        m_MethodName: OnResponseButton
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2103032214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7313,6 +7419,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1182308785007743605, guid: 36f9134bcb18ed04bbfe26d6ee7e1b52, type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1182308785007743605, guid: 36f9134bcb18ed04bbfe26d6ee7e1b52, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1182308785007743605, guid: 36f9134bcb18ed04bbfe26d6ee7e1b52, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1476586529
+      objectReference: {fileID: 0}
     - target: {fileID: 1261977717974027432, guid: 36f9134bcb18ed04bbfe26d6ee7e1b52, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -8631,3 +8749,4 @@ SceneRoots:
   - {fileID: 1548561911}
   - {fileID: 33051292}
   - {fileID: 210254938}
+  - {fileID: 495937915}

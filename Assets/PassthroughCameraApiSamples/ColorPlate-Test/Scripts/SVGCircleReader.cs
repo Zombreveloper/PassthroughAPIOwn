@@ -8,11 +8,13 @@ using UnityEngine;
 public class SVGCircleReader : MonoBehaviour
 {
     public GameObject CircleAsset;
+    public CircleContainer testplate;
     //public Texture2D CircleAsset;
 
     //private properties
     private XDocument originalSVG;
-    public CircleContainer testplate;
+    private List<CircleData> allCircles;
+
 
 
 
@@ -29,7 +31,7 @@ public class SVGCircleReader : MonoBehaviour
         originalSVG = XDocument.Load(path);
 
 
-        List<CircleData> allCircles = ReadValues();
+        allCircles = ReadValues();
         CreateGOwithParent(allCircles);
 
         
@@ -62,6 +64,48 @@ public class SVGCircleReader : MonoBehaviour
 
         //Mittelpunkt herausfinden
         //Erstmal BoundingBox aller Kreise zusammenfassen
+        Renderer[] renderers = parentContainer.GetComponentsInChildren<Renderer>();
+
+        if (renderers.Length == 0)
+        {
+            Debug.LogWarning("Keine Renderer in den Childs gefunden.");
+            return;
+        }
+
+        // Bounds der Child-Renderer zusammenfassen
+        Bounds bounds = renderers[0].bounds;
+        foreach (var rend in renderers)
+        {
+            bounds.Encapsulate(rend.bounds);
+        }
+
+        Vector3 center = bounds.center;
+
+        foreach (GameObject go in children)
+        {
+            go.transform.position = go.transform.position - center;
+        }
+    }
+
+    void CreateGOwithParent()
+    {
+        var dat = allCircles;
+        List<GameObject> children = new List<GameObject>();
+        var parentContainer = new GameObject("CCTPlate");
+        parentContainer.transform.position = Vector3.zero;
+
+        //Punkte als Gameobjects erschaffen
+        foreach (var el in dat)
+        {
+            GameObject go = Instantiate(CircleAsset, el.Position, Quaternion.identity, parentContainer.transform);
+            go.transform.localScale = Vector3.one * el.Radius * 2f; // Durchmesser statt Radius
+            //go.GetComponentInChildren<SpriteRenderer>().sortingLayerName = "OverPanel";
+            //go.GetComponentInChildren<SpriteRenderer>().sortingOrder = 1;
+            children.Add(go);
+        }
+
+        //Mittelpunkt herausfinden
+        //Erstmal Renderer aller Kreise sammeln
         Renderer[] renderers = parentContainer.GetComponentsInChildren<Renderer>();
 
         if (renderers.Length == 0)
@@ -120,7 +164,7 @@ public class SVGCircleReader : MonoBehaviour
         return myCircles;
     }
 
-    void CreatePlateArea(CircleData dat)
+    void CreatePlateArea(CircleData dat) //wird glaube ich nicht mehr gebraucht. Relikt aus der Zeit, bevor ich die Bounds nutzen konnte
     {
         //update die Minimalwerte
         testplate.Bounds2DMin.x = Mathf.Min(testplate.Bounds2DMin.x, dat.Position.x);

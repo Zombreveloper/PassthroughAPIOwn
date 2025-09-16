@@ -1,3 +1,8 @@
+/*
+ * Das ist eine erstversion auf Basis des Unity SVG-Package. Die ist eigentlich komplett wertlos und funktioniert nicht ordentlich
+ * Liest eine SVG aus den Streamingassets und instanziert das Ergebnis
+ */
+
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;

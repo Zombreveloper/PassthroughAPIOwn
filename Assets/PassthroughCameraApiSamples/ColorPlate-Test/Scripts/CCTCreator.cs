@@ -4,10 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using Unity.XR.CoreUtils;
 
 public class CCTCreator : MonoBehaviour
 {
-    public GameObject cctPlate;
 
     [Header("UI Components")]
     public Canvas testCanvas;
@@ -46,9 +46,11 @@ public class CCTCreator : MonoBehaviour
 
 
     //meine eigenen Properties
-    SVGCircleReader circleReader;
+    public GameObject cctPlate;
+    private List<GameObject> plateCircles;
+    //SVGCircleReader circleReader;
 
-    
+
 
     // Enums and data structures
     public enum TestPhase
@@ -81,6 +83,18 @@ public class CCTCreator : MonoBehaviour
         }
     }
 
+    public class Testplate
+    {
+        // I may not need this class or struct at all but just in case
+        public GameObject gameObject;
+        public bool isTarget;
+
+        public Testplate(GameObject go)
+        {  
+            gameObject = go; 
+        }
+    }
+
     void Start()
     {
         //circleReader = new SVGCircleReader();
@@ -110,7 +124,8 @@ public class CCTCreator : MonoBehaviour
         resultsText.gameObject.SetActive(false);
 
         // Create circle pool
-        CreateCirclePool();
+        //CreateCirclePool();
+        SetCircles();
 
     }
 
@@ -126,12 +141,13 @@ public class CCTCreator : MonoBehaviour
         //Mittelpunkt des panels finden
         float cx = width / 2;
         float cy = height / 2;
-        Vector2 panelCenter = new Vector2 (cx, cy );
+        Vector2 panelCenter = new Vector2 (cx, cy);
 
 
-        //ab hier arbeite ich mit dem Prefab
+        //setze Plate auf Panel
         cctPlate.transform.SetParent(stimulusContainer);
         cctPlate.transform.localPosition = containerRect.position;
+        cctPlate.transform.rotation = containerRect.rotation;
 
         //jetzt die Skalierung anpassen. Wird irgendwann mal ne eigene Methode werden. Aber alter... ich will nur noch dass der Scheiß funktioniert.
         List<GameObject> children = new List<GameObject>();
@@ -156,6 +172,8 @@ public class CCTCreator : MonoBehaviour
         cctPlate.transform.localScale *= finalScale;
     }
 
+    #region ChatGPTs strange Circle creations
+    //srsly. These just make a list of instanced Circle GameObjects in a very convoluted way. I already got this
     void CreateCirclePool()
     {
         // Create a pool of circle GameObjects
@@ -197,6 +215,7 @@ public class CCTCreator : MonoBehaviour
 
         return Sprite.Create(texture, new Rect(0, 0, 64, 64), new Vector2(0.5f, 0.5f));
     }
+    #endregion
 
     public void StartTest()
     {
@@ -217,10 +236,15 @@ public class CCTCreator : MonoBehaviour
         correctResponses = 0;
         totalResponses = 0;
 
-        StartCoroutine(RunTestTrial());
+        RunTestTrial();
     }
 
-    IEnumerator RunTestTrial()
+    void RunTestTrial()
+    {
+        waitingForResponse = true;
+        GenerateStimulus();
+    }
+    /*IEnumerator RunTestTrial() //Dringende Überarbeitung. Aktuell stacken sich die Coroutinen ganz böse und geben Timeout after Timeout
     {
         waitingForResponse = true;
 
@@ -242,7 +266,7 @@ public class CCTCreator : MonoBehaviour
             // Timeout - treat as incorrect
             ProcessResponse(false);
         }
-    }
+    }*/
 
     void GenerateStimulus()
     {
@@ -276,9 +300,49 @@ public class CCTCreator : MonoBehaviour
 
         // Create C-shape mask
         Vector2 cCenter = Vector2.zero;
-        float cRadius = 0.2f * Mathf.Min(width, height);
+        float cRadius = 2.5f * Mathf.Min(width, height); //Der Radius bezieht sich anscheinend aktuell auf das unskalierte Plate Asset. Mögliche Ursachen: Aufrufreihenfolge (Aufruf vor Skalierung), Parent.Scale wird nicht berücksichtigt
 
         // Apply colors to circles
+        plateCircles = new List<GameObject>();
+        foreach (Transform child in cctPlate.transform)
+        {
+            plateCircles.Add(child.gameObject);
+            //plateCircles.Add(child.GetComponent<GameObject>());
+        }
+        Debug.Log("Das Objekt hat nun " + plateCircles.Count + " Children");
+
+        cctPlate.SetActive(true);
+        for (int i = 0; i < plateCircles.Count; i++)
+        {
+            var circle = plateCircles[i];
+            circle.gameObject.SetActive(true);
+
+            // Determine if this circle is part of the C
+            //Vector2 relativePos = positions[i] - cCenter;
+
+            Vector2 pos2D = circle.transform.localPosition;
+            Vector2 relativePos = pos2D - cCenter;
+            float distance = relativePos.magnitude;
+            bool isInC = IsPositionInC(relativePos, cRadius, currentGapDirection);
+
+            if (isInC)
+            {
+                Debug.Log("Wir haben Kreise, die im C sind!");
+            }
+
+            // Apply color with luminance noise
+            Color baseColor = isInC ? targetColor : backgroundBaseColor;
+            float luminanceNoise = Random.Range(-luminanceNoiseRange, luminanceNoiseRange);
+            Color finalColor = AdjustLuminance(baseColor, luminanceNoise);
+
+            //circle.GetComponent<Renderer>().material.color = finalColor;
+            circle.GetComponentInChildren<SpriteRenderer>().material.color = finalColor; //Anpassen zu GetComponent wenn ich das Prefab vereinfache
+            //circle.isTarget = isInC; //Wenn ich das richtig verstanden habe, wird dieser Wert nie wieder genutzt
+        }
+
+        /* 
+         * //old and made by ChatGPT. uses the old circles generated originally. Switch to Prefab Circles
+         
         for (int i = 0; i < circles.Count; i++)
         {
             var circle = circles[i];
@@ -300,7 +364,7 @@ public class CCTCreator : MonoBehaviour
 
             circle.image.color = finalColor;
             circle.isTarget = isInC;
-        }
+        } */
     }
 
     bool IsPositionInC(Vector2 position, float radius, int gapDirection)
@@ -392,9 +456,9 @@ public class CCTCreator : MonoBehaviour
 
     public void OnResponseButton(int selectedDirection)
     {
-        if (!waitingForResponse) return;
+        //if (!waitingForResponse) return; //nur wichtig, wenn ich ein Zeitlimit drin habe... glaube ich 
 
-        waitingForResponse = false;
+        //waitingForResponse = false;
         bool correct = selectedDirection == currentGapDirection;
         ProcessResponse(correct);
     }
@@ -459,7 +523,7 @@ public class CCTCreator : MonoBehaviour
         else
         {
             // Continue with next trial
-            StartCoroutine(RunTestTrial());
+            RunTestTrial();
         }
     }
 
@@ -495,13 +559,13 @@ public class CCTCreator : MonoBehaviour
             case ColorVector.Protan:
                 currentVector = ColorVector.Deutan;
                 ResetTestParameters();
-                StartCoroutine(RunTestTrial());
+                RunTestTrial();
                 break;
 
             case ColorVector.Deutan:
                 currentVector = ColorVector.Tritan;
                 ResetTestParameters();
-                StartCoroutine(RunTestTrial());
+                RunTestTrial();
                 break;
 
             case ColorVector.Tritan:

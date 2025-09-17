@@ -1838,6 +1838,8 @@ MonoBehaviour:
   instructionText: {fileID: 2085832807}
   responseButtons: []
   resultsText: {fileID: 1951411629}
+  initialSaturation: 0.5
+  reversalsToStop: 6
   backgroundColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   luminanceNoiseRange: 0.3
 --- !u!114 &777207911 stripped
@@ -4420,7 +4422,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1605626119
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7495,6 +7497,10 @@ PrefabInstance:
     - target: {fileID: 8528845185449029175, guid: 36f9134bcb18ed04bbfe26d6ee7e1b52, type: 3}
       propertyPath: m_Name
       value: Circle
+      objectReference: {fileID: 0}
+    - target: {fileID: 8528845185449029175, guid: 36f9134bcb18ed04bbfe26d6ee7e1b52, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

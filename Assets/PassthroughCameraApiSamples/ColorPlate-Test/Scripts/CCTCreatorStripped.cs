@@ -1,4 +1,5 @@
-﻿/* Manager for the whole Cambridge Color Test Procedure. Highly bloated but working as intended. Meant as a fallback
+﻿/* Manager for the whole Cambridge Color Test Procedure.
+ * Works like the non stripped CCTCreator but gets rid of the bloat
  */
 
 using System.Collections;
@@ -9,7 +10,253 @@ using TMPro;
 using System.Linq;
 using Unity.XR.CoreUtils;
 
-public class CCTCreator : MonoBehaviour
+public class CCTCreatorStripped : MonoBehaviour
+{
+    [SerializeField] private GameObject cctPlate;
+
+    [Header("UI Components")]
+    public Canvas testCanvas;
+    public RectTransform stimulusContainer;
+    public TMP_Text instructionText;
+    public Button[] responseButtons; // 4 buttons for gap directions
+    public TMP_Text resultsText;
+
+    [Header("Test Configuration")]
+    public float initialSaturation = 0.5f;
+    public int reversalsToStop = 6;
+
+    [Header("Color Configuration")]
+    public Color backgroundColor = new Color(0.5f, 0.5f, 0.5f);
+    public float luminanceNoiseRange = 0.3f;
+
+    //Test state variables
+    //private TestPhase currentPhase;
+    private ColorVector currentVector; //Vektor der Farbwerte, die den Confusion Line der entsprechenden Sehschwäche entsprechen. (Tun sie noch nicht so wirklich!)
+    private int currentGapDirection; // 0=right, 1=up, 2=left, 3=down
+
+    private float currentSaturation;
+    private int correctResponses;
+    private int totalResponses;
+
+    //Results storage
+    private Dictionary<ColorVector, float> thresholds; //speichert die Anzahl der Fehler, bis zum nächsten Testvektor gesprungen wird
+
+    //enums and data structures
+    public enum TestPhase
+    {
+        Instructions,
+        Testing,
+        Results
+    }
+
+    public enum ColorVector
+    {
+        Protan,   // L-cone (red-green, affects long wavelength)
+        Deutan,   // M-cone (red-green, affects medium wavelength)
+        Tritan    // S-cone (blue-yellow, affects short wavelength)
+    }
+
+
+
+    void Start()
+    {
+        InitializeTest();
+    }
+
+    private void InitializeTest()
+    {
+        //currentPhase = TestPhase.Instructions;
+        thresholds = new Dictionary<ColorVector, float>();
+
+        // Setup UI
+        instructionText.text = "Cambridge Colour Test\n\nSie sehen gleich ein Muster aus Kreisen. " +
+                              "Suchen Sie das 'C' (Kreis mit Öffnung) und drücken Sie die entsprechende Taste, die der Richtung der Öffnung entspricht.\n" +
+                              "Klicken Sie 'Start' um zu beginnen.";
+
+        // Setup response buttons
+        for (int i = 0; i < responseButtons.Length; i++)
+        {
+            int direction = i; // Capture for closure
+            responseButtons[i].onClick.AddListener(() => OnResponseButton(direction));
+            responseButtons[i].gameObject.SetActive(false);
+        }
+
+        resultsText.gameObject.SetActive(false);
+    }
+
+    //UI Event Listeners
+    public void OnResponseButton(int selectedDirection)
+    {
+        //if (!waitingForResponse) return; //nur wichtig, wenn ich ein Zeitlimit drin habe... glaube ich 
+
+        //waitingForResponse = false;
+        bool correct = selectedDirection == currentGapDirection;
+        ProcessResponse(correct);
+    }
+
+    #region User Response Updates
+
+    private List<float> reversalPoints;
+
+    //User Responses and their processing methods
+    void ProcessResponse(bool correct)
+    {
+        totalResponses++;
+        if (correct) correctResponses++;
+
+        // Staircase algorithm
+        float previousSaturation = currentSaturation;
+
+        if (correct) //Ich glaube, die Saturation sollte weniger stark vergrößert als verkleinert werden
+        {
+            // Decrease saturation (make it harder)
+            currentSaturation -= GetCurrentStepSize();
+        }
+        else
+        {
+            // Increase saturation (make it easier)
+            currentSaturation += GetCurrentStepSize();
+        }
+
+        currentSaturation = Mathf.Clamp01(currentSaturation);
+
+        // Check for reversal       ...Ich bin mir sicher, das kann ich verinfachen. Oder wenigstens als Methode auslagern.
+        CheckReversal();
+
+        // Update UI
+        instructionText.text = $"Testing: {currentVector} Vector\n" +
+                              $"Accuracy: {correctResponses}/{totalResponses} " +
+                              $"({(correctResponses * 100f / totalResponses):F1}%)\n" +
+                              $"Current Saturation: {(currentSaturation * 100):F1}%\n" +
+                              $"Reversals: {reversalPoints.Count}";
+
+        /* Dashier wird nach und nach wieder freigeschaltet
+        // Check if we should continue or move to next vector
+        if (reversalPoints.Count >= reversalsToStop)
+        {
+            // Calculate threshold for this vector
+            float threshold = CalculateThreshold();
+            thresholds[currentVector] = threshold;
+
+            // Move to next vector or finish
+            MoveToNextVector();
+        }
+        else
+        {
+            // Continue with next trial
+            RunTestTrial();
+        }
+
+        float GetCurrentStepSize()
+        {
+            // Reduce step size as we get more reversals
+            if (reversalPoints.Count < 2)
+                return stepSizeInitial;
+            else
+                return stepSizeFinal;
+        }
+        */
+        //Gets minimal distiguishable Color difference... but does it really?
+        float CalculateThreshold() 
+        {
+            if (reversalPoints.Count < 4) return currentSaturation;
+
+            // Use last 4 reversals for threshold calculation
+            var lastReversals = reversalPoints.TakeLast(4).ToList();
+            return lastReversals.Average();
+        }
+
+        // reversal = Wechsel von Desaturation zu greater Saturation oder umgekehrt. u.U. einfach machbar mit richtige Antwort zu falsch und umgekehrt
+        void CheckReversal()
+        {
+            bool isReversal = false;
+            if (reversalPoints.Count > 0)
+            {
+                float lastChange = currentSaturation - previousSaturation;
+                float previousChange = previousSaturation - (reversalPoints.Count > 1 ? reversalPoints[reversalPoints.Count - 2] : initialSaturation);
+
+                if (lastChange * previousChange < 0) // Sign change indicates reversal
+                {
+                    isReversal = true;
+                    reversalPoints.Add(previousSaturation);
+                }
+            }
+            else if (totalResponses > 1)
+            {
+                // First potential reversal
+                reversalPoints.Add(previousSaturation);
+            }
+        }
+
+        float GetCurrentStepSize()
+        {
+            return 0f;
+        }
+
+        void MoveToNextVector()
+        {
+            /*
+            // Hide circles
+            foreach (var circle in circles)
+            {
+                circle.gameObject.SetActive(false);
+            }
+
+            // Move to next vector
+            switch (currentVector)
+            {
+                case ColorVector.Protan:
+                    currentVector = ColorVector.Deutan;
+                    ResetTestParameters();
+                    RunTestTrial();
+                    break;
+
+                case ColorVector.Deutan:
+                    currentVector = ColorVector.Tritan;
+                    ResetTestParameters();
+                    RunTestTrial();
+                    break;
+
+                case ColorVector.Tritan:
+                    FinishTest();
+                    break;
+            } */
+        }
+        #endregion
+
+    }
+
+    /*void InitializeTest()
+    {
+        currentPhase = TestPhase.Instructions;
+        thresholds = new Dictionary<ColorVector, float>();
+        circles = new List<CircleStimulus>();
+
+        // Setup UI
+        instructionText.text = "Cambridge Colour Test\n\nSie sehen gleich ein Muster aus Kreisen. " +
+                              "Suchen Sie das 'C' (Kreis mit Öffnung) und drücken Sie die entsprechende Taste:\n" +
+                              "→ (Rechts), ↑ (Oben), ← (Links), ↓ (Unten)\n\nKlicken Sie 'Start' um zu beginnen.";
+
+        // Setup response buttons
+        for (int i = 0; i < responseButtons.Length; i++)
+        {
+            int direction = i; // Capture for closure
+            responseButtons[i].onClick.AddListener(() => OnResponseButton(direction));
+            responseButtons[i].gameObject.SetActive(false);
+        }
+
+        resultsText.gameObject.SetActive(false);
+
+        // Create circle pool
+        //CreateCirclePool();
+        SetCircles();
+
+    }*/
+}
+
+
+/*
+public class CCTCreatorStripped : MonoBehaviour
 {
 
     [Header("UI Components")]
@@ -93,8 +340,8 @@ public class CCTCreator : MonoBehaviour
         public bool isTarget;
 
         public Testplate(GameObject go)
-        {  
-            gameObject = go; 
+        {
+            gameObject = go;
         }
     }
 
@@ -134,9 +381,6 @@ public class CCTCreator : MonoBehaviour
 
     void SetCircles() //wird momentan missbraucht, um Plättchen dem Canvas anzupassen
     {
-        /*Vector2 bMax = circleReader.testplate.Bounds2DMax;
-        Vector2 bMin = circleReader.testplate.Bounds2DMin;*/
-
         RectTransform containerRect = stimulusContainer.GetComponent<RectTransform>();
         float width = containerRect.rect.width;
         float height = containerRect.rect.height;
@@ -144,15 +388,13 @@ public class CCTCreator : MonoBehaviour
         //Mittelpunkt des panels finden
         float cx = width / 2;
         float cy = height / 2;
-        Vector2 panelCenter = new Vector2 (cx, cy);
+        Vector2 panelCenter = new Vector2(cx, cy);
 
 
         //setze Plate auf Panel
         cctPlate.transform.SetParent(stimulusContainer);
         cctPlate.transform.localPosition = containerRect.position;
         cctPlate.transform.rotation = containerRect.rotation;
-        //cctPlate.transform.rotation.z = Random.Range(0f, 360f);
-        //cctPlate.transform.Rotate(0, 0, Random.Range(0f, 359f), Space.Self);
 
         //jetzt die Skalierung anpassen. Wird irgendwann mal ne eigene Methode werden. Aber alter... ich will nur noch dass der Scheiß funktioniert.
         List<GameObject> children = new List<GameObject>();
@@ -249,35 +491,9 @@ public class CCTCreator : MonoBehaviour
         waitingForResponse = true;
         GenerateStimulus();
     }
-    /*IEnumerator RunTestTrial() //Dringende Überarbeitung. Aktuell stacken sich die Coroutinen ganz böse und geben Timeout after Timeout
-    {
-        waitingForResponse = true;
-
-        // Generate new stimulus
-        GenerateStimulus();
-
-        // Wait for response or timeout
-        float timeoutTime = 10f;
-        float elapsedTime = 0f;
-
-        while (waitingForResponse && elapsedTime < timeoutTime)
-        {
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        if (waitingForResponse)
-        {
-            // Timeout - treat as incorrect
-            ProcessResponse(false);
-        }
-    }*/
 
     void GenerateStimulus()
     {
-        //randomize the Plates rotation for better illusion of a new plate pattern
-        //cctPlate.transform.Rotate(0, 0, Random.Range(0f, 359f), Space.Self);
-
         // Random gap direction
         currentGapDirection = Random.Range(0, 4);
 
@@ -348,31 +564,6 @@ public class CCTCreator : MonoBehaviour
             //circle.isTarget = isInC; //Wenn ich das richtig verstanden habe, wird dieser Wert nie wieder genutzt
         }
 
-        /* 
-         * //old and made by ChatGPT. uses the old circles generated originally. Switch to Prefab Circles
-         
-        for (int i = 0; i < circles.Count; i++)
-        {
-            var circle = circles[i];
-            circle.gameObject.SetActive(true);
-
-            // Position and scale
-            circle.gameObject.transform.localPosition = positions[i];
-            circle.gameObject.transform.localScale = Vector3.one * (sizes[i] / 64f);
-
-            // Determine if this circle is part of the C
-            Vector2 relativePos = positions[i] - cCenter;
-            float distance = relativePos.magnitude;
-            bool isInC = IsPositionInC(relativePos, cRadius, currentGapDirection);
-
-            // Apply color with luminance noise
-            Color baseColor = isInC ? targetColor : backgroundBaseColor;
-            float luminanceNoise = Random.Range(-luminanceNoiseRange, luminanceNoiseRange);
-            Color finalColor = AdjustLuminance(baseColor, luminanceNoise);
-
-            circle.image.color = finalColor;
-            circle.isTarget = isInC;
-        } */
     }
 
     bool IsPositionInC(Vector2 position, float radius, int gapDirection)
@@ -696,3 +887,4 @@ public class CCTCreator : MonoBehaviour
         return json;
     }
 }
+*/

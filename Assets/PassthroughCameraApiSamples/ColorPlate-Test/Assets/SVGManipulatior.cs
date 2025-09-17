@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
 using NUnit.Framework;
-using System.IO;
 using Unity.VectorGraphics;
 using UnityEngine;
 

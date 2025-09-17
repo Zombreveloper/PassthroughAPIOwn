@@ -1725,6 +1725,7 @@ GameObject:
   - component: {fileID: 749426911}
   - component: {fileID: 749426912}
   - component: {fileID: 749426913}
+  - component: {fileID: 749426914}
   m_Layer: 0
   m_Name: CCTManager
   m_TagString: Untagged
@@ -1819,6 +1820,26 @@ MonoBehaviour:
   backgroundColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   luminanceNoiseRange: 0.3
   cctPlate: {fileID: 1428778637}
+--- !u!114 &749426914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 749426908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4380d7d59aa94b540902a5c1be6e3fcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cctPlate: {fileID: 1428778637}
+  testCanvas: {fileID: 1564881985}
+  stimulusContainer: {fileID: 620199346}
+  instructionText: {fileID: 2085832807}
+  responseButtons: []
+  resultsText: {fileID: 1951411629}
+  backgroundColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  luminanceNoiseRange: 0.3
 --- !u!114 &777207911 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 229710696117312062, guid: 9fa0825d6b962924e8124b0b7d0595f8, type: 3}

@@ -33,23 +33,24 @@ public class CCTManager : MonoBehaviour
         Vector2 panelCenter = new Vector2(cx, cy);
 
         cctPlate.SetActive(true);
-        var plateData = cctPlate.GetComponent<TestPlate>();
-        plateData.InitializeValues();
+        
 
         cctPlate.transform.SetParent(stimulusContainer);
         cctPlate.transform.localPosition = containerRect.position;
         cctPlate.transform.rotation = containerRect.rotation;
 
         //Skalierung der TestPlate
-        // Panel-Größe in Weltkoordinaten
+       /* // Panel-Größe in Weltkoordinaten
         Vector2 panelSize = stimulusContainer.rect.size * stimulusContainer.lossyScale;
 
+        var plateData = cctPlate.GetComponent<TestPlate>();
         var objSize = plateData.BoundingBox.size;
         float scaleX = panelSize.x / objSize.x;
         float scaleY = panelSize.y / objSize.y;
         float finalScale = Mathf.Min(scaleX, scaleY);
 
-        //cctPlate.InitializeValues();
+        //plateData.InitializeValues();
+        //cctPlate.InitializeValues();*/
 
     }
 }

@@ -77,7 +77,7 @@ public class TestPlate : MonoBehaviour
         //jetzt radiale Bounds ergänzen
         var center = bounds.center;
         var radius = Math.Max(bounds.extents.x, bounds.extents.y);
-        RadialBounds = new BoundingSphere(center, radius);
+        //RadialBounds = new BoundingSphere(center, radius);
     }
 
     public void SetCenterPoint()
@@ -88,6 +88,6 @@ public class TestPlate : MonoBehaviour
             go.transform.position = go.transform.position - center;
         }
         BoundingBox.center -= center;
-        RadialBounds.position -= center;
+        //RadialBounds.position -= center;
     }
 }

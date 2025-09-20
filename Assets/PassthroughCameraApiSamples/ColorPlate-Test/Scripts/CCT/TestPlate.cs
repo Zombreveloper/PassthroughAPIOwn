@@ -29,7 +29,7 @@ public class TestPlate : MonoBehaviour
     }*/
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         InitializeValues();
     }
@@ -38,7 +38,7 @@ public class TestPlate : MonoBehaviour
     {
         UpdateChildren();
         CalculateBounds();
-        SetCenterPoint();
+        //SetCenterPoint(); // Unnötig, solange ich nicht ne neue SVG auslesen möchte
     }
 
     // Update is called once per frame
@@ -87,7 +87,19 @@ public class TestPlate : MonoBehaviour
         {
             go.transform.position = go.transform.position - center;
         }
-        BoundingBox.center -= center;
+        BoundingBox.center -= center; //Ich glaube, diese Zeile ist ein Problem und verschiebt das Center weg vom Kreis. Entweder kanns gelöscht werden oder ich muss im CircleReader nach Lösungsinpiration suchen.
         //RadialBounds.position -= center;
+    }
+
+    //visible Bounding Box when Item selected
+    public void OnDrawGizmosSelected()
+    {
+        /*var r = GetComponent<Renderer>();
+        if (r == null)
+            return;
+        var bounds = r.bounds;*/
+        Gizmos.matrix = Matrix4x4.identity;
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireCube(BoundingBox.center, BoundingBox.extents * 2);
     }
 }

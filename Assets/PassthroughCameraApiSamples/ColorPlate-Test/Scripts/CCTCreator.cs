@@ -302,6 +302,8 @@ public class CCTCreator : MonoBehaviour
             sizes.Add(size);
         }
 
+        #region Color Management
+
         // Determine target and background colors
         Color targetColor, backgroundBaseColor;
         GetColorsForVector(currentVector, currentSaturation, out targetColor, out backgroundBaseColor);
@@ -386,7 +388,7 @@ public class CCTCreator : MonoBehaviour
         float gapAngle = gapDirection * 90f; // 0°, 90°, 180°, 270°
         float gapWidth = 60f; // degrees
 
-        // Convert position to angle
+        // Convert the plates circle position to angle relative to center of c
         float angle = Mathf.Atan2(position.y, position.x) * Mathf.Rad2Deg;
         if (angle < 0) angle += 360f;
 
@@ -461,6 +463,7 @@ public class CCTCreator : MonoBehaviour
             baseColor.a
         );
     }
+    #endregion
 
     public void OnResponseButton(int selectedDirection)
     {

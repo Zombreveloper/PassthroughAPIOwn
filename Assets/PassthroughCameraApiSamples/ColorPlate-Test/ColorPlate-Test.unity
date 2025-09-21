@@ -1733,6 +1733,7 @@ GameObject:
   - component: {fileID: 749426914}
   - component: {fileID: 749426915}
   - component: {fileID: 749426916}
+  - component: {fileID: 749426917}
   m_Layer: 0
   m_Name: CCTManager
   m_TagString: Untagged
@@ -1808,7 +1809,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13b4184038984514bbf6f06cc7647546, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cctPlate: {fileID: 1428778637}
+  CCTPlate: {fileID: 1428778637}
   stimulusContainer: {fileID: 620199346}
 --- !u!114 &749426915
 MonoBehaviour:
@@ -1834,6 +1835,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b95a61c5a4003a145a4059d1d43ed8f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &749426917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 749426908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b53dd46098c3da48996cba3c5a4fd41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  luminanceNoiseRange: 0.3
 --- !u!114 &777207911 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 229710696117312062, guid: 9fa0825d6b962924e8124b0b7d0595f8, type: 3}

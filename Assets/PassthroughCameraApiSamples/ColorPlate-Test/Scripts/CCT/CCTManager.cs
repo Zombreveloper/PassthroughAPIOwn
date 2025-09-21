@@ -1,27 +1,41 @@
 /* So, das hier wird jetzt die Hauptklasse, die den CCTCreator möglichst gut in andere Klassen ausgelagert nachstellt
  * Ziel 1: Testplate importieren und auf das Panel setzen. [DONE]
+ *  Ziel 1.1: Plate Placement Methoden auf PlateManager schieben
  * Ziel 2: Color Management
  *  Ziel 2.1: Punkte in beliebiger Farbe einfärben. [DONE]
- *  Ziel 2.2: C-Maske in anderer Farbe einfärben.
- *  Ziel 2.3: Luminance Noise für beide Farben adden
+ *  Ziel 2.2: C-Maske in anderer Farbe einfärben. [DONE]
+ *  Ziel 2.3: Luminance Noise für beide Farben adden [DONE]
+ *  Ziel 2.4: ColorVektoren in eigener Klasse ansprechbar machen
+ *  
+ *  Derzeitiges Hauptproblem: Wo speichere ich den current ColorVector so, dass ich ihn als Argument mitgeben darf?
  */
 
+using Meta.XR.ImmersiveDebugger.UserInterface;
 using UnityEngine;
 
 public class CCTManager : MonoBehaviour
 {
-    [SerializeField] private GameObject cctPlate;
+    [field: SerializeField] public GameObject CCTPlate;
     [SerializeField] private RectTransform stimulusContainer;
 
     //Necessary Components on same Object
-    private ColorManager colorManager;
+    private PlateManager plateManager;
+
+    //Structs and Enums
+    public enum ColorVector
+    {
+        Protan,   // L-cone (red-green, affects long wavelength)
+        Deutan,   // M-cone (red-green, affects medium wavelength)
+        Tritan    // S-cone (blue-yellow, affects short wavelength)
+    }
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         CollectComponents();
-        SetPlate();
-        SetColors();
+        plateManager.SetPlateToPanel(stimulusContainer);
+        plateManager.SetColors();
     }
 
     // Update is called once per frame
@@ -32,10 +46,14 @@ public class CCTManager : MonoBehaviour
 
     void CollectComponents()
     {
-        colorManager = GetComponent<ColorManager>();
+        plateManager = GetComponent<PlateManager>();
     }
 
-    #region Positioning
+    
+
+
+
+    #region Obsolete Methods but Kept for now because they are guaranteed to work here
     private void SetPlate()
     {
         RectTransform containerRect = stimulusContainer.GetComponent<RectTransform>();
@@ -47,12 +65,12 @@ public class CCTManager : MonoBehaviour
         float cy = height / 2;
         Vector2 panelCenter = new Vector2(cx, cy);
 
-        cctPlate.SetActive(true);
-        
+        CCTPlate.SetActive(true);
 
-        cctPlate.transform.SetParent(stimulusContainer);
-        cctPlate.transform.localPosition = containerRect.position;
-        cctPlate.transform.rotation = containerRect.rotation;
+
+        CCTPlate.transform.SetParent(stimulusContainer);
+        CCTPlate.transform.localPosition = containerRect.position;
+        CCTPlate.transform.rotation = containerRect.rotation;
 
         ScalePlate();
 
@@ -64,7 +82,7 @@ public class CCTManager : MonoBehaviour
         Vector2 panelSize = stimulusContainer.rect.size * stimulusContainer.lossyScale;
 
         //Verhältnis Objekt zu Panel berechnen
-        var plateData = cctPlate.GetComponent<TestPlate>();
+        var plateData = CCTPlate.GetComponent<TestPlate>();
         var objSize = plateData.BoundingBox.size;
         Debug.Log("The Testplate´s Bounding Boxes Size is: " + objSize);
         float scaleX = panelSize.x / objSize.x;
@@ -72,20 +90,20 @@ public class CCTManager : MonoBehaviour
         float finalScale = Mathf.Min(scaleX, scaleY);
 
         //tatsächliche Skalierung
-        cctPlate.transform.localScale *= finalScale;
+        CCTPlate.transform.localScale *= finalScale;
     }
-    #endregion
 
     void SetColors()
     {
-        var baseColor = colorManager.BackgroundColor;
+        var baseColor = plateManager.GetBackgroundColor();
 
         //Apply Colors to Circles
-        var plateData = cctPlate.GetComponent<TestPlate>();
+        var plateData = CCTPlate.GetComponent<TestPlate>();
 
         foreach (var circle in plateData.Circles)
         {
             circle.GetComponentInChildren<SpriteRenderer>().material.color = baseColor;
         }
     }
+    #endregion
 }

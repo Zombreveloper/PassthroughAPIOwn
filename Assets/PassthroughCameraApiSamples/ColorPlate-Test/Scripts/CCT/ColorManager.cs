@@ -2,17 +2,12 @@
  */
 
 using UnityEngine;
+using CCT.VectorData;
 
 public class ColorManager : MonoBehaviour
 {
     private Color m_backgroundColor = new Color(0.5f, 0.5f, 0.5f);
     private Color m_targetColor = new Color(0.7f, 0.3f, 0.3f);
-    public enum ColorVector
-    {
-        Protan,   // L-cone (red-green, affects long wavelength)
-        Deutan,   // M-cone (red-green, affects medium wavelength)
-        Tritan    // S-cone (blue-yellow, affects short wavelength)
-    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

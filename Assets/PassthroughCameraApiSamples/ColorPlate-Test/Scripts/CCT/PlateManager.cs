@@ -2,6 +2,7 @@
  * Das beinhaltet: Positionierung, Skalierung, Einfärbung, C-Shape
  * Bekommt alle Befehle und Anweisungen vom CCTManager. Inklusive Daten, wenn er sie selbst hat.
  */
+using CCT.VectorData;
 using System.ComponentModel;
 using UnityEngine;
 using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
@@ -14,22 +15,27 @@ public class PlateManager : MonoBehaviour
 
     [SerializeField] public float luminanceNoiseRange = 0.3f;
 
+    private void Awake()
+    {
+        CollectComponents();
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        CollectComponents();
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     void CollectComponents()
     {
         testPlate = GetComponent<CCTManager>().CCTPlate;
-        colorManager = GetComponent<ColorManager>();
+        //colorManager = GetComponent<ColorManager>();
+        colorManager = gameObject.AddComponent<ColorManager>();
         cShape = GetComponent<CShape>();
     }
 
@@ -45,6 +51,11 @@ public class PlateManager : MonoBehaviour
         float cy = height / 2;
         Vector2 panelCenter = new Vector2(cx, cy);
 
+        if (!testPlate)
+        {
+            Debug.Log("PlateManager currently does not own a CCTPlate");
+            return;
+        }
         testPlate.SetActive(true);
 
 
@@ -83,11 +94,12 @@ public class PlateManager : MonoBehaviour
         return colorManager.TargetColor;
     }
 
-    public void SetColors()
+    public void SetColors(ColorVector vec)
     {
-        var bgColor = GetBackgroundColor();
+        //var bgColor = GetBackgroundColor();
+        var bgColor = colorManager.BackgroundColor;
         var targetColor = GetTargetColor();
-        //colorManager.ApplyColorVectors(); hier nächstes mal weiter
+        colorManager.ApplyColorVectors(vec, 0.5f, out targetColor, out bgColor);
         var plateData = testPlate.GetComponent<TestPlate>();
         SetCShape();
 

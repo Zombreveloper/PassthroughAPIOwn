@@ -12,30 +12,35 @@
 
 using Meta.XR.ImmersiveDebugger.UserInterface;
 using UnityEngine;
+using CCT.VectorData;
 
 public class CCTManager : MonoBehaviour
 {
     [field: SerializeField] public GameObject CCTPlate;
     [SerializeField] private RectTransform stimulusContainer;
 
+    private ColorVector currentVector;
+
     //Necessary Components on same Object
     private PlateManager plateManager;
 
     //Structs and Enums
-    public enum ColorVector
+    /*public enum ColorVector
     {
         Protan,   // L-cone (red-green, affects long wavelength)
         Deutan,   // M-cone (red-green, affects medium wavelength)
         Tritan    // S-cone (blue-yellow, affects short wavelength)
-    }
+    }*/
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        currentVector = ColorVector.Protan;
         CollectComponents();
         plateManager.SetPlateToPanel(stimulusContainer);
-        plateManager.SetColors();
+        //SetPlate();
+        plateManager.SetColors(currentVector);
     }
 
     // Update is called once per frame

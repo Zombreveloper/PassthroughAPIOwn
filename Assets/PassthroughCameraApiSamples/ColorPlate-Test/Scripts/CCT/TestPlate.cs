@@ -4,6 +4,7 @@
  * oder hält nur Properties, die von anderen Klassen gesetzt werden. Könnte in dem Fall zu Struct umgewandelt werden
  * 
  * Achtung: Properties updaten sich nicht automatisch, wenn sich etwas an der Plate ändert... wie erreiche ich das?
+ * Allerdings: Skalierung und Repositionierung des Parents nimmt die Bounds mit
  */
 using System;
 using System.Collections.Generic;

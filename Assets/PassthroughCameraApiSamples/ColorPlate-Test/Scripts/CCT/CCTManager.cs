@@ -7,6 +7,8 @@
  *  Ziel 2.3: Luminance Noise für beide Farben adden [DONE]
  *  Ziel 2.4: ColorVektoren in eigener Klasse ansprechbar machen
  *  
+ *  Ziel X: Protan, Deutan und Tritan Testprozeduren (Inklusive Anwortspeicherung) seperiert kapseln, um sie im Test randomisiert zu verweben
+ *  
  *  Derzeitiges Hauptproblem: Wo speichere ich den current ColorVector so, dass ich ihn als Argument mitgeben darf?
  */
 

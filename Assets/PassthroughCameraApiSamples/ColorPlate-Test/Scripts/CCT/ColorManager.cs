@@ -3,12 +3,20 @@
 
 using UnityEngine;
 using CCT.VectorData;
+using UnityEditor.SceneManagement;
 
 public class ColorManager : MonoBehaviour
 {
+    private ColorVectors m_colorVectors;
+
     private Color m_backgroundColor = new Color(0.5f, 0.5f, 0.5f);
     private Color m_targetColor = new Color(0.7f, 0.3f, 0.3f);
 
+
+    private void Awake()
+    {
+        m_colorVectors = gameObject.AddComponent<ColorVectors>();
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -33,10 +41,13 @@ public class ColorManager : MonoBehaviour
         set { m_targetColor = value; }
     }
 
-    /*void GetColorsForVector()
+    public void GetColorsForVector(out Color target, out Color background)
     {
         //Will apply the Colorvectors once they are part of this whole thing
-    }*/
+        background = m_backgroundColor;
+        var colorVec = m_colorVectors.GetRGBColor();
+        target = new Color(colorVec.x, colorVec.y, colorVec.z);
+    }
 
     public void ApplyColorVectors(ColorVector vector, float saturation, out Color target, out Color background)
     {

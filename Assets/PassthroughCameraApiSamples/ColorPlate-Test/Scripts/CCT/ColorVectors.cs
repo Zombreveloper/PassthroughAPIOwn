@@ -26,7 +26,7 @@ public class ColorVectors : MonoBehaviour
         
     }
 
-    void ColorXYToUV(Vector2 xyVec)
+    private void ColorXYToUV(Vector2 xyVec)
     {
         var xyY = new xyYColor(xyVec.x,xyVec.y, 0.5);
         var rgbWorkingSpace = RGBWorkingSpaces.sRGB;
@@ -39,13 +39,21 @@ public class ColorVectors : MonoBehaviour
         var outputLuv = xyYToLuv.Convert(xyY);
     }
 
-    void ColorXYToLinRGB(Vector2 xyVec)
+    private LinearRGBColor ColorXYToLinRGB(Vector2 xyVec)
     {
         var xyY = new xyYColor(xyVec.x, xyVec.y, 0.5);
         var rgbWorkingSpace = RGBWorkingSpaces.sRGB;
 
         //Step1: to LinearRGB
-        var xyYToLinearRGB = new ConverterBuilder().FromxyY().ToLinearRGB(rgbWorkingSpace).Build();
+        var xyYToLinearRGB = new ConverterBuilder().FromxyY(rgbWorkingSpace.WhitePoint).ToLinearRGB(rgbWorkingSpace).Build();
         var outputLinRGB = xyYToLinearRGB.Convert(xyY);
+        return outputLinRGB;
+    }
+
+    public Vector3 GetRGBColor()
+    {
+        var myColor = ColorXYToLinRGB(protanPoint);
+        Vector3 outputVector = new Vector3((float) myColor.R, (float) myColor.G, (float) myColor.B);
+        return outputVector;
     }
 }

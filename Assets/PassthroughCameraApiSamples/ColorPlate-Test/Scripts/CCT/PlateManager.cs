@@ -99,7 +99,8 @@ public class PlateManager : MonoBehaviour
         //var bgColor = GetBackgroundColor();
         var bgColor = colorManager.BackgroundColor;
         var targetColor = GetTargetColor();
-        colorManager.ApplyColorVectors(vec, 0.5f, out targetColor, out bgColor);
+        //colorManager.ApplyColorVectors(vec, 0.5f, out targetColor, out bgColor);
+        colorManager.GetColorsForVector(out targetColor, out bgColor);
         var plateData = testPlate.GetComponent<TestPlate>();
         SetCShape();
 
@@ -108,8 +109,8 @@ public class PlateManager : MonoBehaviour
         {
             bool isInC = cShape.IsPositionInside(circle.transform.localPosition);
             Color baseColor = isInC ? targetColor : bgColor;
-            baseColor = AdjustLuminance(baseColor);
-            circle.GetComponentInChildren<SpriteRenderer>().material.color = baseColor;
+            var finalColor = AdjustLuminance(baseColor);
+            circle.GetComponentInChildren<SpriteRenderer>().material.color = finalColor;
         }
     }
 

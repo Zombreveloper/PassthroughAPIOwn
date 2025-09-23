@@ -39,7 +39,7 @@ public class TestPlate : MonoBehaviour
     {
         UpdateChildren();
         CalculateBounds();
-        //SetCenterPoint(); // Unnötig, solange ich nicht ne neue SVG auslesen möchte
+        //SetCenterPoint(); // Unnötig, solange ich nicht ne neue SVG auslesen möchte. Außerdem broken
     }
 
     // Update is called once per frame

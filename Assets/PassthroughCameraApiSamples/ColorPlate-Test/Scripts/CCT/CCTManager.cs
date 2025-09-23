@@ -5,9 +5,14 @@
  *  Ziel 2.1: Punkte in beliebiger Farbe einfärben. [DONE]
  *  Ziel 2.2: C-Maske in anderer Farbe einfärben. [DONE]
  *  Ziel 2.3: Luminance Noise für beide Farben adden [DONE]
- *  Ziel 2.4: ColorVektoren in eigener Klasse ansprechbar machen
+ *  Ziel 2.4: ColorVektoren in eigener Klasse ansprechbar machen [Done]
+ *  Ziel 2.5: Farben akkurat entsättigen
+ *  
+ * Ziel 3: Rest vom Test wieder einfügen Minus die ausgelagerten Methoden
+ *  
  *  
  *  Ziel X: Protan, Deutan und Tritan Testprozeduren (Inklusive Anwortspeicherung) seperiert kapseln, um sie im Test randomisiert zu verweben
+ *      Ziel X.2: Weg von dem Enum und ganze CVDType Klasse (vllt als Namespace) erstellen. Mit allen Daten spezifisch für diese Deficiency inklusive Vector und Zwischenspeicherung der Testantworten)
  *  
  *  Derzeitiges Hauptproblem: Wo speichere ich den current ColorVector so, dass ich ihn als Argument mitgeben darf?
  */
@@ -15,6 +20,7 @@
 using Meta.XR.ImmersiveDebugger.UserInterface;
 using UnityEngine;
 using CCT.VectorData;
+using System;
 
 public class CCTManager : MonoBehaviour
 {
@@ -34,10 +40,19 @@ public class CCTManager : MonoBehaviour
         Tritan    // S-cone (blue-yellow, affects short wavelength)
     }*/
 
+    //public Array CVDType { get; private set; }
+    public string[] cvdType = { "Protan", "Deutan", "Tritan"};
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        //Platzhaltercode um random meine Vektoren zu bekommen
+        /*var ri = UnityEngine.Random.Range((int)0, cvdType.Length +1);
+        if (ri == 0) { currentVector = ColorVector.Protan; }
+        else if (ri == 1) { currentVector = ColorVector.Deutan; }
+        else { currentVector = ColorVector.Tritan; }*/
+
         currentVector = ColorVector.Protan;
         CollectComponents();
         plateManager.SetPlateToPanel(stimulusContainer);

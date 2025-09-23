@@ -5,7 +5,6 @@
 using CCT.VectorData;
 using System.ComponentModel;
 using UnityEngine;
-using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 public class PlateManager : MonoBehaviour
 {
@@ -37,6 +36,7 @@ public class PlateManager : MonoBehaviour
         //colorManager = GetComponent<ColorManager>();
         colorManager = gameObject.AddComponent<ColorManager>();
         cShape = GetComponent<CShape>();
+        cShape = gameObject.AddComponent<CShape>();
     }
 
     //Plate positioning
@@ -97,10 +97,10 @@ public class PlateManager : MonoBehaviour
     public void SetColors(ColorVector vec)
     {
         //var bgColor = GetBackgroundColor();
-        var bgColor = colorManager.BackgroundColor;
-        var targetColor = GetTargetColor();
+        //var bgColor = colorManager.BackgroundColor;
+        //var targetColor = GetTargetColor();
         //colorManager.ApplyColorVectors(vec, 0.5f, out targetColor, out bgColor);
-        colorManager.GetColorsForVector(out targetColor, out bgColor);
+        colorManager.GetColorsForVector(vec, out var targetColor, out var bgColor);
         var plateData = testPlate.GetComponent<TestPlate>();
         SetCShape();
 

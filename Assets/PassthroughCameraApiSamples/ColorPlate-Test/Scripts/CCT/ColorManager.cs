@@ -3,7 +3,6 @@
 
 using UnityEngine;
 using CCT.VectorData;
-using UnityEditor.SceneManagement;
 
 public class ColorManager : MonoBehaviour
 {
@@ -41,11 +40,10 @@ public class ColorManager : MonoBehaviour
         set { m_targetColor = value; }
     }
 
-    public void GetColorsForVector(out Color target, out Color background)
+    public void GetColorsForVector(ColorVector vec, out Color target, out Color background) //Muss zusätzlich currentDeficiency und Sättigung abfragen
     {
-        //Will apply the Colorvectors once they are part of this whole thing
         background = m_backgroundColor;
-        var colorVec = m_colorVectors.GetRGBColor();
+        var colorVec = m_colorVectors.GetRGBColor(vec);
         target = new Color(colorVec.x, colorVec.y, colorVec.z);
     }
 

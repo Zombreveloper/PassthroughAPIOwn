@@ -1445,7 +1445,6 @@ GameObject:
   - component: {fileID: 749426913}
   - component: {fileID: 749426914}
   - component: {fileID: 749426917}
-  - component: {fileID: 749426916}
   m_Layer: 0
   m_Name: CCTManager
   m_TagString: Untagged
@@ -1523,18 +1522,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CCTPlate: {fileID: 1428778637}
   stimulusContainer: {fileID: 620199346}
---- !u!114 &749426916
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 749426908}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b95a61c5a4003a145a4059d1d43ed8f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  cvdType:
+  - Protan
+  - Deutan
+  - Tritan
 --- !u!114 &749426917
 MonoBehaviour:
   m_ObjectHideFlags: 0

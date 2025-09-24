@@ -28,6 +28,7 @@ public class ColorManager : MonoBehaviour
         
     }
 
+    //Wird jetzt von den ColorVectors geregelt
     public Color BackgroundColor
     {
         get { return m_backgroundColor; }
@@ -42,7 +43,9 @@ public class ColorManager : MonoBehaviour
 
     public void GetColorsForVector(ColorVector vec, out Color target, out Color background) //Muss zusätzlich currentDeficiency und Sättigung abfragen
     {
-        background = m_backgroundColor;
+        //background = m_backgroundColor;
+        var bgVec = m_colorVectors.GetBackgroundColor();
+        background = new Color(bgVec.x, bgVec.y, bgVec.z);
         var colorVec = m_colorVectors.GetRGBColor(vec);
         target = new Color(colorVec.x, colorVec.y, colorVec.z);
     }

@@ -9,10 +9,11 @@ using CCT.VectorData;
 using Colourful;
 using Unity.XR.CoreUtils;
 using UnityEngine;
+using static Oculus.Interaction.InteractableColorVisual;
 
 public class ColorVectors : MonoBehaviour
 {
-    private Vector2 fieldChromaticity = new Vector2(0.413f, 0.360f);
+    public Vector2 FieldChromaticity { get; private set; } = new Vector2(0.413f, 0.360f);
     //Copunctual Points
     private Vector2 protanPoint = new Vector2(0.747f, 0.253f);
     private Vector2 deutanPoint = new Vector2(1.40f, -0.40f);
@@ -56,10 +57,28 @@ public class ColorVectors : MonoBehaviour
         var xy = new xyChromaticity(xyVec.x, xyVec.y);
         var rgbWorkingSpace = RGBWorkingSpaces.sRGB;
 
-        //Step1: to LinearRGB
+        //to LinearRGB
         var xyToLinearRGB = new ConverterBuilder().Fromxy(rgbWorkingSpace.WhitePoint).ToLinearRGB(rgbWorkingSpace).Build();
         var outputLinRGB = xyToLinearRGB.Convert(xy);
         return outputLinRGB;
+    }
+
+    private xyYColor ColorLuvToXYY(Vector3 luvVec)
+    {
+        var luv = new LuvColor(luvVec.x, luvVec.y, luvVec.z);
+        var rgbWorkingSpace = RGBWorkingSpaces.sRGB;
+
+        //to xyY
+        var luvToxyY = new ConverterBuilder().FromLuv(rgbWorkingSpace.WhitePoint).ToxyY(rgbWorkingSpace.WhitePoint).Build();
+        var outputxyY = luvToxyY.Convert(luv);
+        return outputxyY;
+    }
+
+    public Vector3 GetBackgroundColor()
+    {
+        var myColor = ColorXYToLinRGB(FieldChromaticity);
+        Vector3 outputVector = ColorToVector(myColor);
+        return outputVector;
     }
 
     public Vector3 GetRGBColor(ColorVector current)
@@ -93,14 +112,13 @@ public class ColorVectors : MonoBehaviour
     //dynamische Positionen auf den Vektoren
     public xyYColor Saturate(Vector2 xy)
     {
-        var uvFC = ColorXYToLuv(fieldChromaticity);
+        var uvFC = ColorXYToLuv(FieldChromaticity);
         var uvCP = ColorXYToLuv(xy);
         var colorPathUV = ColorToVector(uvCP) - ColorToVector(uvFC);
 
         //Vektorlänge halbieren 
-        var finalVec = colorPathUV * 0.5f;
-        //Hier ist der Fehler! ich nehme gerade Luv-Werte und verpacke die einfach als xyY!
-        var xyYDesaturated = new xyYColor(finalVec.x, finalVec.y, finalVec.z);
+        var desatLuvVec = ColorToVector(uvFC) + (colorPathUV * 0.1f);
+        var xyYDesaturated = ColorLuvToXYY(desatLuvVec); //new xyYColor(finalVec.x, finalVec.y, finalVec.z);
         return xyYDesaturated;
     }
 

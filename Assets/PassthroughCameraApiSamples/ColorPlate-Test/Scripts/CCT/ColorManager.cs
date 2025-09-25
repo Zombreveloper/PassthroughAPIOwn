@@ -41,7 +41,7 @@ public class ColorManager : MonoBehaviour
         set { m_targetColor = value; }
     }
 
-    public void GetColorsForVector(ColorVector vec, out Color target, out Color background) //Muss zusätzlich currentDeficiency und Sättigung abfragen
+    public void GetColorsForVector(ColorVector vec, out Color target, out Color background) //Vec steht gerade für die currentDeficiency
     {
         //background = m_backgroundColor;
         var bgVec = m_colorVectors.GetBackgroundColor();

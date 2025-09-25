@@ -94,7 +94,7 @@ public class PlateManager : MonoBehaviour
         return colorManager.TargetColor;
     }
 
-    public void SetColors(ColorVector vec)
+    public void SetColors(ColorVector vec, int gapDir)
     {
         //var bgColor = GetBackgroundColor();
         //var bgColor = colorManager.BackgroundColor;
@@ -102,7 +102,7 @@ public class PlateManager : MonoBehaviour
         //colorManager.ApplyColorVectors(vec, 0.5f, out targetColor, out bgColor);
         colorManager.GetColorsForVector(vec, out var targetColor, out var bgColor);
         var plateData = testPlate.GetComponent<TestPlate>();
-        SetCShape();
+        SetCShape(gapDir);
 
         //Apply Colors to Circles
         foreach (var circle in plateData.Circles)
@@ -126,13 +126,13 @@ public class PlateManager : MonoBehaviour
         );
     }
 
-    public void SetCShape() //oder CreateCShape?
+    public void SetCShape(int gap) //oder CreateCShape?
     {
         //hier stattdessen ein CShape.Create(alle wichtigen Variablen) einfügen. Den rest macht die CShape Klasse!
 
         Vector3 plateExtents = testPlate.GetComponent<TestPlate>().BoundingBox.extents;
         float cRadius = 0.7f * Mathf.Min(plateExtents.x, plateExtents.y); //Größe des C in Relation zur Testplate
-        int gap = 1; //Platzhalter
+        //int gapDir = 1; //Platzhalter
         cShape.CreateShape(cRadius, gap);
     }
 }

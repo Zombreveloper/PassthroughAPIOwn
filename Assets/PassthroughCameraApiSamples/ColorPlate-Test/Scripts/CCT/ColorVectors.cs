@@ -3,6 +3,11 @@
  * 
  * Achtung: Prüfen, ob die Quest überhaupt wirklich mit sRGB arbeitet!
  * Ich meine schon, aber könnte mich falsch erinnert haben.
+ * 
+ * TODO Farbverwaltung: 
+ * 1: Helligkeiten vereinheitlichen
+ * 2: sRGB verwenden und hoffen, dass Gammakurve passender wird
+ * 3: Unity interne Color-Klasse läuft auf sRGB?
  */
 using System.Drawing;
 using CCT.VectorData;
@@ -19,6 +24,9 @@ public class ColorVectors : MonoBehaviour
     private Vector2 deutanPoint = new Vector2(1.40f, -0.40f);
     private Vector2 tritanPoint = new Vector2(0.171f, 0f);
 
+    private static int totalSteps = 20;
+    private int currentStep = 15;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -31,6 +39,7 @@ public class ColorVectors : MonoBehaviour
         
     }
 
+    #region Color Space conversions
     private LuvColor ColorXYToLuv(Vector2 xyVec)
     {
         var xy = new xyChromaticity(xyVec.x, xyVec.y);
@@ -73,6 +82,25 @@ public class ColorVectors : MonoBehaviour
         var outputxyY = luvToxyY.Convert(luv);
         return outputxyY;
     }
+    #endregion
+
+    private Vector2 xyVectorForCVDType(ColorVector current)
+    {
+        switch (current)
+        {
+            case ColorVector.Protan:
+                return protanPoint;
+
+            case ColorVector.Deutan:
+                return deutanPoint;
+
+            case ColorVector.Tritan:
+                return tritanPoint;
+
+            default:
+                return Vector2.zero;
+        }
+    }
 
     public Vector3 GetBackgroundColor()
     {
@@ -83,7 +111,7 @@ public class ColorVectors : MonoBehaviour
 
     public Vector3 GetRGBColor(ColorVector current)
     {
-        Vector2 selected;
+        /*Vector2 selected;
         switch (current)
         {
             case ColorVector.Protan:
@@ -100,8 +128,9 @@ public class ColorVectors : MonoBehaviour
 
             default: selected = Vector2.zero;
                 break;
-        }
-
+        }*/
+        Vector2 selected = xyVectorForCVDType(current);
+        //Debug.Log("I'm currently showing " + selected);
         var colorSat = Saturate(selected);
         var myColor = ColorXYYToLinRGB(ColorToVector(colorSat));
         Vector3 outputVector = ColorToVector(myColor);
@@ -116,10 +145,33 @@ public class ColorVectors : MonoBehaviour
         var uvCP = ColorXYToLuv(xy);
         var colorPathUV = ColorToVector(uvCP) - ColorToVector(uvFC);
 
-        //Vektorlänge halbieren 
-        var desatLuvVec = ColorToVector(uvFC) + (colorPathUV * 0.1f);
+        //Vektorlänge reduzieren 
+        var factor = Staircase();
+        var desatLuvVec = ColorToVector(uvFC) + (colorPathUV * factor);
         var xyYDesaturated = ColorLuvToXYY(desatLuvVec); //new xyYColor(finalVec.x, finalVec.y, finalVec.z);
         return xyYDesaturated;
+    }
+
+    public void ReduceSaturation()
+    { currentStep--; }
+
+    public void IncreaseSaturation()
+    { currentStep++; }
+
+    private float Staircase()
+    {
+
+        if (currentStep >= totalSteps)
+        {
+            currentStep = totalSteps;
+            Debug.Log("Staircase already reached its limit");
+            //sende Signal zurück an CCT-Manager, dass der Limit-Case eingetreten ist
+
+        }
+        Debug.Log("Current Step liegt gerade bei: " + currentStep);
+        float lerpFactor = (float)currentStep / (float)totalSteps;
+        Debug.Log("Daraus ergibt sich der Interpolationsfaktor: " + lerpFactor);
+        return lerpFactor;
     }
 
     //Conversion helpers

@@ -1522,6 +1522,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CCTPlate: {fileID: 1428778637}
   stimulusContainer: {fileID: 620199346}
+  testCanvas: {fileID: 1564881985}
+  instructionText: {fileID: 2085832807}
+  responseButtons:
+  - {fileID: 1355979688}
+  - {fileID: 1627327925}
+  - {fileID: 2103032213}
+  - {fileID: 1864473360}
+  resultsText: {fileID: 1951411629}
   cvdType:
   - Protan
   - Deutan
@@ -3279,19 +3287,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1355979689}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 749426913}
-        m_TargetAssemblyTypeName: CCTCreator, Assembly-CSharp
-        m_MethodName: OnResponseButton
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1355979689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4343,19 +4339,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1627327926}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 749426913}
-        m_TargetAssemblyTypeName: CCTCreator, Assembly-CSharp
-        m_MethodName: OnResponseButton
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1627327926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5160,19 +5144,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1864473361}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 749426913}
-        m_TargetAssemblyTypeName: CCTCreator, Assembly-CSharp
-        m_MethodName: OnResponseButton
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1864473361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6302,19 +6274,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2103032214}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 749426913}
-        m_TargetAssemblyTypeName: CCTCreator, Assembly-CSharp
-        m_MethodName: OnResponseButton
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &2103032214
 MonoBehaviour:
   m_ObjectHideFlags: 0

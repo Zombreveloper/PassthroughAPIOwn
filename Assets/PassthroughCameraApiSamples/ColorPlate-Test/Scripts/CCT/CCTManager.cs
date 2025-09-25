@@ -131,7 +131,6 @@ public class CCTManager : MonoBehaviour
         //total responses up
         //correct responses up if correct
         //relation between these two can be calculated and used somewhere else
-        Debug.Log("hallo ich wurde gedrückt wie ein Freundin am Morgen");
         if (correct)
         {
             //decrease saturation by Step Size

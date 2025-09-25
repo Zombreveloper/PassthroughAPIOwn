@@ -98,24 +98,6 @@ public abstract class CVDTypeData : ScriptableObject
 
     public Vector3 GetRGBColor(ColorVector current)
     {
-        /*Vector2 selected;
-        switch (current)
-        {
-            case ColorVector.Protan:
-                selected = protanPoint;
-                break;
-
-            case ColorVector.Deutan:
-                selected = deutanPoint;
-                break;
-
-            case ColorVector.Tritan:
-                selected = tritanPoint;
-                break;
-
-            default: selected = Vector2.zero;
-                break;
-        }*/
         Vector2 selected = xyVectorForCVDType(current);
         //Debug.Log("I'm currently showing " + selected);
         var colorSat = Saturate(selected);

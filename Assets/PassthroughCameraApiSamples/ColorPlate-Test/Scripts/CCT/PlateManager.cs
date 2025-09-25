@@ -94,13 +94,13 @@ public class PlateManager : MonoBehaviour
         return colorManager.TargetColor;
     }
 
-    public void SetColors(ColorVector vec, int gapDir)
+    public void SetColors(ColorVector vec, CVDTypeData cvdType, int gapDir)
     {
         //var bgColor = GetBackgroundColor();
         //var bgColor = colorManager.BackgroundColor;
         //var targetColor = GetTargetColor();
         //colorManager.ApplyColorVectors(vec, 0.5f, out targetColor, out bgColor);
-        colorManager.GetColorsForVector(vec, out var targetColor, out var bgColor);
+        colorManager.GetColorsForVector(vec, cvdType, out var targetColor, out var bgColor);
         var plateData = testPlate.GetComponent<TestPlate>();
         SetCShape(gapDir);
 

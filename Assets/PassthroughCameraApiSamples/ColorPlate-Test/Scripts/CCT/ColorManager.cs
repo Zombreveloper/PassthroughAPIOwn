@@ -41,12 +41,14 @@ public class ColorManager : MonoBehaviour
         set { m_targetColor = value; }
     }
 
-    public void GetColorsForVector(ColorVector vec, out Color target, out Color background) //Vec steht gerade für die currentDeficiency
+    public void GetColorsForVector(ColorVector vec, CVDTypeData cvdType, out Color target, out Color background) //Vec steht gerade für die currentDeficiency
     {
         //background = m_backgroundColor;
-        var bgVec = m_colorVectors.GetBackgroundColor();
+        //var bgVec = m_colorVectors.GetBackgroundColor();
+        var bgVec = cvdType.GetBackgroundColor();
         background = new Color(bgVec.x, bgVec.y, bgVec.z);
-        var colorVec = m_colorVectors.GetRGBColor(vec);
+        //var colorVec = m_colorVectors.GetRGBColor(vec);
+        var colorVec = cvdType.GetRGBColor(vec);
         target = new Color(colorVec.x, colorVec.y, colorVec.z);
     }
 

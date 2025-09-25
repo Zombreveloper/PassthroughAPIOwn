@@ -31,6 +31,8 @@ public class CCTManager : MonoBehaviour
     [SerializeField] private RectTransform stimulusContainer;
 
     private ColorVector currentVector;
+    [SerializeField] private List<CVDTypeData> types;
+    private CVDTypeData currentCVD;
 
     //Necessary Components on same Object
     private PlateManager plateManager;
@@ -77,11 +79,13 @@ public class CCTManager : MonoBehaviour
     {
         //RandomCVDType();
         currentVector = ColorVector.Protan;
+        var n = UnityEngine.Random.Range(0, types.Count);
+        currentCVD = types[n];
         currentGapDirection = UnityEngine.Random.Range(0, 4);
         CollectComponents();
         plateManager.SetPlateToPanel(stimulusContainer);
         //SetPlate();
-        plateManager.SetColors(currentVector, currentGapDirection);
+        plateManager.SetColors(currentVector, currentCVD, currentGapDirection);
         InitializeTest();
     }
 
@@ -136,20 +140,21 @@ public class CCTManager : MonoBehaviour
             //decrease saturation by Step Size
             Debug.Log("Deine Antwort war richtig!");
             var cvdData = GetComponent<ColorVectors>();
-            cvdData.ReduceSaturation();
+            //cvdData.ReduceSaturation();
+            currentCVD.ReduceSaturation();
         }
         else
         {
             //increasse saturation by Step Size
             Debug.Log("Deine Antwort war flasch!");
             var cvdData = GetComponent<ColorVectors>();
-            cvdData.IncreaseSaturation();
+            currentCVD.IncreaseSaturation();
         }
 
 
         RandomCVDType();
         currentGapDirection = UnityEngine.Random.Range(0, 4);
-        plateManager.SetColors(currentVector, currentGapDirection);
+        plateManager.SetColors(currentVector, currentCVD, currentGapDirection);
     }
 
     private void RandomCVDType() //evt zu Type mit Rückgabe ColorVector wechseln. Ist eigentlich aber egal

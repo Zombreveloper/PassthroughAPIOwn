@@ -1088,7 +1088,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1768483705676418943, guid: c2cacb2eb3b758a4b825ebbc4846613a, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4033583340728958674, guid: c2cacb2eb3b758a4b825ebbc4846613a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1318,7 +1318,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 620199345}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -1442,7 +1442,6 @@ GameObject:
   m_Component:
   - component: {fileID: 749426910}
   - component: {fileID: 749426912}
-  - component: {fileID: 749426913}
   - component: {fileID: 749426914}
   - component: {fileID: 749426917}
   m_Layer: 0
@@ -1480,34 +1479,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CircleAsset: {fileID: 941212708}
---- !u!114 &749426913
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 749426908}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af4898b453980274d986de59cfd552c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  testCanvas: {fileID: 1564881985}
-  stimulusContainer: {fileID: 620199346}
-  instructionText: {fileID: 2085832807}
-  responseButtons: []
-  resultsText: {fileID: 1951411629}
-  circlesCount: 300
-  circleMinSize: 0.02
-  circleMaxSize: 0.08
-  gapSize: 0.3
-  initialSaturation: 0.5
-  reversalsToStop: 6
-  stepSizeInitial: 0.1
-  stepSizeFinal: 0.02
-  backgroundColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  luminanceNoiseRange: 0.3
-  cctPlate: {fileID: 1428778637}
 --- !u!114 &749426914
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3012,7 +2983,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 749426913}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CCTCreator, Assembly-CSharp
         m_MethodName: StartTest
         m_Mode: 1
@@ -5455,7 +5426,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1951411628
 RectTransform:
   m_ObjectHideFlags: 0

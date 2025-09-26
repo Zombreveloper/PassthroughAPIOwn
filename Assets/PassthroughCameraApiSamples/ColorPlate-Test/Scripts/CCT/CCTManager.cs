@@ -44,7 +44,6 @@ public class CCTManager : MonoBehaviour
     public Canvas testCanvas;
     public TMP_Text instructionText;
     public Button[] responseButtons; // 4 buttons for gap directions
-    public TMP_Text resultsText;
 
     //Test state variables
     private TestPhase currentPhase;
@@ -54,9 +53,10 @@ public class CCTManager : MonoBehaviour
     //Test Progress
     private int totalRespones;
     private int correctRespones;
+    private Vector3 results;
 
     //EndRequirements
-    [SerializeField] private int maxReversals = 1;
+    [SerializeField] private int maxReversals = 11;
     [SerializeField] private int maxWrongFullSaturation = 5;
 
 
@@ -252,11 +252,19 @@ public class CCTManager : MonoBehaviour
         }
         plateManager.DisablePlate();
 
-        Vector3 results = CalculateResults();
+        results = CalculateResults();
         Debug.Log("Test Ende");
+
+        //Show results in text
+        string resultText = "You completed the Color Test. Your results: \n";
+        resultText += $"Protan Score: {results.x} \n";
+        resultText += $"Deutan Score: {results.y} \n";
+        resultText += $"Tritan Score: {results.x} \n";
+        resultText += $"What does this mean for you? I am not entirely sure yet. I didn't test this through.";
+        instructionText.text = resultText;
     }
 
-    private Vector3 CalculateResults()
+    private Vector3 CalculateResults() //Vllt stattdessen als Liste oder dict?
     {
         var protanThreshold = types[0].GetThresholdValue(maxWrongFullSaturation);
         var deutanThreshold = types[1].GetThresholdValue(maxWrongFullSaturation);

@@ -1,5 +1,6 @@
+using System.Collections.Generic;
 using System.Drawing;
-using CCT.VectorData;
+using System.Linq;
 using Colourful;
 using Unity.XR.CoreUtils;
 using UnityEngine;
@@ -14,17 +15,25 @@ public abstract class CVDTypeData : ScriptableObject
     public float Threshold;
     public int Reversals;
     public int WrongAtMaxSat;
+    public int TotalResponses;
+    public int CorrectResponses;
+
+    public bool CurrentResponseCorrect;
+    public bool LastResponseCorrect;
+
+    public bool IsActive = true;
+
+    //storage properties for threshold calculation
+    public Vector2 UVBeforeReversal;
+    public Vector2 UVAfterReversal;
+    //public thresholds = new Dictionary<ColorVector, float>();
+    private List<float> thresholds = new List<float>();
 
     //former ColorVector properties
     public Vector2 FieldChromaticity { get; private set; } = new Vector2(0.413f, 0.360f);
 
-    //Copunctal Points (Kommen weg sobald ich die Switchcase Unterscheidung woanders eingefügt habe... die evt gar nicht mehr nötig ist?
-    private Vector2 protanPoint = new Vector2(0.747f, 0.253f);
-    private Vector2 deutanPoint = new Vector2(1.40f, -0.40f);
-    private Vector2 tritanPoint = new Vector2(0.171f, 0f);
-
     private static int totalSteps = 20;
-    private int currentStep = 15;
+    [SerializeField] private int currentStep = 15;
 
     #region Color Space conversions
     private LuvColor ColorXYToLuv(Vector2 xyVec)
@@ -71,7 +80,7 @@ public abstract class CVDTypeData : ScriptableObject
     }
     #endregion
 
-    private Vector2 xyVectorForCVDType(ColorVector current)
+    /*private Vector2 xyVectorForCVDType(ColorVector current)
     {
         switch (current)
         {
@@ -87,6 +96,26 @@ public abstract class CVDTypeData : ScriptableObject
             default:
                 return Vector2.zero;
         }
+    }*/
+
+    public void ResetData()
+    {
+        currentStep = 15;
+        Threshold = 0;
+        Reversals = 0;
+        WrongAtMaxSat = 0;
+        TotalResponses = 0;
+        CorrectResponses = 0;
+        CurrentResponseCorrect = false;
+        LastResponseCorrect = false;
+        IsActive = true;
+        UVBeforeReversal = Vector2.zero;
+        UVAfterReversal = Vector2.zero;
+    }
+
+    public void OnDestroy()
+    {
+        ResetData();
     }
 
     public Vector3 GetBackgroundColor()
@@ -96,18 +125,18 @@ public abstract class CVDTypeData : ScriptableObject
         return outputVector;
     }
 
-    public Vector3 GetRGBColor(ColorVector current)
+    public Vector3 GetRGBColor()
     {
-        Vector2 selected = xyVectorForCVDType(current);
+        //Vector2 selected = xyVectorForCVDType(current);
         //Debug.Log("I'm currently showing " + selected);
-        var colorSat = Saturate(selected);
+        var colorSat = Saturate(CopunctPoint);
         var myColor = ColorXYYToLinRGB(ColorToVector(colorSat));
         Vector3 outputVector = ColorToVector(myColor);
         return outputVector;
     }
 
 
-    //dynamische Positionen auf den Vektoren
+    //dynamische Positionierung auf den Vektoren
     public xyYColor Saturate(Vector2 xy)
     {
         var uvFC = ColorXYToLuv(FieldChromaticity);
@@ -133,6 +162,7 @@ public abstract class CVDTypeData : ScriptableObject
         if (currentStep >= totalSteps)
         {
             currentStep = totalSteps;
+            WrongAtMaxSat++;
             Debug.Log("Staircase already reached its limit");
             //sende Signal zurück an CCT-Manager, dass der Limit-Case eingetreten ist
 
@@ -141,6 +171,42 @@ public abstract class CVDTypeData : ScriptableObject
         float lerpFactor = (float)currentStep / (float)totalSteps;
         Debug.Log("Daraus ergibt sich der Interpolationsfaktor: " + lerpFactor);
         return lerpFactor;
+    }
+
+    //Threshold Methods
+    public void SetUVNoReversal()
+    {
+        var uvFC = ColorXYToLuv(FieldChromaticity);
+        var uvCP = ColorXYToLuv(CopunctPoint);
+        var colorPathUV = ColorToVector(uvCP) - ColorToVector(uvFC);
+
+        //Vektorlänge reduzieren 
+        var factor = Staircase();
+        UVBeforeReversal = ColorToVector(uvFC) + (colorPathUV * factor);
+    }
+
+    public void SetUVReversal()
+    {
+        var uvFC = ColorXYToLuv(FieldChromaticity);
+        var uvCP = ColorXYToLuv(CopunctPoint);
+        var colorPathUV = ColorToVector(uvCP) - ColorToVector(uvFC);
+
+        //Vektorlänge reduzieren 
+        var factor = Staircase();
+        var uvReversal = ColorToVector(uvFC) + (colorPathUV * factor);
+        thresholds.Add(uvReversal.magnitude);
+    }
+
+    public float GetThresholdValue(int maxFailures)
+    {
+        if (WrongAtMaxSat < maxFailures)
+        {
+            var lastReversals = thresholds.TakeLast(6).ToList();
+            var average = lastReversals.Average();
+            return average;
+        }
+        else return 120f;
+
     }
 
     //Conversion helpers

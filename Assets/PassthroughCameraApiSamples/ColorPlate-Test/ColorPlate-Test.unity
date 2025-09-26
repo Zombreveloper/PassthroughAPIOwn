@@ -1534,10 +1534,8 @@ MonoBehaviour:
   - {fileID: 2103032213}
   - {fileID: 1864473360}
   resultsText: {fileID: 1951411629}
-  cvdType:
-  - Protan
-  - Deutan
-  - Tritan
+  maxReversals: 1
+  maxWrongFullSaturation: 5
 --- !u!114 &749426917
 MonoBehaviour:
   m_ObjectHideFlags: 0

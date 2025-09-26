@@ -2,7 +2,6 @@
  * Das beinhaltet: Positionierung, Skalierung, Einfärbung, C-Shape
  * Bekommt alle Befehle und Anweisungen vom CCTManager. Inklusive Daten, wenn er sie selbst hat.
  */
-using CCT.VectorData;
 using System.ComponentModel;
 using UnityEngine;
 
@@ -84,23 +83,13 @@ public class PlateManager : MonoBehaviour
     }
 
     //Coloring
-    public Color GetBackgroundColor() //Könnte bald Argumente wie Current Vector annehmen. Und sowohl target als auch bg Color ausgeben
-    {
-        return colorManager.BackgroundColor;
-    }
-
-    public Color GetTargetColor()
-    {
-        return colorManager.TargetColor;
-    }
-
-    public void SetColors(ColorVector vec, CVDTypeData cvdType, int gapDir)
+    public void SetColors(CVDTypeData cvdType, int gapDir)
     {
         //var bgColor = GetBackgroundColor();
         //var bgColor = colorManager.BackgroundColor;
         //var targetColor = GetTargetColor();
         //colorManager.ApplyColorVectors(vec, 0.5f, out targetColor, out bgColor);
-        colorManager.GetColorsForVector(vec, cvdType, out var targetColor, out var bgColor);
+        colorManager.GetColorsForVector(cvdType, out var targetColor, out var bgColor);
         var plateData = testPlate.GetComponent<TestPlate>();
         SetCShape(gapDir);
 
@@ -114,7 +103,7 @@ public class PlateManager : MonoBehaviour
         }
     }
 
-    Color AdjustLuminance(Color baseColor)
+    private Color AdjustLuminance(Color baseColor)
     {
         // Simple luminance adjustment
         float luminanceNoise = Random.Range(-luminanceNoiseRange, luminanceNoiseRange);
@@ -134,5 +123,10 @@ public class PlateManager : MonoBehaviour
         float cRadius = 0.7f * Mathf.Min(plateExtents.x, plateExtents.y); //Größe des C in Relation zur Testplate
         //int gapDir = 1; //Platzhalter
         cShape.CreateShape(cRadius, gap);
+    }
+
+    public void DisablePlate()
+    {
+        testPlate.SetActive(false);
     }
 }

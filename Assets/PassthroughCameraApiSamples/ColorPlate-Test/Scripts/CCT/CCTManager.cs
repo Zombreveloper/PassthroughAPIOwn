@@ -6,20 +6,23 @@
  *  Ziel 2.2: C-Maske in anderer Farbe einfärben. [DONE]
  *  Ziel 2.3: Luminance Noise für beide Farben adden [DONE]
  *  Ziel 2.4: ColorVektoren in eigener Klasse ansprechbar machen [Done]
- *  Ziel 2.5: Farben akkurat entsättigen
+ *  Ziel 2.5: Farben akkurat entsättigen [DONE]
+ *  Ziel 2.6: Helligkeiten normalisieren
  *  
  * Ziel 3: Rest vom Test wieder einfügen Minus die ausgelagerten Methoden
+ * Ziel 4: Endbedingungen festlegen
+ * Ziel 5: Ergebnisse ausgeben => Threshold
  *  
  *  
  *  Ziel X: Protan, Deutan und Tritan Testprozeduren (Inklusive Anwortspeicherung) seperiert kapseln, um sie im Test randomisiert zu verweben
  *      Ziel X.2: Weg von dem Enum und ganze CVDType Klasse (vllt als Namespace) erstellen. Mit allen Daten spezifisch für diese Deficiency inklusive Vector und Zwischenspeicherung der Testantworten)
+ *  [DONE]
  *  
- *  Derzeitiges Hauptproblem: Wo speichere ich den current ColorVector so, dass ich ihn als Argument mitgeben darf?
  */
 
 using System;
 using System.Collections.Generic;
-using CCT.VectorData;
+using System.Linq;
 using Meta.XR.ImmersiveDebugger.UserInterface;
 using TMPro;
 using UnityEngine;
@@ -30,7 +33,6 @@ public class CCTManager : MonoBehaviour
     [field: SerializeField] public GameObject CCTPlate;
     [SerializeField] private RectTransform stimulusContainer;
 
-    private ColorVector currentVector;
     [SerializeField] private List<CVDTypeData> types;
     private CVDTypeData currentCVD;
 
@@ -46,22 +48,19 @@ public class CCTManager : MonoBehaviour
 
     //Test state variables
     private TestPhase currentPhase;
-    private Dictionary<ColorVector, float> thresholds;
+    //private Dictionary<ColorVector, float> thresholds;
     private int currentGapDirection; // 0=right, 1=up, 2=left, 3=down
 
-    //Staircase step variables
-    private int initialStep = 15;
-    private int currentStep;
-    private int staircaseTotalSteps = 20;
+    //Test Progress
+    private int totalRespones;
+    private int correctRespones;
+
+    //EndRequirements
+    [SerializeField] private int maxReversals = 1;
+    [SerializeField] private int maxWrongFullSaturation = 5;
 
 
     //Structs and Enums
-    /*public enum ColorVector
-    {
-        Protan,   // L-cone (red-green, affects long wavelength)
-        Deutan,   // M-cone (red-green, affects medium wavelength)
-        Tritan    // S-cone (blue-yellow, affects short wavelength)
-    }*/
 
     public enum TestPhase
     {
@@ -70,22 +69,23 @@ public class CCTManager : MonoBehaviour
         Results
     }
 
-    //public Array CVDType { get; private set; }
-    public string[] cvdType = { "Protan", "Deutan", "Tritan"};
 
+    private void Awake()
+    {
+        foreach (var type in types) { type.ResetData(); }
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //RandomCVDType();
-        currentVector = ColorVector.Protan;
-        var n = UnityEngine.Random.Range(0, types.Count);
-        currentCVD = types[n];
+        ChooseRandomCVD();
+        //currentCVD = types[1]; //testing only Protan
+        
         currentGapDirection = UnityEngine.Random.Range(0, 4);
         CollectComponents();
         plateManager.SetPlateToPanel(stimulusContainer);
         //SetPlate();
-        plateManager.SetColors(currentVector, currentCVD, currentGapDirection);
+        plateManager.SetColors(currentCVD, currentGapDirection);
         InitializeTest();
     }
 
@@ -104,9 +104,10 @@ public class CCTManager : MonoBehaviour
 
     void InitializeTest()
     {
+
         //currentPhase = TestPhase.Instructions;
-        thresholds = new Dictionary<ColorVector, float>();
-        //circles = new List<CircleStimulus>();
+        currentPhase = TestPhase.Testing;
+        //thresholds = new Dictionary<ColorVector, float>();
 
         // Setup UI
         /*instructionText.text = "Cambridge Colour Test\n\nSie sehen gleich ein Muster aus Kreisen. " +
@@ -130,40 +131,140 @@ public class CCTManager : MonoBehaviour
         ProcessResponse(correct);
     }
 
-    void ProcessResponse(bool correct) //Hier kommt noch eine Menge rein zum Prüfen der Antworten, aber erstmal nur nächste Platte
+    void ProcessResponse(bool correct)
     {
-        //total responses up
-        //correct responses up if correct
-        //relation between these two can be calculated and used somewhere else
+        //adjust saturation
         if (correct)
         {
             //decrease saturation by Step Size
             Debug.Log("Deine Antwort war richtig!");
-            var cvdData = GetComponent<ColorVectors>();
-            //cvdData.ReduceSaturation();
             currentCVD.ReduceSaturation();
         }
         else
         {
             //increasse saturation by Step Size
             Debug.Log("Deine Antwort war flasch!");
-            var cvdData = GetComponent<ColorVectors>();
             currentCVD.IncreaseSaturation();
         }
 
+        bool isReversal = CheckReversal(correct);
+        UpdateReversalValues(isReversal);
+        SetCVDTypeStatus();
 
-        RandomCVDType();
-        currentGapDirection = UnityEngine.Random.Range(0, 4);
-        plateManager.SetColors(currentVector, currentCVD, currentGapDirection);
+        //count the total and correct Respones of the current CVDType
+        //IMPORTANT TO KEEP AFTER PROCESSING AND BEFORE SETTING NEW PLATE
+        currentCVD.TotalResponses++;
+        if (correct) { currentCVD.CorrectResponses++; }
+        //set next testplate
+
+        //Check if test should end or continue
+        if (EveryTypeInactive())
+        {
+            FinishTest();
+        }
+        else
+        {
+            ChooseRandomCVD();
+            //currentCVD = types[1]; //testing only protan
+            currentGapDirection = UnityEngine.Random.Range(0, 4);
+            plateManager.SetColors(currentCVD, currentGapDirection);
+        }
     }
 
-    private void RandomCVDType() //evt zu Type mit Rückgabe ColorVector wechseln. Ist eigentlich aber egal
+    private void ChooseRandomCVD()
     {
-        var ri = UnityEngine.Random.Range((int)0, cvdType.Length +1);
-        if (ri == 0) { currentVector = ColorVector.Protan; }
-        else if (ri == 1) { currentVector = ColorVector.Deutan; }
-        else { currentVector = ColorVector.Tritan; }
+        var n = UnityEngine.Random.Range(0, types.Count);
+        currentCVD = types[n];
+        //If CVDType is done, do a reroll. Funktioniert, geht aber ganz sicher ressourcenschonender!
+        if (!currentCVD.IsActive)
+        {
+            ChooseRandomCVD();
+            return;
+        }
+        Debug.Log("We are now testing for: " + currentCVD.Name + ". List Index: " + n);
     }
+
+    private bool CheckReversal(bool currentResponseCorrect)
+    {
+        Debug.Log("Diese Antwort war wirklich und wahrhaftig: " + currentResponseCorrect);
+        currentCVD.CurrentResponseCorrect = currentResponseCorrect;
+        var last = currentCVD.LastResponseCorrect;
+        var current = currentCVD.CurrentResponseCorrect;
+
+        if (currentCVD.TotalResponses == (int)0)
+        {
+            //do nothing
+            Debug.Log("No Reversal happened because this was your first response");
+            return false;
+        }
+        else if (last != current)
+        {
+            currentCVD.Reversals++;
+            Debug.Log("Reversal happened! Reversals of " + currentCVD.Name + " is now " + currentCVD.Reversals);
+            return true;
+        }
+        else
+        {
+            //do nothing
+            Debug.Log("No Reversal happened!");
+            return true;
+        }
+        currentCVD.LastResponseCorrect = currentResponseCorrect;
+        Debug.Log("Last Response now updated to: " + currentCVD.LastResponseCorrect);
+    }
+
+    private void UpdateReversalValues(bool reversal)
+    {
+        if (!reversal)
+        {
+            //currentCVD.SetUVNoReversal();
+            return;
+        }
+        else
+        {
+            currentCVD.SetUVReversal();
+        }
+    }
+
+    private void SetCVDTypeStatus()
+    {
+        if (currentCVD.Reversals >= maxReversals || currentCVD.WrongAtMaxSat >= maxWrongFullSaturation)
+        {
+            currentCVD.IsActive = false;
+        }
+    }
+
+    private bool EveryTypeInactive()
+    {
+        //responds true if every Type is inactive
+        bool noneTrue = types.All(t => !t.IsActive);
+        return noneTrue;
+    }
+
+    private void FinishTest()
+    {
+        currentPhase = TestPhase.Results;
+
+        // Hide response buttons
+        foreach (var button in responseButtons)
+        {
+            button.gameObject.SetActive(false);
+        }
+        plateManager.DisablePlate();
+
+        Vector3 results = CalculateResults();
+        Debug.Log("Test Ende");
+    }
+
+    private Vector3 CalculateResults()
+    {
+        var protanThreshold = types[0].GetThresholdValue(maxWrongFullSaturation);
+        var deutanThreshold = types[1].GetThresholdValue(maxWrongFullSaturation);
+        var tritanThreshold = types[2].GetThresholdValue(maxWrongFullSaturation);
+        Vector3 result = new Vector3(protanThreshold, deutanThreshold, tritanThreshold);
+        return result;
+    }
+
 
     #region Obsolete Methods but Kept for now because they are guaranteed to work here
     /*

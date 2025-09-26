@@ -32,8 +32,8 @@ public abstract class CVDTypeData : ScriptableObject
     //former ColorVector properties
     public Vector2 FieldChromaticity { get; private set; } = new Vector2(0.413f, 0.360f);
 
-    private static int totalSteps = 20;
-    [SerializeField] private int currentStep = 15;
+    private static int totalSteps = 60;
+    [SerializeField] private int currentStep = 20;
 
     #region Color Space conversions
     private LuvColor ColorXYToLuv(Vector2 xyVec)
@@ -80,24 +80,6 @@ public abstract class CVDTypeData : ScriptableObject
     }
     #endregion
 
-    /*private Vector2 xyVectorForCVDType(ColorVector current)
-    {
-        switch (current)
-        {
-            case ColorVector.Protan:
-                return protanPoint;
-
-            case ColorVector.Deutan:
-                return deutanPoint;
-
-            case ColorVector.Tritan:
-                return tritanPoint;
-
-            default:
-                return Vector2.zero;
-        }
-    }*/
-
     public void ResetData()
     {
         currentStep = 15;
@@ -111,6 +93,7 @@ public abstract class CVDTypeData : ScriptableObject
         IsActive = true;
         UVBeforeReversal = Vector2.zero;
         UVAfterReversal = Vector2.zero;
+        thresholds.Clear();
     }
 
     public void OnDestroy()
@@ -164,7 +147,6 @@ public abstract class CVDTypeData : ScriptableObject
             currentStep = totalSteps;
             WrongAtMaxSat++;
             Debug.Log("Staircase already reached its limit");
-            //sende Signal zurück an CCT-Manager, dass der Limit-Case eingetreten ist
 
         }
         Debug.Log("Current Step liegt gerade bei: " + currentStep);
@@ -231,6 +213,25 @@ public abstract class CVDTypeData : ScriptableObject
     public Vector3 ColorToVector(xyChromaticity myColor)
     {
         Vector3 outputVector = new Vector3((float)myColor.x, (float)myColor.y, 0.5f);
+        return outputVector;
+    }
+
+    //Conversion to Vector 2 discards Luminance and only holds Chromaticity values
+    public Vector2 ColorToVector2(LuvColor myColor)
+    {
+        Vector2 outputVector = new Vector2((float)myColor.u, (float)myColor.v);
+        return outputVector;
+    }
+
+    public Vector2 ColorToVector2(xyYColor myColor)
+    {
+        Vector2 outputVector = new Vector2((float)myColor.x, (float)myColor.y);
+        return outputVector;
+    }
+
+    public Vector2 ColorToVector2(xyChromaticity myColor)
+    {
+        Vector2 outputVector = new Vector2((float)myColor.x, (float)myColor.y);
         return outputVector;
     }
 }

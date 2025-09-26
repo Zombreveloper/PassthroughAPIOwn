@@ -207,7 +207,7 @@ public class CCTManager : MonoBehaviour
         {
             //do nothing
             Debug.Log("No Reversal happened!");
-            return true;
+            return false;
         }
         currentCVD.LastResponseCorrect = currentResponseCorrect;
         Debug.Log("Last Response now updated to: " + currentCVD.LastResponseCorrect);

@@ -1504,8 +1504,7 @@ MonoBehaviour:
   - {fileID: 1627327925}
   - {fileID: 2103032213}
   - {fileID: 1864473360}
-  resultsText: {fileID: 1951411629}
-  maxReversals: 1
+  maxReversals: 11
   maxWrongFullSaturation: 5
 --- !u!114 &749426917
 MonoBehaviour:
@@ -2536,6 +2535,14 @@ PrefabInstance:
     - target: {fileID: 7114770130731238579, guid: df64bf5efda75be4db0c812f9277d678, type: 3}
       propertyPath: m_SizeDelta.y
       value: 343.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7114770130731238583, guid: df64bf5efda75be4db0c812f9277d678, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7277900217757024513, guid: df64bf5efda75be4db0c812f9277d678, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7755127141733438790, guid: df64bf5efda75be4db0c812f9277d678, type: 3}
       propertyPath: m_AnchorMax.y

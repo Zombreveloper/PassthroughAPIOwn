@@ -122,7 +122,7 @@ public class CCTManager : MonoBehaviour
             //responseButtons[i].gameObject.SetActive(false);
         }
 
-        resultsText.gameObject.SetActive(false);
+        //resultsText.gameObject.SetActive(false);
     }
 
     public void OnResponseButton(int selectedDirection)

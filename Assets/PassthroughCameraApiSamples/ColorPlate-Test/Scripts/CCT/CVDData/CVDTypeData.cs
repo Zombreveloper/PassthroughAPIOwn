@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+//using System.Numerics;
 using Colourful;
 using Unity.XR.CoreUtils;
 using UnityEngine;
@@ -26,6 +27,8 @@ public abstract class CVDTypeData : ScriptableObject
     //storage properties for threshold calculation
     public Vector2 UVBeforeReversal;
     public Vector2 UVAfterReversal;
+    public Vector2 currentuvAposth;
+
     //public thresholds = new Dictionary<ColorVector, float>();
     private List<float> thresholds = new List<float>();
 
@@ -68,6 +71,18 @@ public abstract class CVDTypeData : ScriptableObject
         return outputLinRGB;
     }
 
+    private LinearRGBColor VecxyToLinRGB(Vector2 xyVec)
+    {
+        var uvVec76 = VecxyToVecuv1976(xyVec);
+        var uv76Desat = SaturateUV1976(uvVec76);
+        // Zu Ergebnis Luminanz hinzufügen und zu RGB umwandeln.
+        //var uv60Desat = VecxyToVecuv1976(uv76Desat);
+        var vecxyDesat = Vecuv1976Toxy(uv76Desat);
+        var linRGB = ColorXYToLinRGB(vecxyDesat);
+        return linRGB;
+        
+    }
+
     private xyYColor ColorLuvToXYY(Vector3 luvVec)
     {
         var luv = new LuvColor(luvVec.x, luvVec.y, luvVec.z);
@@ -77,6 +92,46 @@ public abstract class CVDTypeData : ScriptableObject
         var luvToxyY = new ConverterBuilder().FromLuv(rgbWorkingSpace.WhitePoint).ToxyY(rgbWorkingSpace.WhitePoint).Build();
         var outputxyY = luvToxyY.Convert(luv);
         return outputxyY;
+    }
+
+    private xyChromaticity ColorLuvToXY(Vector3 luvVec)
+    {
+        var luv = new LuvColor(luvVec.x, luvVec.y, luvVec.z);
+        var rgbWorkingSpace = RGBWorkingSpaces.sRGB;
+
+        //to xy
+        var luvToxy = new ConverterBuilder().FromLuv(rgbWorkingSpace.WhitePoint).Toxy(rgbWorkingSpace.WhitePoint).Build();
+        var outputxy = luvToxy.Convert(luv);
+        return outputxy;
+    }
+
+    //Berechnung von Seite 13 hieraus: https://www.uni-weimar.de/fileadmin/user/fak/medien/professuren/Computer_Graphics/course_material/Fundamentals_of_Imaging13/3-ima-color-spaces.pdf
+    //Leider dort keine Quellen angeben. Selber nochmal nachsuchen für BA
+    private Vector2 VecxyToVecuv1976(Vector2 vec) //I mean the newer version with apostroph but I'm not allowed to write that
+    {
+        var x = vec.x;
+        var y = vec.y;
+        var u = 2f * x / (6f * y - x + 1.5f); 
+        var v = 4.5f * y / (6f * y - x + 1.5f);
+        return new Vector2(u, v);
+    }
+
+    private Vector2 Vecuv1976ToVecUV1960(Vector2 vec) //I mean the newer version with apostroph but I'm not allowed to write that
+    {
+        var uAposth = vec.x;
+        var vAposth = vec.y;
+        var u = uAposth;
+        var v = (2 / 3) * vAposth;
+        return new Vector2(u, v);
+    }
+
+    private Vector2 Vecuv1976Toxy(Vector2 vec)
+    {
+        var uAposth = vec.x;
+        var vAposth = vec.y;
+        var x = (9 * uAposth) / (6 * uAposth - 16 * vAposth + 12);
+        var y = (4 * vAposth) / (6 * uAposth - 16 * vAposth + 12);
+        return new Vector2(x, y);
     }
     #endregion
 
@@ -110,6 +165,16 @@ public abstract class CVDTypeData : ScriptableObject
 
     public Vector3 GetRGBColor()
     {
+        var uvAposthCP = VecxyToVecuv1976(CopunctPoint);
+        var colorSatuvAposth = SaturateUV1976(uvAposthCP);
+        var myuvAposthChroma = Vecuv1976Toxy(colorSatuvAposth);
+        var myColor = ColorXYToLinRGB(myuvAposthChroma);
+        Vector3 outputVector = ColorToVector(myColor);
+        return outputVector;
+    }
+
+    public Vector3 GetRGBColorOld()
+    {
         //Vector2 selected = xyVectorForCVDType(current);
         //Debug.Log("I'm currently showing " + selected);
         var colorSat = Saturate(CopunctPoint);
@@ -120,17 +185,38 @@ public abstract class CVDTypeData : ScriptableObject
 
 
     //dynamische Positionierung auf den Vektoren
+    public Vector2 SaturateUV1976(Vector2 uvCP) //Saturation Vector based on u'v' chromaticity
+    {
+        var uvFC = VecxyToVecuv1976(FieldChromaticity);
+        var uvChromaPath = uvCP - uvFC;
+        var factor = Staircase();
+        var uvDesat = uvFC + uvChromaPath * factor;
+        return uvDesat;
+    }
     public xyYColor Saturate(Vector2 xy)
     {
-        var uvFC = ColorXYToLuv(FieldChromaticity);
-        var uvCP = ColorXYToLuv(xy);
-        var colorPathUV = ColorToVector(uvCP) - ColorToVector(uvFC);
+        var luvFC = ColorXYToLuv(FieldChromaticity);
+        var luvCP = ColorXYToLuv(xy);
+        var chromaPathUV = ColorToVector2(luvCP) - ColorToVector2(luvFC);
 
         //Vektorlänge reduzieren 
         var factor = Staircase();
-        var desatLuvVec = ColorToVector(uvFC) + (colorPathUV * factor);
-        var xyYDesaturated = ColorLuvToXYY(desatLuvVec); //new xyYColor(finalVec.x, finalVec.y, finalVec.z);
+        var desatLuvVec = ColorToVector2(luvFC) + (chromaPathUV * factor);
+        var xyYDesaturated = ColorLuvToXYY(desatLuvVec);
         return xyYDesaturated;
+    }
+
+    public xyChromaticity SaturateChroma(Vector2 xy)
+    {
+        var luvFC = ColorXYToLuv(FieldChromaticity);
+        var luvCP = ColorXYToLuv(xy);
+        var colorPathlUV = ColorToVector(luvCP) - ColorToVector(luvFC);
+
+        //Vektorlänge reduzieren 
+        var factor = Staircase();
+        var desatLuvVec = ColorToVector(luvFC) + (colorPathlUV * factor);
+        var xyDesaturated = ColorLuvToXY(desatLuvVec);
+        return xyDesaturated;
     }
 
     public void ReduceSaturation()
@@ -169,13 +255,13 @@ public abstract class CVDTypeData : ScriptableObject
 
     public void SetUVReversal()
     {
-        var uvFC = ColorXYToLuv(FieldChromaticity);
-        var uvCP = ColorXYToLuv(CopunctPoint);
-        var colorPathUV = ColorToVector(uvCP) - ColorToVector(uvFC);
+        var uvAposthFC = VecxyToVecuv1976(FieldChromaticity);
+        var uvAposthCP = VecxyToVecuv1976(CopunctPoint);
+        var chromaPathUV = uvAposthCP - uvAposthFC;
 
         //Vektorlänge reduzieren 
         var factor = Staircase();
-        var uvReversal = ColorToVector(uvFC) + (colorPathUV * factor);
+        var uvReversal = uvAposthFC + (chromaPathUV * factor);
         thresholds.Add(uvReversal.magnitude);
     }
 
@@ -187,7 +273,7 @@ public abstract class CVDTypeData : ScriptableObject
             var average = lastReversals.Average();
             return average;
         }
-        else return 120f;
+        else return 120f; //Artificial MaxValue. Recalculate if Calculation for normal MaxValues changes
 
     }
 

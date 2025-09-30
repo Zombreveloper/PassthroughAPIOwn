@@ -35,7 +35,7 @@ public abstract class CVDTypeData : ScriptableObject
     //former ColorVector properties
     public Vector2 FieldChromaticity { get; private set; } = new Vector2(0.413f, 0.360f);
 
-    private static int totalSteps = 60;
+    [SerializeField] private int totalSteps = 60;
     [SerializeField] private int currentStep = 20;
 
     #region Color Space conversions

@@ -173,15 +173,18 @@ public class CCTManager : MonoBehaviour
 
     private void ChooseRandomCVD()
     {
-        var n = UnityEngine.Random.Range(0, types.Count);
-        currentCVD = types[n];
-        //If CVDType is done, do a reroll. Funktioniert, geht aber ganz sicher ressourcenschonender!
-        if (!currentCVD.IsActive)
+        var activeTypes = types.Where(t => t.IsActive).ToList();
+
+        if (activeTypes.Count == 0)
         {
-            ChooseRandomCVD();
+            Debug.LogWarning("No active CVD types left!");
             return;
         }
-        Debug.Log("We are now testing for: " + currentCVD.Name + ". List Index: " + n);
+
+        var n = UnityEngine.Random.Range(0, activeTypes.Count);
+        currentCVD = activeTypes[n];
+
+        Debug.Log("We are now testing for: " + currentCVD.Name);
     }
 
     private bool CheckReversal(bool currentResponseCorrect)
@@ -228,7 +231,7 @@ public class CCTManager : MonoBehaviour
 
     private void SetCVDTypeStatus()
     {
-        if (currentCVD.Reversals >= maxReversals || currentCVD.WrongAtMaxSat >= maxWrongFullSaturation)
+        if (currentCVD.Reversals >= maxReversals) // || currentCVD.WrongAtMaxSat >= maxWrongFullSaturation)
         {
             currentCVD.IsActive = false;
         }

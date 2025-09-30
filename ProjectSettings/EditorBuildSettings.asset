@@ -8,22 +8,22 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/PassthroughCameraApiSamples/StartScene/StartScene.unity
     guid: 69e1b31c45bac42f88f75017ee404de1
-  - enabled: 1
+  - enabled: 0
     path: Assets/PassthroughCameraApiSamples/CameraViewer/CameraViewer.unity
     guid: ad5bb12b10679b840999aa322aa7a491
-  - enabled: 1
+  - enabled: 0
     path: Assets/PassthroughCameraApiSamples/BrightnessEstimation/BrightnessEstimation.unity
     guid: 8ea13e682474e1748965f8e21972f2b2
   - enabled: 1
     path: Assets/PassthroughCameraApiSamples/ColorPlate-Test/ColorPlate-Test.unity
     guid: 0480f58de6a865d45944897de22f1da6
-  - enabled: 1
+  - enabled: 0
     path: Assets/PassthroughCameraApiSamples/MenuButtonTestScene/MenuButtonTest.unity
     guid: 6a5d513a0c48402479a942952f29a7de
-  - enabled: 1
+  - enabled: 0
     path: Assets/PassthroughCameraApiSamples/MenuButtonTestScene/UI-Interaction2.unity
     guid: 89f1faa15b31113468cdc3735e14245c
-  - enabled: 1
+  - enabled: 0
     path: "Assets/Samples/Meta XR Interaction \u200BSDK/78.0.0/Example Scenes/RayExamples.unity"
     guid: 1b2d3f90c0f50b94cb910c66c773d00d
   m_configObjects:

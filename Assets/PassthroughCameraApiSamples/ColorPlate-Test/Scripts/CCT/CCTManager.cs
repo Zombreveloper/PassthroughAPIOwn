@@ -193,27 +193,29 @@ public class CCTManager : MonoBehaviour
         currentCVD.CurrentResponseCorrect = currentResponseCorrect;
         var last = currentCVD.LastResponseCorrect;
         var current = currentCVD.CurrentResponseCorrect;
+        bool revHappening;
 
         if (currentCVD.TotalResponses == (int)0)
         {
             //do nothing
             Debug.Log("No Reversal happened because this was your first response");
-            return false;
+            revHappening = false;
         }
         else if (last != current)
         {
             currentCVD.Reversals++;
             Debug.Log("Reversal happened! Reversals of " + currentCVD.Name + " is now " + currentCVD.Reversals);
-            return true;
+            revHappening = true;
         }
         else
         {
             //do nothing
             Debug.Log("No Reversal happened!");
-            return false;
+            revHappening = false;
         }
         currentCVD.LastResponseCorrect = currentResponseCorrect;
         Debug.Log("Last Response now updated to: " + currentCVD.LastResponseCorrect);
+        return revHappening;
     }
 
     private void UpdateReversalValues(bool reversal)
@@ -265,6 +267,8 @@ public class CCTManager : MonoBehaviour
         resultText += $"Tritan Score: {results.x} \n";
         resultText += $"What does this mean for you? I am not entirely sure yet. I didn't test this through.";
         instructionText.text = resultText;
+
+        foreach (var type in types) { type.ResetData(); }
     }
 
     private Vector3 CalculateResults() //Vllt stattdessen als Liste oder dict?

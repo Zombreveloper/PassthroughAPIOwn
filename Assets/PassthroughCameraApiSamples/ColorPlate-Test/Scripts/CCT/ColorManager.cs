@@ -1,4 +1,4 @@
-/* Stores Data for ColorRanges and calculates Color Output
+/* Calls Data for ColorRanges and calculates Color Output
  */
 
 using UnityEngine;

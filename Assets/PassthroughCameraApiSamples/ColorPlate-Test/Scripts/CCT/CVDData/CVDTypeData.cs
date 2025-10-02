@@ -137,7 +137,7 @@ public abstract class CVDTypeData : ScriptableObject
 
     public void ResetData()
     {
-        currentStep = 15;
+        currentStep = 20;
         Threshold = 0;
         Reversals = 0;
         WrongAtMaxSat = 0;
@@ -234,6 +234,11 @@ public abstract class CVDTypeData : ScriptableObject
             WrongAtMaxSat++;
             Debug.Log("Staircase already reached its limit");
 
+        }
+        else if (currentStep <= 0)
+        {
+            currentStep = 0;
+            Debug.Log("Staircase already reached minimum");
         }
         Debug.Log("Current Step liegt gerade bei: " + currentStep);
         float lerpFactor = (float)currentStep / (float)totalSteps;

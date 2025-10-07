@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class SimCalculator : MonoBehaviour
 {
-    [SerializeField] private TableImportSO m_coneTable;
-    private Sensitivities m_Sensitivities;
+    [SerializeField] private OcularDataset m_oculData;
+    private Sensitivities m_sensitivities;
 
     private float m_coneshift = 500f;
 
@@ -13,7 +13,7 @@ public class SimCalculator : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Debug.Log("Die Startwellenlänge vom Index 13 ist: " + m_coneTable.rows[13].Lambda_nm);
+        Debug.Log("Die Startwellenlänge vom Index 13 ist: " + m_oculData.rows[13].Lambda_nm);
         var wavenumConeL = ConeAsWavenumber();
         wavenumConeL = ShiftConeByWavenumber(wavenumConeL, m_coneshift);
         ToWavelength(wavenumConeL);
@@ -34,9 +34,9 @@ public class SimCalculator : MonoBehaviour
         //conversion factor nm to cm^-1
         var centimeter = (decimal)Mathf.Pow(10, 7);
 
-        foreach (var item in m_coneTable.rows)
+        foreach (var item in m_oculData.rows)
         {
-            wavenumbers.Add(centimeter / item.Lambda_nm);
+            wavenumbers.Add(centimeter / (decimal)item.Lambda_nm);
             coneSensitivities.Add(item.LogL2);
         }
         Sensitivities sensitivities = new Sensitivities(wavenumbers, coneSensitivities);

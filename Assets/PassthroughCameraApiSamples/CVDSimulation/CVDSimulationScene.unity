@@ -263,7 +263,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dda92353f21add438e5cd59342f27e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jsonFile: {fileID: 4900000, guid: 3a0287d244cbded4fa9edc919885a22d, type: 3}
 --- !u!4 &81065409
 Transform:
   m_ObjectHideFlags: 0
@@ -291,7 +290,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a698c9ab75f469b4e8ebda841cb45402, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_coneTable: {fileID: 11400000, guid: 08e3e2c000709034eb6d76a56c8dfa9c, type: 2}
+  m_oculData: {fileID: 11400000, guid: 5d666e1bd9ce9d9489e489d4c81ae1db, type: 2}
 --- !u!1 &151131007
 GameObject:
   m_ObjectHideFlags: 0

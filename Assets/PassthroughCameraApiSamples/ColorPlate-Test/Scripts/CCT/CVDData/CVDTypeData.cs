@@ -38,6 +38,14 @@ public abstract class CVDTypeData : ScriptableObject
     [SerializeField] private int totalSteps = 60;
     [SerializeField] private int currentStep = 20;
 
+    //Helper Function to set ConfusionPoint Vectors to the limits of our Colorspace (currently sRGB)
+    public void GetCPLimits()
+    {
+        //var clampedCP =
+        GamutLimiter.ClampConfusionLineToSRGB(FieldChromaticity, CopunctPoint);
+        //Debug.Log("die Maximale Länge des Vektors: " + Name + " liegt bei: " + clampedCP);
+    }
+
     #region Color Space conversions
     private LuvColor ColorXYToLuv(Vector2 xyVec)
     {
@@ -254,7 +262,7 @@ public abstract class CVDTypeData : ScriptableObject
         var colorPathUV = ColorToVector(uvCP) - ColorToVector(uvFC);
 
         //Vektorlänge reduzieren 
-        var factor = Staircase();
+        var factor = (float)currentStep / (float)totalSteps;
         UVBeforeReversal = ColorToVector(uvFC) + (colorPathUV * factor);
     }
 

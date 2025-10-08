@@ -78,6 +78,7 @@ public class CCTManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        DetermineCPGamutLimits();
         ChooseRandomCVD();
         //currentCVD = types[1]; //testing only Protan
         
@@ -89,10 +90,11 @@ public class CCTManager : MonoBehaviour
         InitializeTest();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void DetermineCPGamutLimits()
     {
-        
+        types[0].GetCPLimits();
+        types[1].GetCPLimits();
+        types[2].GetCPLimits();
     }
 
     void CollectComponents()
@@ -277,7 +279,8 @@ public class CCTManager : MonoBehaviour
         var deutanThreshold = types[1].GetThresholdValue(maxWrongFullSaturation);
         var tritanThreshold = types[2].GetThresholdValue(maxWrongFullSaturation);
         Vector3 result = new Vector3(protanThreshold, deutanThreshold, tritanThreshold);
-        return result;
+        var resultMagnified = result * Mathf.Pow(10, 3);
+        return resultMagnified;
     }
 
 

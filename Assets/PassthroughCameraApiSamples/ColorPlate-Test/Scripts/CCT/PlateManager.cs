@@ -4,6 +4,7 @@
  */
 using System.ComponentModel;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlateManager : MonoBehaviour
 {
@@ -100,6 +101,7 @@ public class PlateManager : MonoBehaviour
             Color baseColor = isInC ? targetColor : bgColor;
             var finalColor = AdjustLuminance(baseColor);
             circle.GetComponentInChildren<SpriteRenderer>().material.color = finalColor;
+            circle.GetComponentInChildren<Image>().color = finalColor;
         }
     }
 

@@ -77,8 +77,8 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _Radius: 0.98
-    - _Smoothness: 0.01
+    - _Radius: 0.962
+    - _Smoothness: 0.0713
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -88,12 +88,12 @@ Material:
     - _StencilReadMask: 255
     - _StencilWriteMask: 255
     - _Strength: 0.2
-    - _Thickness: 0
+    - _Thickness: 0.018
     - _UVSec: 0
     - _UseUIAlphaClip: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.6415094, g: 0.6415094, b: 0.6415094, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

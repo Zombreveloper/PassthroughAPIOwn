@@ -100,8 +100,17 @@ public class PlateManager : MonoBehaviour
             bool isInC = cShape.IsPositionInside(circle.transform.localPosition);
             Color baseColor = isInC ? targetColor : bgColor;
             var finalColor = AdjustLuminance(baseColor);
-            circle.GetComponentInChildren<SpriteRenderer>().material.color = finalColor;
-            circle.GetComponentInChildren<Image>().color = finalColor;
+
+            if (circle.transform.childCount > 0)
+            {
+                circle.GetComponentInChildren<SpriteRenderer>().material.color = finalColor;
+                circle.GetComponentInChildren<Image>().color = finalColor;
+            }
+            else
+            {
+                circle.GetComponent<SpriteRenderer>().material.color = finalColor;
+                circle.GetComponent<Image>().color = finalColor;
+            }
         }
     }
 

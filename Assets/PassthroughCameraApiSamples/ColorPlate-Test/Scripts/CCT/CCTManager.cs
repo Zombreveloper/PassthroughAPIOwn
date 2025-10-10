@@ -41,7 +41,7 @@ public class CCTManager : MonoBehaviour
 
     //properties from original Manager. some may get outsourced in the future:
     [Header("UI Components")]
-    public Canvas testCanvas;
+    public Canvas testCanvas;                             
     public TMP_Text instructionText;
     public Button[] responseButtons; // 4 buttons for gap directions
 

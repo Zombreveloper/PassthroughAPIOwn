@@ -13,7 +13,7 @@ public static class GamutLimiter
     public static (Vector2 minUV, Vector2 maxUV) ClampConfusionLineToSRGB(
     //public static Vector2 ClampConfusionLineToSRGB(
         Vector2 originUV, Vector2 directionUV,
-        float maxDistance = 0.5f,
+        float maxDistance = 1f,
         float tolerance = 1e-5f)
     {
         /*var converter = new ConverterBuilder()

@@ -44,6 +44,14 @@ public abstract class CVDTypeData : ScriptableObject
         //var clampedCP =
         GamutLimiter.ClampConfusionLineToSRGB(FieldChromaticity, CopunctPoint);
         //Debug.Log("die Maximale Länge des Vektors: " + Name + " liegt bei: " + clampedCP);
+
+        //Kurz diese Funktion missbrauchen um u_v_ Werte auszugeben für meinen Merkzettel
+        var uv = VecxyToVecuv1976(CopunctPoint);
+        var fc = VecxyToVecuv1976(FieldChromaticity);
+        var control = Vecuv1976Toxy(uv);
+        Debug.Log("Die u'v' Werte von " + Name + " liegen bei: " + uv);
+        Debug.Log("Die Rücktransformierten xy Werte von " + Name + " liegen bei: " + control);
+        Debug.Log("Die u'v' Werte von der FieldChromaticity liegen bei: " + fc);
     }
 
     #region Color Space conversions
@@ -119,7 +127,7 @@ public abstract class CVDTypeData : ScriptableObject
     {
         var x = vec.x;
         var y = vec.y;
-        var u = 2f * x / (6f * y - x + 1.5f); 
+        var u = 2f * x / (6f * y - x + 1.5f);
         var v = 4.5f * y / (6f * y - x + 1.5f);
         return new Vector2(u, v);
     }

@@ -41,7 +41,7 @@ public class CCTManager : MonoBehaviour
 
     //properties from original Manager. some may get outsourced in the future:
     [Header("UI Components")]
-    public Canvas testCanvas;                             
+    public Canvas testCanvas;
     public TMP_Text instructionText;
     public Button[] responseButtons; // 4 buttons for gap directions
 
@@ -79,8 +79,8 @@ public class CCTManager : MonoBehaviour
     void Start()
     {
         DetermineCPGamutLimits();
-        ChooseRandomCVD();
-        //currentCVD = types[1]; //testing only Protan
+        //ChooseRandomCVD();
+        currentCVD = types[1]; //testing only Protan
         
         currentGapDirection = UnityEngine.Random.Range(0, 4);
         CollectComponents();
@@ -166,8 +166,8 @@ public class CCTManager : MonoBehaviour
         }
         else
         {
-            ChooseRandomCVD();
-            //currentCVD = types[1]; //testing only protan
+            //ChooseRandomCVD();
+            currentCVD = types[1]; //testing only protan
             currentGapDirection = UnityEngine.Random.Range(0, 4);
             plateManager.SetColors(currentCVD, currentGapDirection);
         }

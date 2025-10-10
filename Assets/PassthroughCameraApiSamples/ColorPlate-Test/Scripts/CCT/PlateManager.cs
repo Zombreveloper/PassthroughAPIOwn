@@ -33,7 +33,6 @@ public class PlateManager : MonoBehaviour
     void CollectComponents()
     {
         testPlate = GetComponent<CCTManager>().CCTPlate;
-        //colorManager = GetComponent<ColorManager>();
         colorManager = gameObject.AddComponent<ColorManager>();
         cShape = GetComponent<CShape>();
         cShape = gameObject.AddComponent<CShape>();

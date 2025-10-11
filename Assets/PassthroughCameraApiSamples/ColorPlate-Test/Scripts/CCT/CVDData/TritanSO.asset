@@ -13,13 +13,15 @@ MonoBehaviour:
   m_Name: TritanSO
   m_EditorClassIdentifier: 
   Threshold: 0
-  Reversals: 11
+  Reversals: 0
   WrongAtMaxSat: 0
-  TotalResponses: 12
-  CorrectResponses: 12
-  CurrentResponseCorrect: 1
+  TotalResponses: 0
+  CorrectResponses: 0
+  CurrentResponseCorrect: 0
   LastResponseCorrect: 0
-  IsActive: 0
+  IsActive: 1
   UVBeforeReversal: {x: 0, y: 0}
   UVAfterReversal: {x: 0, y: 0}
-  currentStep: 3
+  currentuvAposth: {x: 0, y: 0}
+  totalSteps: 60
+  currentStep: 20

@@ -41,7 +41,7 @@ public abstract class CVDTypeData : ScriptableObject
     //Helper Function to set ConfusionPoint Vectors to the limits of our Colorspace (currently sRGB)
     public void GetCPLimits()
     {
-        //var clampedCP =
+        /*//var clampedCP =
         GamutLimiter.ClampConfusionLineToSRGB(FieldChromaticity, CopunctPoint);
         //Debug.Log("die Maximale Länge des Vektors: " + Name + " liegt bei: " + clampedCP);
 
@@ -51,7 +51,17 @@ public abstract class CVDTypeData : ScriptableObject
         var control = Vecuv1976Toxy(uv);
         Debug.Log("Die u'v' Werte von " + Name + " liegen bei: " + uv);
         Debug.Log("Die Rücktransformierten xy Werte von " + Name + " liegen bei: " + control);
-        Debug.Log("Die u'v' Werte von der FieldChromaticity liegen bei: " + fc);
+        Debug.Log("Die u'v' Werte von der FieldChromaticity liegen bei: " + fc);*/
+
+        // neuer Ansatz, diesmal basierend auf den Primary-Werten des sRGB-Gamuts, luminanzunabhängig
+
+        //sRGB-Primaries
+        Vector2 pR = new Vector2(0.6400f, 0.3300f);
+        Vector2 pG = new Vector2(0.3000f, 0.6000f);
+        Vector2 pB = new Vector2(0.1500f, 0.0600f);
+
+        var factor = ChromaticityGamut.MaxDistanceInsideTriangle(FieldChromaticity, CopunctPoint, pR, pG, pB);
+        Debug.Log("Der Skalierungsfaktor für Vektor " + Name + " liegt bei: " +  factor);
     }
 
     #region Color Space conversions
@@ -282,7 +292,10 @@ public abstract class CVDTypeData : ScriptableObject
 
         //Vektorlänge reduzieren 
         var factor = Staircase();
-        var uvReversal = uvAposthFC + (chromaPathUV * factor);
+        //Achtung! Diese Zeile könnte der Fehler gewesen sein. Denn ich messe sonst nicht die Länge vom FC zum CP
+        //Sondern vom Nullpunkt aus zum FC und dann ein bisschen zum CP. Aber der FC wird halt immer draufgerechnet.
+        //var uvReversal = uvAposthFC + (chromaPathUV * factor);
+        var uvReversal = chromaPathUV * factor;
         thresholds.Add(uvReversal.magnitude);
     }
 

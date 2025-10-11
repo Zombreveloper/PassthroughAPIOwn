@@ -48,7 +48,7 @@ public static class ChromaticityGamut
     public static float MaxDistanceInsideTriangle(Vector2 o, Vector2 dir, Vector2 p0, Vector2 p1, Vector2 p2)
     {
         // Normiere die Richtung, damit t die "Länge" entlang dir ist.
-        Vector2 d = dir.normalized;
+        Vector2 d = dir.normalized; //Sorry Bro, ich will doch nicht normalisieren
         float eps = 1e-9f;
 
         // Liste der Kanten

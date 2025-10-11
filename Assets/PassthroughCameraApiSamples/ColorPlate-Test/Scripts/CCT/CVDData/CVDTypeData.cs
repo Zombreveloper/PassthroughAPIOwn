@@ -12,6 +12,7 @@ public abstract class CVDTypeData : ScriptableObject
 {
     public abstract string Name { get; }
     public abstract Vector2 CopunctPoint { get; }
+    [SerializeField] private Vector2 gamutCP;
     //Test response variables
     public float Threshold;
     public int Reversals;
@@ -38,8 +39,13 @@ public abstract class CVDTypeData : ScriptableObject
     [SerializeField] private int totalSteps = 60;
     [SerializeField] private int currentStep = 20;
 
+    private void OnEnable()
+    {
+        gamutCP = GetCPLimits();
+    }
+
     //Helper Function to set ConfusionPoint Vectors to the limits of our Colorspace (currently sRGB)
-    public void GetCPLimits()
+    public Vector2 GetCPLimits()
     {
         /*//var clampedCP =
         GamutLimiter.ClampConfusionLineToSRGB(FieldChromaticity, CopunctPoint);
@@ -59,9 +65,13 @@ public abstract class CVDTypeData : ScriptableObject
         Vector2 pR = new Vector2(0.6400f, 0.3300f);
         Vector2 pG = new Vector2(0.3000f, 0.6000f);
         Vector2 pB = new Vector2(0.1500f, 0.0600f);
+        var dir = CopunctPoint - FieldChromaticity;
 
-        var factor = ChromaticityGamut.MaxDistanceInsideTriangle(FieldChromaticity, CopunctPoint, pR, pG, pB);
-        Debug.Log("Der Skalierungsfaktor für Vektor " + Name + " liegt bei: " +  factor);
+        var factor = ChromaticityGamut.MaxDistanceInsideTriangle(FieldChromaticity, dir, pR, pG, pB);
+        Debug.Log("Der Skalierungsfaktor für Vektor " + Name + " liegt bei: " + factor);
+        var scalCP = FieldChromaticity + factor * dir.normalized;
+        Debug.Log("Der Vektor " + Name + " liegt nun also an Punkt: " + scalCP);
+        return scalCP;
     }
 
     #region Color Space conversions

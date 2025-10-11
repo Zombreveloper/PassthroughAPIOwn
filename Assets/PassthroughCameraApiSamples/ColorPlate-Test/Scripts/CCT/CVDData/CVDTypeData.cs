@@ -201,7 +201,7 @@ public abstract class CVDTypeData : ScriptableObject
 
     public Vector3 GetRGBColor()
     {
-        var uvAposthCP = VecxyToVecuv1976(CopunctPoint);
+        var uvAposthCP = VecxyToVecuv1976(gamutCP);
         var colorSatuvAposth = SaturateUV1976(uvAposthCP);
         var myuvAposthChroma = Vecuv1976Toxy(colorSatuvAposth);
         var myColor = ColorXYToLinRGB(myuvAposthChroma);
@@ -286,7 +286,7 @@ public abstract class CVDTypeData : ScriptableObject
     public void SetUVNoReversal()
     {
         var uvFC = ColorXYToLuv(FieldChromaticity);
-        var uvCP = ColorXYToLuv(CopunctPoint);
+        var uvCP = ColorXYToLuv(gamutCP);
         var colorPathUV = ColorToVector(uvCP) - ColorToVector(uvFC);
 
         //Vektorlänge reduzieren 
@@ -297,7 +297,7 @@ public abstract class CVDTypeData : ScriptableObject
     public void SetUVReversal()
     {
         var uvAposthFC = VecxyToVecuv1976(FieldChromaticity);
-        var uvAposthCP = VecxyToVecuv1976(CopunctPoint);
+        var uvAposthCP = VecxyToVecuv1976(gamutCP);
         var chromaPathUV = uvAposthCP - uvAposthFC;
 
         //Vektorlänge reduzieren 

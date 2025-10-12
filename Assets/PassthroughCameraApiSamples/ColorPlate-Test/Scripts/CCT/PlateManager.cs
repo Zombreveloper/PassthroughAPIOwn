@@ -83,7 +83,7 @@ public class PlateManager : MonoBehaviour
     }
 
     //Coloring
-    public void SetColors(CVDTypeData cvdType, int gapDir)
+    public void SetColorsOld(CVDTypeData cvdType, int gapDir)
     {
         //var bgColor = GetBackgroundColor();
         //var bgColor = colorManager.BackgroundColor;
@@ -99,6 +99,33 @@ public class PlateManager : MonoBehaviour
             bool isInC = cShape.IsPositionInside(circle.transform.localPosition);
             Color baseColor = isInC ? targetColor : bgColor;
             var finalColor = AdjustLuminance(baseColor);
+
+            if (circle.transform.childCount > 0)
+            {
+                circle.GetComponentInChildren<SpriteRenderer>().material.color = finalColor;
+                circle.GetComponentInChildren<Image>().color = finalColor;
+            }
+            else
+            {
+                circle.GetComponent<SpriteRenderer>().material.color = finalColor;
+                circle.GetComponent<Image>().color = finalColor;
+            }
+        }
+    }
+
+    public void SetColors(CVDTypeData cvdType, int gapDir)
+    {
+        colorManager.GetBaseChromas(cvdType, out var targetChroma, out var bgChroma);
+        var plateData = testPlate.GetComponent<TestPlate>();
+        SetCShape(gapDir);
+
+        //Apply Colors to Circles
+        foreach (var circle in plateData.Circles)
+        {
+            bool isInC = cShape.IsPositionInside(circle.transform.localPosition);
+            Vector2 baseChroma = isInC ? targetChroma : bgChroma;
+            var xyYColor = colorManager.AddRandomLuminance(baseChroma);
+            Color finalColor = colorManager.ToColor(xyYColor);
 
             if (circle.transform.childCount > 0)
             {

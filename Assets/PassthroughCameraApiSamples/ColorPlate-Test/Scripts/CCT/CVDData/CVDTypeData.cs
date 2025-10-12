@@ -12,7 +12,7 @@ public abstract class CVDTypeData : ScriptableObject
 {
     public abstract string Name { get; }
     public abstract Vector2 CopunctPoint { get; }
-    [SerializeField] private Vector2 gamutCP;
+    [SerializeField] public Vector2 gamutCP { get; private set; }
     //Test response variables
     public float Threshold;
     public int Reversals;
@@ -261,7 +261,7 @@ public abstract class CVDTypeData : ScriptableObject
     public void IncreaseSaturation()
     { currentStep++; }
 
-    private float Staircase()
+    public float Staircase()
     {
 
         if (currentStep >= totalSteps)

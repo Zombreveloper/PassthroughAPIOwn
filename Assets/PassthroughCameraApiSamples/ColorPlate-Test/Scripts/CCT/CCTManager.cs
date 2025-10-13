@@ -53,7 +53,7 @@ public class CCTManager : MonoBehaviour
     //Test Progress
     private int totalRespones;
     private int correctRespones;
-    private Vector3 results;
+    private float[,] results;
 
     //EndRequirements
     [SerializeField] private int maxReversals = 11;
@@ -263,22 +263,40 @@ public class CCTManager : MonoBehaviour
         Debug.Log("Test Ende");
 
         //Show results in text
-        string resultText = "You completed the Color Test. Your results: \n";
-        resultText += $"Protan Score: {results.x} \n";
-        resultText += $"Deutan Score: {results.y} \n";
-        resultText += $"Tritan Score: {results.x} \n";
-        resultText += $"What does this mean for you? I am not entirely sure yet. I didn't test this through.";
+        string resultText = "You completed the Color Test. Your results as u'v' Thresholds: \n";
+        resultText += $"Protan Score: {results[0, 0]} \n";
+        resultText += $"Deutan Score: {results[1, 0]} \n";
+        resultText += $"Tritan Score: {results[2, 0]} \n \n";
+
+        resultText += "Your Score as a Scale of 0 to 120: \n";
+        resultText += $"Protan Score: {results[0, 1]} \n";
+        resultText += $"Deutan Score: {results[1, 1]} \n";
+        resultText += $"Tritan Score: {results[2, 1]} \n \n";
         instructionText.text = resultText;
 
         foreach (var type in types) { type.ResetData(); }
     }
 
-    private Vector3 CalculateResults() //Vllt stattdessen als Liste oder dict?
+    private float[,] CalculateResults()
+    {
+        float[,] results = new float[3, 2];
+        for (int i = 0; i < types.Count; i++)
+        {
+            results[i, 0] = types[i].GetThresholdValue(maxWrongFullSaturation);
+            results[i, 1] = types[i].ResultAsScore(results[i, 0]);
+        }
+
+        return results;
+    }
+
+    private Vector3 CalculateResultsOld() //Vllt stattdessen als Liste oder dict?
     {
         var protanThreshold = types[0].GetThresholdValue(maxWrongFullSaturation);
         var deutanThreshold = types[1].GetThresholdValue(maxWrongFullSaturation);
         var tritanThreshold = types[2].GetThresholdValue(maxWrongFullSaturation);
         Vector3 result = new Vector3(protanThreshold, deutanThreshold, tritanThreshold);
+
+
         var resultMagnified = result * Mathf.Pow(10, 3);
         return resultMagnified;
     }

@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59ee90d056a23b44598caef1274d8044, type: 3}
   m_Name: ProtanSO
   m_EditorClassIdentifier: 
+  gamutCP: {x: 0.5909725, y: 0.30298486}
+  maxPossibleScore: 0.17904773
   Threshold: 0
   Reversals: 0
   WrongAtMaxSat: 0
@@ -24,4 +26,4 @@ MonoBehaviour:
   UVAfterReversal: {x: 0, y: 0}
   currentuvAposth: {x: 0, y: 0}
   totalSteps: 60
-  currentStep: 20
+  currentStep: 45

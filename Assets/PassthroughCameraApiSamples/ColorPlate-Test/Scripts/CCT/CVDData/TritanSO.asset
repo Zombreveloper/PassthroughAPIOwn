@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff1e4e63d1df4f04ab0352bd1232b4fc, type: 3}
   m_Name: TritanSO
   m_EditorClassIdentifier: 
+  gamutCP: {x: 0.24741761, y: 0.113679096}
+  maxPossibleScore: 0.2345093
   Threshold: 0
   Reversals: 0
   WrongAtMaxSat: 0
@@ -24,4 +26,4 @@ MonoBehaviour:
   UVAfterReversal: {x: 0, y: 0}
   currentuvAposth: {x: 0, y: 0}
   totalSteps: 60
-  currentStep: 20
+  currentStep: 45

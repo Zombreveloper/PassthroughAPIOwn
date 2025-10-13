@@ -12,14 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13eb266a7b034d040931edece983cacf, type: 3}
   m_Name: DeutanSO
   m_EditorClassIdentifier: 
+  gamutCP: {x: 0.53039443, y: 0.2696051}
+  maxPossibleScore: 0.15848435
   Threshold: 0
-  Reversals: 11
+  Reversals: 0
   WrongAtMaxSat: 0
-  TotalResponses: 14
-  CorrectResponses: 12
-  CurrentResponseCorrect: 1
+  TotalResponses: 0
+  CorrectResponses: 0
+  CurrentResponseCorrect: 0
   LastResponseCorrect: 0
-  IsActive: 0
+  IsActive: 1
   UVBeforeReversal: {x: 0, y: 0}
   UVAfterReversal: {x: 0, y: 0}
-  currentStep: 5
+  currentuvAposth: {x: 0, y: 0}
+  totalSteps: 60
+  currentStep: 45

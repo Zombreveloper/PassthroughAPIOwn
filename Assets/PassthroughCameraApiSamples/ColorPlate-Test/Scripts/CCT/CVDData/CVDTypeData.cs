@@ -12,7 +12,8 @@ public abstract class CVDTypeData : ScriptableObject
 {
     public abstract string Name { get; }
     public abstract Vector2 CopunctPoint { get; }
-    [SerializeField] public Vector2 gamutCP { get; private set; }
+    [SerializeField] public Vector2 gamutCP ; //{ get; private set; }
+    public float maxPossibleScore;
     //Test response variables
     public float Threshold;
     public int Reversals;
@@ -37,7 +38,7 @@ public abstract class CVDTypeData : ScriptableObject
     public Vector2 FieldChromaticity { get; private set; } = new Vector2(0.413f, 0.360f);
 
     [SerializeField] private int totalSteps = 60;
-    [SerializeField] private int currentStep = 20;
+    [SerializeField] private int currentStep = 45;
 
     private void OnEnable()
     {
@@ -71,7 +72,17 @@ public abstract class CVDTypeData : ScriptableObject
         Debug.Log("Der Skalierungsfaktor für Vektor " + Name + " liegt bei: " + factor);
         var scalCP = FieldChromaticity + factor * dir.normalized;
         Debug.Log("Der Vektor " + Name + " liegt nun also an Punkt: " + scalCP);
+        maxPossibleScore = CalcMaxScore();
         return scalCP;
+    }
+
+    private float CalcMaxScore()
+    {
+        var uvAposthFC = VecxyToVecuv1976(FieldChromaticity);
+        var uvAposthCP = VecxyToVecuv1976(gamutCP);
+        var chromaPathUV = uvAposthCP - uvAposthFC;
+
+        return chromaPathUV.magnitude;
     }
 
     #region Color Space conversions
@@ -173,7 +184,7 @@ public abstract class CVDTypeData : ScriptableObject
 
     public void ResetData()
     {
-        currentStep = 20;
+        currentStep = 45;
         Threshold = 0;
         Reversals = 0;
         WrongAtMaxSat = 0;
@@ -319,6 +330,12 @@ public abstract class CVDTypeData : ScriptableObject
         }
         else return 120f; //Artificial MaxValue. Recalculate if Calculation for normal MaxValues changes
 
+    }
+
+    public float ResultAsScore(float uvResult)
+    {
+        var score = (uvResult / maxPossibleScore) * 120;
+        return score;
     }
 
     //Conversion helpers

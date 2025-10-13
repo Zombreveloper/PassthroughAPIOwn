@@ -11,9 +11,9 @@ public class ColorManager : MonoBehaviour
     //private Color m_backgroundColor = new Color(0.5f, 0.5f, 0.5f);
     //private Color m_targetColor = new Color(0.7f, 0.3f, 0.3f);
 
-    private CVDTypeData currentCVD;
+    /*private CVDTypeData currentCVD;
     private Vector2 currentFC;
-    private Vector2 currentCP;
+    private Vector2 currentCP;*/
 
     private void Awake()
     {
@@ -31,12 +31,12 @@ public class ColorManager : MonoBehaviour
     //Ab hier Stuff, der seit 12.10. neu ist, um den Color Manager auch mal Colors managen zu lassen. 
     //Damit die CVDTypeData sich nicht mehr damit rumschlagen muss und einfach Data halten darf
 
-    public void SetcurrentCVDVectors(CVDTypeData cvdType) //, out Color target, out Color background)
+    /*public void SetcurrentCVDVectors(CVDTypeData cvdType) //, out Color target, out Color background)
     {
         currentFC = cvdType.FieldChromaticity;
         currentCP = cvdType.gamutCP;
         currentCVD = cvdType;
-    }
+    }*/
 
     // PlateManager Schritt 1: einmal Farbwerte ohne Luminanz holen und zwischenspeichern
     public void GetBaseChromas(CVDTypeData cvdType, out Vector2 target, out Vector2 background)
@@ -89,7 +89,7 @@ public class ColorManager : MonoBehaviour
 
     public Vector2 SaturateU_V_(Vector2 uvCP, CVDTypeData cvd) //Saturation Vector based on u'v' chromaticity
     {
-        var uvFC = VecxyToVecu_v_(currentFC);
+        var uvFC = VecxyToVecu_v_(cvd.FieldChromaticity);
         var uvChromaPath = uvCP - uvFC;
         var factor = cvd.Staircase();
         var uvDesat = uvFC + uvChromaPath * factor;

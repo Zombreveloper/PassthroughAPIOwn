@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using Unity.Sentis;
 using UnityEngine;
 
 public class TestPlate : MonoBehaviour
@@ -39,6 +40,7 @@ public class TestPlate : MonoBehaviour
     {
         UpdateChildren();
         CalculateBounds();
+        SetLayer();
         //SetCenterPoint(); // Unnötig, solange ich nicht ne neue SVG auslesen möchte. Außerdem broken
     }
 
@@ -79,6 +81,15 @@ public class TestPlate : MonoBehaviour
         var center = bounds.center;
         var radius = Math.Max(bounds.extents.x, bounds.extents.y);
         //RadialBounds = new BoundingSphere(center, radius);
+    }
+
+    private void SetLayer()
+    {
+        var children = transform.GetComponentsInChildren<Transform>();
+        for (int i = 0; i < children.Length; i++)
+        {
+            children[i].gameObject.layer = 7;
+        }
     }
 
     public void SetCenterPoint()

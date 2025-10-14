@@ -37,8 +37,8 @@ public abstract class CVDTypeData : ScriptableObject
     //former ColorVector properties
     public Vector2 FieldChromaticity { get; private set; } = new Vector2(0.413f, 0.360f);
 
-    [SerializeField] private int totalSteps = 60;
-    [SerializeField] private int currentStep = 45;
+    [SerializeField] private int totalSteps = 120;
+    [SerializeField] private int currentStep = 90;
 
     private void OnEnable()
     {
@@ -267,10 +267,20 @@ public abstract class CVDTypeData : ScriptableObject
     }
 
     public void ReduceSaturation()
-    { currentStep--; }
+    {
+        if (Reversals < 6)
+            currentStep -= 2;
+        else
+            currentStep--;
+    }
 
     public void IncreaseSaturation()
-    { currentStep++; }
+    {
+        if (Reversals < 6)
+            currentStep += 2;
+        else
+            currentStep++;
+    }
 
     public float Staircase()
     {

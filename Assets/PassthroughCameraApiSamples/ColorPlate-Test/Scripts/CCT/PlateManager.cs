@@ -130,12 +130,12 @@ public class PlateManager : MonoBehaviour
             if (circle.transform.childCount > 0)
             {
                 circle.GetComponentInChildren<SpriteRenderer>().material.color = finalColor;
-                circle.GetComponentInChildren<Image>().color = finalColor;
+                //circle.GetComponentInChildren<Image>().color = finalColor;
             }
             else
             {
                 circle.GetComponent<SpriteRenderer>().material.color = finalColor;
-                circle.GetComponent<Image>().color = finalColor;
+                //circle.GetComponent<Image>().color = finalColor;
             }
         }
     }

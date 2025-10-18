@@ -1107,6 +1107,7 @@ GameObject:
   - component: {fileID: 749426912}
   - component: {fileID: 749426914}
   - component: {fileID: 749426917}
+  - component: {fileID: 749426918}
   m_Layer: 0
   m_Name: CCTManager
   m_TagString: Untagged
@@ -1182,6 +1183,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   luminanceNoiseRange: 0.3
+--- !u!114 &749426918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 749426908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e0de7f24c062d34c9ac73da7d704947, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &782271457
 GameObject:
   m_ObjectHideFlags: 0

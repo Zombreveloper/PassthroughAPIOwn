@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CCTEvent;
 using Meta.XR.ImmersiveDebugger.UserInterface;
 using TMPro;
 using UnityEngine;
@@ -123,6 +124,11 @@ public class CCTManager : MonoBehaviour
             responseButtons[i].onClick.AddListener(() => OnResponseButton(direction));
             //responseButtons[i].gameObject.SetActive(false);
         }
+
+        CCTEventManager.Input.OnRStickRight += OnResponseButton;
+        CCTEventManager.Input.OnRStickLeft += OnResponseButton;
+        CCTEventManager.Input.OnRStickUp += OnResponseButton;
+        CCTEventManager.Input.OnRStickDown += OnResponseButton;
 
         //resultsText.gameObject.SetActive(false);
     }

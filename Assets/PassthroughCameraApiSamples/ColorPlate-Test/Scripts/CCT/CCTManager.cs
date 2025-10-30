@@ -45,6 +45,7 @@ public class CCTManager : MonoBehaviour
     public Canvas testCanvas;
     public TMP_Text instructionText;
     public Button[] responseButtons; // 4 buttons for gap directions
+    public Button nothingButton; // the button you press when you don't see anything
 
     //Test state variables
     private TestPhase currentPhase;
@@ -124,6 +125,7 @@ public class CCTManager : MonoBehaviour
             responseButtons[i].onClick.AddListener(() => OnResponseButton(direction));
             //responseButtons[i].gameObject.SetActive(false);
         }
+        nothingButton.onClick.AddListener(() => ProcessResponse(false));
 
         CCTEventManager.Input.OnRStickRight += OnResponseButton;
         CCTEventManager.Input.OnRStickLeft += OnResponseButton;
@@ -131,6 +133,14 @@ public class CCTManager : MonoBehaviour
         CCTEventManager.Input.OnRStickDown += OnResponseButton;
 
         //resultsText.gameObject.SetActive(false);
+    }
+
+    private void OnDisable()
+    {
+        CCTEventManager.Input.OnRStickRight -= OnResponseButton;
+        CCTEventManager.Input.OnRStickLeft -= OnResponseButton;
+        CCTEventManager.Input.OnRStickUp -= OnResponseButton;
+        CCTEventManager.Input.OnRStickDown -= OnResponseButton;
     }
 
     public void OnResponseButton(int selectedDirection)
@@ -241,7 +251,7 @@ public class CCTManager : MonoBehaviour
 
     private void SetCVDTypeStatus()
     {
-        if (currentCVD.Reversals >= maxReversals) // || currentCVD.WrongAtMaxSat >= maxWrongFullSaturation)
+        if (currentCVD.Reversals >= maxReversals || currentCVD.WrongAtMaxSat >= maxWrongFullSaturation)
         {
             currentCVD.IsActive = false;
         }
@@ -263,6 +273,7 @@ public class CCTManager : MonoBehaviour
         {
             button.gameObject.SetActive(false);
         }
+        nothingButton.gameObject.SetActive(false);
         plateManager.DisablePlate();
 
         results = CalculateResults();

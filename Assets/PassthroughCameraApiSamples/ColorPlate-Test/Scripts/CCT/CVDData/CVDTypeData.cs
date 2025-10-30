@@ -338,7 +338,7 @@ public abstract class CVDTypeData : ScriptableObject
             var average = lastReversals.Average();
             return average;
         }
-        else return 120f; //Artificial MaxValue. Recalculate if Calculation for normal MaxValues changes
+        else return maxPossibleScore; //return 120f; //Artificial MaxValue. Recalculate if Calculation for normal MaxValues changes
 
     }
 

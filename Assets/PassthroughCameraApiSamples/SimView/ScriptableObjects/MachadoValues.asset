@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e88e60b9ea3776946b06f3d0022ef842, type: 3}
+  m_Name: MachadoValues
+  m_EditorClassIdentifier: 
+  <ProtanValues>k__BackingField:
+  - {fileID: 11400000, guid: 80143a0e04d6d07489ea99a9b6c162c2, type: 2}
+  - {fileID: 11400000, guid: a9ecdb03a6d82a042b1af51947242a02, type: 2}
+  - {fileID: 11400000, guid: f5543982ac44488419fee151068141f9, type: 2}
+  - {fileID: 11400000, guid: 3cda4e0f5ceed334eb760cd82c3d3dc3, type: 2}
+  - {fileID: 11400000, guid: 52c5f54e19c4c574996e5b113077802d, type: 2}
+  - {fileID: 11400000, guid: d08fcfaa5dde941458b4d7b247311781, type: 2}
+  - {fileID: 11400000, guid: a2036f8034ae13a4e8af0853647e6879, type: 2}
+  - {fileID: 11400000, guid: 097cf3e28bacd2941ab74f6713dc6c91, type: 2}
+  - {fileID: 11400000, guid: 2f1b4d36c0a5df349acb1c0bf6cef230, type: 2}
+  - {fileID: 11400000, guid: cf7ee3398a536404f8f183098bbb6a7a, type: 2}
+  - {fileID: 11400000, guid: 489795d0e55bb354a831f1c557e99ce3, type: 2}
+  <DeutanValues>k__BackingField:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  <TritanValues>k__BackingField:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

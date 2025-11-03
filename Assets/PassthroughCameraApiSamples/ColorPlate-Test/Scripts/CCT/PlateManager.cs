@@ -166,4 +166,9 @@ public class PlateManager : MonoBehaviour
     {
         testPlate.SetActive(false);
     }
+
+    public void EnablePlate()
+    {
+        testPlate.SetActive(true);
+    }
 }

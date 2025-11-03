@@ -5,6 +5,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class MachadoSim : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class MachadoSim : MonoBehaviour
 
     public float cvdSeverity = 0;
     public Slider severSlider;
+    public TMP_Dropdown TypeSelect;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -32,12 +34,35 @@ public class MachadoSim : MonoBehaviour
 
     private void ProcessLUT(float severity)
     {
-        var finalMatrix = GetMatrixBySeverity(machado.ProtanValues, severity);
+        var currentType = GetCvdMatrices();
+        var finalMatrix = GetMatrixBySeverity(currentType, severity);
         CreateLUTFromMatrix(finalMatrix.GetMatrix());
 
     }
 
-    public DeficiencyColorMatrixBase GetMatrixBySeverity(List<DeficiencyColorMatrixBase> cvdTypes, float severity)
+    private List<DeficiencyColorMatrixBase> GetCvdMatrices()
+    {
+        var currentIndex = TypeSelect.value;
+
+        switch (currentIndex)
+        {
+            case 0:
+                return machado.ProtanValues;
+
+            case 1:
+                return machado.DeutanValues;
+
+            case 2:
+                return machado.TritanValues;
+
+            default:
+                Debug.LogWarning("Dropdown Menu got invalid values ");
+                return null;
+        }
+
+    }
+
+    private DeficiencyColorMatrixBase GetMatrixBySeverity(List<DeficiencyColorMatrixBase> cvdTypes, float severity)
     {
         //if severity outside accessible area get values from outmost possible matrix
         if (severity <= 0)

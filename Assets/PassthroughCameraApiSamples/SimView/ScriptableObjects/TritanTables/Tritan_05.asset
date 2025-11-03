@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c76b57891255a2445ae7c13b33091c1f, type: 3}
+  m_Name: Tritan_05
+  m_EditorClassIdentifier: 
+  matrix:
+  - 1.017277
+  - 0.027029
+  - -0.044306
+  - -0.006113
+  - 0.958479
+  - 0.047634
+  - 0.006379
+  - 0.248708
+  - 0.744913

@@ -1125,6 +1125,7 @@ MonoBehaviour:
   nothingButton: {fileID: 1934001593}
   maxReversals: 11
   maxWrongFullSaturation: 5
+  plateViewSeconds: 5
 --- !u!114 &749426917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1137,7 +1138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b53dd46098c3da48996cba3c5a4fd41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  luminanceNoiseRange: 0.3
+  luminanceNoiseRange: 0.35
 --- !u!114 &749426918
 MonoBehaviour:
   m_ObjectHideFlags: 0

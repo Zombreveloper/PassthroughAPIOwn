@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c76b57891255a2445ae7c13b33091c1f, type: 3}
+  m_Name: Deutan_09
+  m_EditorClassIdentifier: 
+  matrix:
+  - 0.392952
+  - 0.82361
+  - -0.216562
+  - 0.263559
+  - 0.69021
+  - 0.046232
+  - -0.01191
+  - 0.040281
+  - 0.97163

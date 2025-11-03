@@ -12,6 +12,7 @@
  * Ziel 3: Rest vom Test wieder einfügen Minus die ausgelagerten Methoden
  * Ziel 4: Endbedingungen festlegen
  * Ziel 5: Ergebnisse ausgeben => Threshold
+ * Ziel 6: Betrachtungszeit jedes Testplättchens begrenzen
  *  
  *  
  *  Ziel X: Protan, Deutan und Tritan Testprozeduren (Inklusive Anwortspeicherung) seperiert kapseln, um sie im Test randomisiert zu verweben
@@ -21,6 +22,7 @@
  */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using CCTEvent;
@@ -40,7 +42,6 @@ public class CCTManager : MonoBehaviour
     //Necessary Components on same Object
     private PlateManager plateManager;
 
-    //properties from original Manager. some may get outsourced in the future:
     [Header("UI Components")]
     public Canvas testCanvas;
     public TMP_Text instructionText;
@@ -61,6 +62,10 @@ public class CCTManager : MonoBehaviour
     [SerializeField] private int maxReversals = 11;
     [SerializeField] private int maxWrongFullSaturation = 5;
 
+    //misc
+    private IEnumerator timeLimit;
+    [SerializeField] private float plateViewSeconds = 5.0f;
+
 
     //Structs and Enums
 
@@ -80,6 +85,9 @@ public class CCTManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        //setup Coroutine
+        timeLimit = ViewTimeLimit(plateViewSeconds);
+
         DetermineCPGamutLimits();
         ChooseRandomCVD();
         //currentCVD = types[1]; //testing only Protan
@@ -151,6 +159,8 @@ public class CCTManager : MonoBehaviour
 
     void ProcessResponse(bool correct)
     {
+        StopAllCoroutines();
+
         //adjust saturation
         if (correct)
         {
@@ -170,7 +180,7 @@ public class CCTManager : MonoBehaviour
         SetCVDTypeStatus();
 
         //count the total and correct Respones of the current CVDType
-        //IMPORTANT TO KEEP AFTER PROCESSING AND BEFORE SETTING NEW PLATE
+        //IMPORTANT TO KEEP ORDER AFTER PROCESSING AND BEFORE SETTING NEW PLATE
         currentCVD.TotalResponses++;
         if (correct) { currentCVD.CorrectResponses++; }
         //set next testplate
@@ -186,6 +196,8 @@ public class CCTManager : MonoBehaviour
             //currentCVD = types[1]; //testing only protan
             currentGapDirection = UnityEngine.Random.Range(0, 4);
             plateManager.SetColors(currentCVD, currentGapDirection);
+            plateManager.EnablePlate();
+            StartCoroutine(ViewTimeLimit(plateViewSeconds));
         }
     }
 
@@ -306,7 +318,17 @@ public class CCTManager : MonoBehaviour
         return results;
     }
 
-    private Vector3 CalculateResultsOld() //Vllt stattdessen als Liste oder dict?
+    private IEnumerator ViewTimeLimit(float limit)
+    {
+        //plateManager.EnablePlate();
+        yield return new WaitForSeconds(limit);
+        plateManager.DisablePlate();
+    }
+
+
+    #region Obsolete Methods but Kept for now because they are guaranteed to work here
+    /*
+     private Vector3 CalculateResultsOld() //Vllt stattdessen als Liste oder dict?
     {
         var protanThreshold = types[0].GetThresholdValue(maxWrongFullSaturation);
         var deutanThreshold = types[1].GetThresholdValue(maxWrongFullSaturation);
@@ -318,9 +340,6 @@ public class CCTManager : MonoBehaviour
         return resultMagnified;
     }
 
-
-    #region Obsolete Methods but Kept for now because they are guaranteed to work here
-    /*
     private void SetPlate()
     {
         RectTransform containerRect = stimulusContainer.GetComponent<RectTransform>();

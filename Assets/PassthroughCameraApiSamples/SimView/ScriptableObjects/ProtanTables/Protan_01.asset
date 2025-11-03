@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c76b57891255a2445ae7c13b33091c1f, type: 3}
-  m_Name: Deutanopia
+  m_Name: Protan_01
   m_EditorClassIdentifier: 
   matrix:
-  - 0.367
-  - 0.861
-  - -0.228
-  - 0.28
-  - 0.673
-  - 0.047
-  - -0.012
-  - 0.043
-  - 0.969
+  - 0.856167
+  - 0.182038
+  - -0.038205
+  - 0.029342
+  - 0.955115
+  - 0.015544
+  - -0.00288
+  - -0.001563
+  - 1.004443

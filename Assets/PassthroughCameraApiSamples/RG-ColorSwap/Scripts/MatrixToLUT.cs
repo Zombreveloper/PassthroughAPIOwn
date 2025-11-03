@@ -106,7 +106,6 @@ public class MatrixToLUT : MonoBehaviour
         var lut = new OVRPassthroughColorLut(lutColors, OVRPassthroughColorLut.ColorChannels.Rgb);
         //lut.SetLut(lutColors);
         m_passthroughLayer.SetColorLut(lut);
-        //m_passthroughLayer.colorMapEditorUse = true; //existiert gar nicht du dummes GPT
 
         Debug.Log("Matrix-basierte LUT wurde angewendet.");
     }

@@ -29,6 +29,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/PassthroughCameraApiSamples/SimView/SimView.unity
     guid: 29f1824e39aa63e4ca3eab26f08a3b6d
+  - enabled: 1
+    path: Assets/PassthroughCameraApiSamples/SaveGameManager/SaveManagement.unity
+    guid: eddb0fae3ff7f70439d776e3f7b3c079
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: f2bf97b3acdb64248a707c407c9fc54e, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 7aa650e3e1ae1264ebd5fa14d1f9ee00, type: 3}

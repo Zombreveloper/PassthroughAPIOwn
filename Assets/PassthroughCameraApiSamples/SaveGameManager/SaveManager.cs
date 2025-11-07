@@ -25,7 +25,7 @@ public class SaveManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
             filePath = Path.Combine(Application.persistentDataPath, "userdataCVD.json");
-            //LoadData();
+            LoadData();
         }
         else Destroy(gameObject);
     }

@@ -39,7 +39,7 @@ public class MenuManager : MonoBehaviour
     }
 
     //InputField methods
-    private void ShowKeyboard()
+    public void ShowKeyboard()
     {
         overlayKeyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default);
     }

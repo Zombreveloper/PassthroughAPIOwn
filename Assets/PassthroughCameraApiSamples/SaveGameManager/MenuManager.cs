@@ -6,10 +6,14 @@ using TMPro;
 public class MenuManager : MonoBehaviour
 {
     public TMP_Dropdown ProfileSelect;
-    public Text protanText, deutanText, tritanText;
+    public TextMeshProUGUI protanText, deutanText, tritanText; //Debug Ausgabetext der gespeicherten CVD-Werte. Auf diese Weise sichtbar im Headset Build
 
-    //Alles zum virtuellen Schreiben mit dem Textfeld. weil die Systemtastatur wohl kein BuildingBlock sein darf i guess.
-    public TMP_InputField TextField;
+    //Alles zum virtuellen Schreiben mit dem Textfeld. weil die Systemtastatur wohl kein BuildingBlock sein darf I guess.
+    public TMP_InputField NameField;
+    public TMP_InputField ProtanField;
+    public TMP_InputField DeutanField;
+    public TMP_InputField TritanField;
+    public Button SubmitButton, DeleteButton;
     private TouchScreenKeyboard overlayKeyboard;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -21,7 +25,8 @@ public class MenuManager : MonoBehaviour
 
         ProfileSelect.onValueChanged.AddListener(delegate { OnUserSelected(ProfileSelect.value); });
 
-        TextField.onSelect.AddListener(delegate { ShowKeyboard(); });
+        //NameField.onSelect.AddListener(delegate { ShowKeyboard(); });
+        SubmitButton.onClick.AddListener(() => SubmitEntry());
     }
 
     private void OnUserSelected(int index)
@@ -42,5 +47,27 @@ public class MenuManager : MonoBehaviour
     public void ShowKeyboard()
     {
         overlayKeyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default);
+    }
+
+    //[TODO] Check schreiben, ob Felder gefüllt und sonst Warnhinweis geben.
+    //Oder halt nix abschicken lassen und hoffen, dass User schlau ist.
+    public void SubmitEntry()
+    {
+        var newUser = new UserDataCVD();
+
+        newUser.Name = NameField.text;
+        newUser.ProtanScore = float.Parse(ProtanField.text);
+        newUser.DeutanScore = float.Parse(DeutanField.text);
+        newUser.TritanScore = float.Parse(TritanField.text);
+        //uv-Werte werden später hinzugefügt. Für Machado sind die irrelevant.
+
+        SaveManager.Instance.AddUser(newUser);
+
+        /*var name = NameField.text;
+        var prot = ProtanField.text;
+        var deut = DeutanField.text;
+        var trit = TritanField.text;*/
+
+        
     }
 }

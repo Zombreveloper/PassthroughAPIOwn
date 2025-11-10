@@ -26,12 +26,6 @@ public class MachadoSim : MonoBehaviour
         severSlider.onValueChanged.AddListener(delegate { ProcessLUT(severSlider.value); });
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void ProcessLUT(float severity)
     {
         var currentType = GetCvdMatrices();

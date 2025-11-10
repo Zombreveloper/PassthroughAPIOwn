@@ -48,6 +48,20 @@ public class SaveManager : MonoBehaviour
         SaveData();
     }
 
+    public void DeleteUser(string name)
+    {
+        int index = Data.Users.FindIndex(u => u.Name == name);
+        if (index >= 0)
+        {
+            Data.Users.RemoveAt(index);
+            SaveData();
+        }
+        else
+        {
+            Debug.LogWarning("Profile not found in JSON file. Something went seriously wrong...");
+        }
+    }
+
     public UserDataCVD GetName(string name)
     {
         return Data.Users.Find(u => u.Name == name);

@@ -18,7 +18,7 @@ public class SaveManager : MonoBehaviour
     public AllUserData Data = new AllUserData(); //Note: Maybe I don't need to make a new one everytime?
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         if (Instance == null)
         {

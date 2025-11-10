@@ -13,32 +13,60 @@ public class MachadoSim : MonoBehaviour
     public MachadoValues machado;
     public Matrix4x4 MySimMatrix;
 
-    public float cvdSeverity = 0;
     public Slider severSlider;
     public TMP_Dropdown TypeSelect;
+
+    public float activeSeverity;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         var passthrough = GameObject.Find("[BuildingBlock] Passthrough");
         m_passthroughLayer = passthrough.GetComponent<OVRPassthroughLayer>();
-        //ProcessLUT();
-        severSlider.onValueChanged.AddListener(delegate { ProcessLUT(severSlider.value); });
     }
 
-    private void ProcessLUT(float severity)
+    public void ProcessLUT(int typeIndex, float severity)
     {
-        var currentType = GetCvdMatrices();
+        var currentType = GetCvdMatrices(typeIndex);
         var finalMatrix = GetMatrixBySeverity(currentType, severity);
+        MySimMatrix = finalMatrix.GetMatrix(); //Only for debugging to see values in Inspector
         CreateLUTFromMatrix(finalMatrix.GetMatrix());
 
     }
 
-    private List<DeficiencyColorMatrixBase> GetCvdMatrices()
+    #region Personalized Sim Section
+    //Personalized Methods bloats this class up with stuff it shouldn't be handling. 
+    //Create additional Translator Class if I find time
+    public void ProcessPersonalizedLUT(UserDataCVD user)
     {
-        var currentIndex = TypeSelect.value;
+        var maxCVDValue = Mathf.Max(user.ProtanScore, user.DeutanScore, user.TritanScore);
+        var currentType = GetCvdMatricesByScore(maxCVDValue, user);
 
-        switch (currentIndex)
+        activeSeverity = maxCVDValue;
+
+        //Now divide by 12 to turn the Score with a scale of 120 to a range of 0 to 10 to coincide with my simulation range
+        var cvdTableValue = maxCVDValue / 12f;
+        var finalMatrix = GetMatrixBySeverity(currentType, cvdTableValue);
+        MySimMatrix = finalMatrix.GetMatrix(); //Only for debugging to see values in Inspector
+        CreateLUTFromMatrix(finalMatrix.GetMatrix());
+    }
+
+    private List<DeficiencyColorMatrixBase> GetCvdMatricesByScore(float highScore, UserDataCVD user)
+    {
+        if (highScore == user.ProtanScore)
+            return machado.ProtanValues;
+        else if (highScore == user.DeutanScore)
+            return machado.DeutanValues;
+        else if (highScore == user.TritanScore)
+            return machado.TritanValues;
+        else return machado.TritanValues;
+    }
+    #endregion
+
+    public List<DeficiencyColorMatrixBase> GetCvdMatrices(int index)
+    {
+
+        switch (index)
         {
             case 0:
                 return machado.ProtanValues;
@@ -140,4 +168,6 @@ public class MachadoSim : MonoBehaviour
 
         Debug.Log("Matrix-basierte LUT wurde angewendet.");
     }
+
+
 }

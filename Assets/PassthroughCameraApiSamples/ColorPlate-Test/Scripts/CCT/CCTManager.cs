@@ -1,6 +1,6 @@
 ﻿/* So, das hier wird jetzt die Hauptklasse, die den CCTCreator möglichst gut in andere Klassen ausgelagert nachstellt
  * Ziel 1: Testplate importieren und auf das Panel setzen. [DONE]
- *  Ziel 1.1: Plate Placement Methoden auf PlateManager schieben
+ *  Ziel 1.1: Plate Placement Methoden auf PlateManager schieben [DONE]
  * Ziel 2: Color Management
  *  Ziel 2.1: Punkte in beliebiger Farbe einfärben. [DONE]
  *  Ziel 2.2: C-Maske in anderer Farbe einfärben. [DONE]
@@ -10,9 +10,9 @@
  *  Ziel 2.6: Helligkeiten normalisieren
  *  
  * Ziel 3: Rest vom Test wieder einfügen Minus die ausgelagerten Methoden
- * Ziel 4: Endbedingungen festlegen
- * Ziel 5: Ergebnisse ausgeben => Threshold
- * Ziel 6: Betrachtungszeit jedes Testplättchens begrenzen
+ * Ziel 4: Endbedingungen festlegen [DONE]
+ * Ziel 5: Ergebnisse ausgeben => Threshold [DONE]
+ * Ziel 6: Betrachtungszeit jedes Testplättchens begrenzen [DONE]
  *  
  *  
  *  Ziel X: Protan, Deutan und Tritan Testprozeduren (Inklusive Anwortspeicherung) seperiert kapseln, um sie im Test randomisiert zu verweben
@@ -65,6 +65,7 @@ public class CCTManager : MonoBehaviour
     //misc
     private IEnumerator timeLimit;
     [SerializeField] private float plateViewSeconds = 5.0f;
+    public GameObject ProfileEntryPanel;
 
 
     //Structs and Enums
@@ -303,6 +304,8 @@ public class CCTManager : MonoBehaviour
         resultText += $"Tritan Score: {results[2, 1]} \n \n";
         instructionText.text = resultText;
 
+        InitializeProfilePanel();
+
         foreach (var type in types) { type.ResetData(); }
     }
 
@@ -316,6 +319,16 @@ public class CCTManager : MonoBehaviour
         }
 
         return results;
+    }
+
+    //Data Saving done by Profile Panel MenuInteraction Script
+    //I agree this is bad design and the panel should at the very least ask for its data itself.
+    //But at this point I don't really care anymore.
+    private void InitializeProfilePanel()
+    {
+        ProfileEntryPanel.gameObject.SetActive(true);
+        var pEntry = ProfileEntryPanel.GetComponent<MenuInteraction>();
+        pEntry.SetResultValues(results);
     }
 
     private IEnumerator ViewTimeLimit(float limit)

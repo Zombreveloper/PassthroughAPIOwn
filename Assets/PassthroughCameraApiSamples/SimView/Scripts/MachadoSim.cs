@@ -19,7 +19,7 @@ public class MachadoSim : MonoBehaviour
     public float activeSeverity;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         var passthrough = GameObject.Find("[BuildingBlock] Passthrough");
         m_passthroughLayer = passthrough.GetComponent<OVRPassthroughLayer>();

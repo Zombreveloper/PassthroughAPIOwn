@@ -21,7 +21,7 @@ public class SimPanel : MonoBehaviour
     {
         severSlider.onValueChanged.AddListener(delegate { sim.ProcessLUT(typeSelect.value, severSlider.value); });
         typeSelect.onValueChanged.AddListener(delegate { sim.ProcessLUT(typeSelect.value, severSlider.value); });
-        profileSelect.onValueChanged.AddListener(delegate { sim.ProcessLUT(typeSelect.value, severSlider.value); });
+        profileSelect.onValueChanged.AddListener(delegate { OnUserSelected(profileSelect.value); });
         RefreshDropdown();
     }
 
@@ -32,8 +32,8 @@ public class SimPanel : MonoBehaviour
         var user = SaveManager.Instance.GetName(name);
         if (user != null)
         {
-            sim.ProcessPersonalizedLUT(user);
             Debug.Log($" I am reading user: {user.Name}, Protan: {user.ProtanScore}, Deutan: {user.DeutanScore}, Tritan: {user.TritanScore} ");
+            sim.ProcessPersonalizedLUT(user);
             tooltip.text = $"current Simulation severity: {sim.activeSeverity}";
             //Nochmal nachschauen. F2 erkennt Nachkommastellen nicht als solche, wenn sie durch einen Punkt getrennt sind
             /*protanText.text = user.ProtanScore.ToString("N2");

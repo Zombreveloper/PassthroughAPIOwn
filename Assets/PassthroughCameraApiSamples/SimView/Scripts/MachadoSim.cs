@@ -1,11 +1,13 @@
 /* maps the Machado matrices based on an interpolation value to a LUT and applies it to the Passthrough Layer
  */
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+using Colourful;
+using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class MachadoSim : MonoBehaviour
 {
@@ -13,8 +15,6 @@ public class MachadoSim : MonoBehaviour
     public MachadoValues machado;
     public Matrix4x4 MySimMatrix;
 
-    public Slider severSlider;
-    public TMP_Dropdown TypeSelect;
 
     public float activeSeverity;
 
@@ -123,7 +123,7 @@ public class MachadoSim : MonoBehaviour
 
     void CreateLUTFromMatrix(Matrix4x4 matrix)
     {
-        const int resolution = 16;
+        const int resolution = 32; //Besser auf 32 setzen für volle 255 value Resolution
         Color[] lutColors = new Color[resolution * resolution * resolution];
         //Matrix4x4 matrix = DeficiencyMatrix.GetMatrix();
 
@@ -162,6 +162,7 @@ public class MachadoSim : MonoBehaviour
             }
         }
 
+        CreateLutAsset(lutColors, resolution);
         var lut = new OVRPassthroughColorLut(lutColors, OVRPassthroughColorLut.ColorChannels.Rgb);
         //lut.SetLut(lutColors);
         m_passthroughLayer.SetColorLut(lut, 1);
@@ -169,5 +170,22 @@ public class MachadoSim : MonoBehaviour
         Debug.Log("Matrix-basierte LUT wurde angewendet.");
     }
 
+    private void CreateLutAsset(Color[] colors, int res)
+    {
+        //var lut = new OVRPassthroughColorLut(colors, OVRPassthroughColorLut.ColorChannels.Rgb);
+        Texture2D lutTex = new Texture2D(res, res * res, TextureFormat.RGB24, false, false);
 
+        //Coloring the new Texture
+        for (int y = 0; y < lutTex.height; y++)
+        {
+            for (int x = 0; x < lutTex.width; x++)
+            {
+                Color applyColor = colors[x + y * lutTex.height];
+                lutTex.SetPixel(x, y, applyColor);
+            }
+        }
+        lutTex.Apply();
+
+        AssetDatabase.CreateAsset(lutTex, "Assets/LUTs/DynamicCVDLut");
+    }
 }

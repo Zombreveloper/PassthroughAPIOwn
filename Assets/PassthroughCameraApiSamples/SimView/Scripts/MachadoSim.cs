@@ -1,8 +1,11 @@
 /* maps the Machado matrices based on an interpolation value to a LUT and applies it to the Passthrough Layer
+ * 
+ * Code for Safe as PNG provided by: https://discussions.unity.com/t/how-to-save-a-texture2d-into-a-png/184699/4
  */
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Colourful;
 using TMPro;
 using UnityEditor;
@@ -17,6 +20,7 @@ public class MachadoSim : MonoBehaviour
 
 
     public float activeSeverity;
+    private string lutPath = "Assets/PassthroughCameraApiSamples/LUTs/DynamicCvdLut.asset";
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -164,7 +168,6 @@ public class MachadoSim : MonoBehaviour
 
         CreateLutAsset(lutColors, resolution);
         var lut = new OVRPassthroughColorLut(lutColors, OVRPassthroughColorLut.ColorChannels.Rgb);
-        //lut.SetLut(lutColors);
         m_passthroughLayer.SetColorLut(lut, 1);
 
         Debug.Log("Matrix-basierte LUT wurde angewendet.");
@@ -173,19 +176,47 @@ public class MachadoSim : MonoBehaviour
     private void CreateLutAsset(Color[] colors, int res)
     {
         //var lut = new OVRPassthroughColorLut(colors, OVRPassthroughColorLut.ColorChannels.Rgb);
-        Texture2D lutTex = new Texture2D(res, res * res, TextureFormat.RGB24, false, false);
+        Texture2D lutTex = new Texture2D(res * res, res, TextureFormat.RGB24, false, true);
+        lutTex.wrapMode = TextureWrapMode.Clamp;
+        lutTex.filterMode = FilterMode.Point;
+
 
         //Coloring the new Texture
-        for (int y = 0; y < lutTex.height; y++)
+        Debug.Log($"Die Dimensionen der Texture2D liegen bei Höhe: {lutTex.height} und Breite: {lutTex.width}. Das macht {lutTex.height * lutTex.width} Pixel.");
+        Debug.Log($"Das ColorArray beinhaltet {colors.Length} Einträge.");
+        //Debug.Log($"Jetzt gerade zählt der Index bis höchstens: {(lutTex.width - 1) + (lutTex.height - 1) * (lutTex.height - 1)}");
+
+        int i = 0;
+        for (int z = 0; z < res; z++)
         {
-            for (int x = 0; x < lutTex.width; x++)
+            for (int y = 0; y < lutTex.height; y++)
             {
-                Color applyColor = colors[x + y * lutTex.height];
-                lutTex.SetPixel(x, y, applyColor);
+                for (int x = 0; x < lutTex.width / res; x++)
+                {
+                    Color applyColor = colors[y + x * res];
+                    lutTex.SetPixel(x + z * res, y, colors[i++]);
+                }
             }
         }
         lutTex.Apply();
 
-        AssetDatabase.CreateAsset(lutTex, "Assets/LUTs/DynamicCVDLut");
+        SaveTextureAsPNG(lutTex);
+        //AssetDatabase.CreateAsset(lutTex, lutPath);
+    }
+
+    private void SaveTextureAsPNG(Texture2D texture)
+    {
+        byte[] bytes = texture.EncodeToPNG();
+        var dirPath = Application.dataPath + "/PassthroughCameraApiSamples/LUTs";
+        if (!System.IO.Directory.Exists(dirPath))
+        {
+            System.IO.Directory.CreateDirectory(dirPath);
+        }
+        System.IO.File.WriteAllBytes(dirPath + "/ProfileCvdLut" + ".png", bytes); //Hier bald durch Profilnamen individualisieren!
+        Debug.Log(bytes.Length / 1024 + "Kb was saved as: " + dirPath);
+
+#if UNITY_EDITOR
+        UnityEditor.AssetDatabase.Refresh();
+#endif
     }
 }

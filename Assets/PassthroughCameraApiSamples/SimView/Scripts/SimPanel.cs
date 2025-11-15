@@ -29,11 +29,12 @@ public class SimPanel : MonoBehaviour
     private void OnUserSelected(int index)
     {
         string name = profileSelect.options[index].text;
-        var user = SaveManager.Instance.GetName(name);
+        var user = SaveManager.Instance.GetByName(name);
         if (user != null)
         {
             Debug.Log($" I am reading user: {user.Name}, Protan: {user.ProtanScore}, Deutan: {user.DeutanScore}, Tritan: {user.TritanScore} ");
-            sim.ProcessPersonalizedLUT(user);
+            //sim.ProcessPersonalizedLUT(user);
+            sim.LoadPersonalizedLUT(user.Name);
             tooltip.text = $"current Simulation severity: {sim.activeSeverity}";
             //Nochmal nachschauen. F2 erkennt Nachkommastellen nicht als solche, wenn sie durch einen Punkt getrennt sind
             /*protanText.text = user.ProtanScore.ToString("N2");
@@ -62,7 +63,7 @@ public class SimPanel : MonoBehaviour
     {
         var defaultuser = new UserDataCVD();
 
-        defaultuser.Name = "Default Profile";
+        defaultuser.Name = "DefaultProfile";
         defaultuser.ProtanScore = 40f;
         defaultuser.DeutanScore = 19.99999f;
         defaultuser.TritanScore = 3.66666f;

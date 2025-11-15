@@ -34,7 +34,7 @@ public class MenuManager : MonoBehaviour
     private void OnUserSelected(int index)
     {
         string name = ProfileSelect.options[index].text;
-        var user = SaveManager.Instance.GetName(name);
+        var user = SaveManager.Instance.GetByName(name);
         if (user != null)
         {
             //Nochmal nachschauen. F2 erkennt Nachkommastellen nicht als solche, wenn sie durch einen Punkt getrennt sind

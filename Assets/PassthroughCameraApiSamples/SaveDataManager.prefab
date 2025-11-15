@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6681679694178650432}
   - component: {fileID: 2088475104153682835}
+  - component: {fileID: 3972357387507360528}
   m_Layer: 0
   m_Name: SaveDataManager
   m_TagString: Untagged
@@ -46,3 +47,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Data:
     Users: []
+  currentUser:
+    Name: 
+    ProtanScore: 0
+    DeutanScore: 0
+    TritanScore: 0
+    ProtanUV: 0
+    DeutanUV: 0
+    TritanUV: 0
+--- !u!114 &3972357387507360528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8597692885268620402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93349e335b78b02478132e042af43d64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  saveManager: {fileID: 2088475104153682835}

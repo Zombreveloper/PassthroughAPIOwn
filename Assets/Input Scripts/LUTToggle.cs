@@ -11,7 +11,6 @@ using UnityEngine;
 public class LUTToggle : MonoBehaviour
 {
     public bool ShowStartButtonTooltip = true;
-    private static ReturnToStartScene s_instance;
     //[SerializeField] private GameObject m_ptLayer;
     private OVRPassthroughLayer m_passthroughLayer;
     private OVRPassthroughColorLut m_currentLut;
@@ -67,7 +66,7 @@ public class LUTToggle : MonoBehaviour
     }
 }
 
-/* Original Code I used as *Inspiration*
+/* Original Code I derived from
 // Copyright (c) Meta Platforms, Inc. and affiliates.
 // Original Source code from Oculus Starter Samples (https://github.com/oculus-samples/Unity-StarterSamples)
 

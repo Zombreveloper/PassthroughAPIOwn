@@ -11,6 +11,7 @@ using System.Threading;
 using Colourful;
 using Oculus.Platform.Models;
 using ProfileSaveEvent;
+using SimInputs;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -32,6 +33,11 @@ public class MachadoSim : MonoBehaviour
     private string lutPath = Application.dataPath + "/Resources/LUTs";
     private string lutLoadPath = "LUTs"; //Path zum Laden gekürzt, da Resources.Load() den Resources Folder als Root ansieht.
 
+    //flags
+    public bool simActive { get; private set; } = false;
+    private bool PPLutIsSet = false;
+    private bool OVRLutIsSet = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
@@ -49,43 +55,72 @@ public class MachadoSim : MonoBehaviour
     {
         ProfileSaveEventManager.Save.OnProfileCreated += CreatePersonalizedLUT;
         ProfileSaveEventManager.Save.OnProfileDeleted += DeletePersonalizedLUT;
+
+        SimInputEventManager.Input.OnXButton += ToggleSimulation;
     }
 
     private void OnDisable()
     {
         ProfileSaveEventManager.Save.OnProfileCreated -= CreatePersonalizedLUT;
         ProfileSaveEventManager.Save.OnProfileDeleted -= DeletePersonalizedLUT;
+        SimInputEventManager.Input.OnXButton -= ToggleSimulation;
     }
 
 
+    private void ToggleSimulation()
+    {
+        if (simActive)
+        {
+            DisableSimulation();
+        }
+        else
+        {
+            EnableSimulation();
+        }
+    }
 
+    public void EnableSimulation()
+    {
+        var postprocessing = GameObject.Find("Post Processing Volume");
+
+        if (postprocessing != null && PPLutIsSet)
+            postprocessing.SetActive(true);
+        if (m_passthroughLayer != null && OVRLutIsSet)
+        {
+            m_passthroughLayer.colorMapEditorType = OVRPassthroughLayer.ColorMapEditorType.ColorLut;
+
+        }
+
+        simActive = true;
+    }
+
+    private void DisableSimulation()
+    {
+        var postprocessing = GameObject.Find("Post Processing Volume");
+
+        if (postprocessing != null)
+        { postprocessing.SetActive(false); }
+        if (m_passthroughLayer != null)
+        { m_passthroughLayer.DisableColorMap(); }
+
+        simActive = false;
+    }
+
+    // Called when playing with Deficiency Sliders in SimView Scene. 
+    // This doesn't save any LUT files so no flags will be set by this method!
     public void ProcessLUT(int typeIndex, float severity)
     {
         var currentType = GetCvdMatrices(typeIndex);
         var finalMatrix = GetMatrixBySeverity(currentType, severity);
         MySimMatrix = finalMatrix.GetMatrix(); //Only for debugging to see values in Inspector
         CreateLUTFromMatrix(finalMatrix.GetMatrix());
-
     }
 
     #region Personalized Sim Section
     //Personalized Methods bloats this class up with stuff it shouldn't be handling. 
     //Create additional Translator Class if I find time
-    public void ProcessPersonalizedLUT(UserDataCVD user)
-    {
-        var maxCVDValue = Mathf.Max(user.ProtanScore, user.DeutanScore, user.TritanScore);
-        var currentType = GetCvdMatricesByScore(maxCVDValue, user);
 
-        activeSeverity = maxCVDValue;
-
-        //Now divide by 12 to turn the Score with a scale of 120 to a range of 0 to 10 to coincide with my simulation range
-        var cvdTableValue = maxCVDValue / 12f;
-        var finalMatrix = GetMatrixBySeverity(currentType, cvdTableValue);
-        MySimMatrix = finalMatrix.GetMatrix(); //Only for debugging to see values in Inspector
-        CreateLUTFromMatrix(finalMatrix.GetMatrix());
-    }
-
-    //Supposed to be the version of ProcessPersonalizedLUT(), that doesn't apply the LUT directly but only saves it 
+    //This doesn't apply the LUT directly but only saves it 
     public void CreatePersonalizedLUT(UserDataCVD user)
     {
         var maxCVDValue = Mathf.Max(user.ProtanScore, user.DeutanScore, user.TritanScore);
@@ -105,8 +140,9 @@ public class MachadoSim : MonoBehaviour
         var filePath = lutPath + "/CVD_LUT_" + name + ".png";
         if (Resources.Load(filePath) != null)
         {
-            FileUtil.DeleteFileOrDirectory(lutPath + "/CVD_LUT_" + name + ".png");
+            System.IO.File.Delete(lutPath + "/CVD_LUT_" + name + ".png");
         }
+        DisableSimulation();
     }
 
     public void LoadPersonalizedLUT(string name)
@@ -191,6 +227,8 @@ public class MachadoSim : MonoBehaviour
                 grading.ldrLut.value = tex;
                 volume.profile = profile;
                 Debug.Log("Neue LUT gesetzt!");
+
+                PPLutIsSet = true;
             }
         }
     }
@@ -201,6 +239,7 @@ public class MachadoSim : MonoBehaviour
         {
             OVRPassthroughColorLut ovrLut = new OVRPassthroughColorLut(tex, flipY: false);
             m_passthroughLayer.SetColorLut(ovrLut, weight: 1);
+            OVRLutIsSet = true;
         }
     }
 
@@ -216,6 +255,7 @@ public class MachadoSim : MonoBehaviour
     }
     #endregion
 
+    #region LUT Calculation
     public List<DeficiencyColorMatrixBase> GetCvdMatrices(int index)
     {
 
@@ -405,6 +445,8 @@ public class MachadoSim : MonoBehaviour
         return lutTex;
         //AssetDatabase.CreateAsset(lutTex, lutPath);
     }
+
+    #endregion LUT Calculation
 
     private void SaveTextureAsPNG(Texture2D texture)
     {

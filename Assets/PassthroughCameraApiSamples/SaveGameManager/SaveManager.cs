@@ -29,7 +29,7 @@ public class SaveManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
             filePath = Path.Combine(Application.persistentDataPath, "userdataCVD.json");
-            LoadData();
+            InitializeData();
             SetUser();
         }
         else Destroy(gameObject);
@@ -88,7 +88,7 @@ public class SaveManager : MonoBehaviour
     public UserDataCVD GetByName(string name)
     {
         //return 
-          var u = Data.Users.Find(u => u.Name == name);
+        var u = Data.Users.Find(u => u.Name == name);
         currentUser = u;
         return u;
     }
@@ -99,7 +99,7 @@ public class SaveManager : MonoBehaviour
         File.WriteAllText(filePath, jsonForm);
     }
 
-    public void LoadData()
+    public void InitializeData()
     {
         if (File.Exists(filePath))
         {
@@ -137,6 +137,9 @@ namespace ProfileSaveEvent
         {
             public UnityAction<UserDataCVD> OnProfileCreated;
             public UnityAction<string> OnProfileDeleted;
+
+            public UnityAction<string> OnProfileUpdated;
         }
+
     }
 }

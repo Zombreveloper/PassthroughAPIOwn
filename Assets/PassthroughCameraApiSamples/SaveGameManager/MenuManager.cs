@@ -41,6 +41,7 @@ public class MenuManager : MonoBehaviour
             protanText.text = user.ProtanScore.ToString("N2");
             deutanText.text = user.DeutanScore.ToString("F2");
             tritanText.text = user.TritanScore.ToString("F2");
+
         }
     }
 

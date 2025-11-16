@@ -62,6 +62,4 @@ MonoBehaviour:
     e31: 0
     e32: 0
     e33: 0
-  severSlider: {fileID: 0}
-  TypeSelect: {fileID: 0}
   activeSeverity: 0

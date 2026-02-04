@@ -1,8 +1,8 @@
 {
   "buildFiles": [
-    "E:\\UnityProjects\\PassthroughAPIOwn\\Library\\PramData\\AndroidApplicationController\\Cache\\com.StickimediaProductions.ColorblindSample\\gradle-project\\unityLibrary\\src\\main\\cpp\\CMakeLists.txt",
-    "E:\\UnityProjects\\PassthroughAPIOwn\\Library\\PramData\\AndroidApplicationController\\Cache\\com.StickimediaProductions.ColorblindSample\\gradle-project\\unityLibrary\\src\\main\\cpp\\FramePacing\\CMakeLists.txt",
-    "E:\\UnityProjects\\PassthroughAPIOwn\\Library\\PramData\\AndroidApplicationController\\Cache\\com.StickimediaProductions.ColorblindSample\\gradle-project\\unityLibrary\\src\\main\\cpp\\GameActivity\\CMakeLists.txt"
+    "E:\\UnityProjects\\PassthroughAPIOwn\\Library\\Bee\\Android\\Prj\\IL2CPP\\Gradle\\unityLibrary\\src\\main\\cpp\\CMakeLists.txt",
+    "E:\\UnityProjects\\PassthroughAPIOwn\\Library\\Bee\\Android\\Prj\\IL2CPP\\Gradle\\unityLibrary\\src\\main\\cpp\\FramePacing\\CMakeLists.txt",
+    "E:\\UnityProjects\\PassthroughAPIOwn\\Library\\Bee\\Android\\Prj\\IL2CPP\\Gradle\\unityLibrary\\src\\main\\cpp\\GameActivity\\CMakeLists.txt"
   ],
   "cleanCommandsComponents": [
     [
@@ -23,14 +23,14 @@
       "toolchain": "toolchain",
       "abi": "arm64-v8a",
       "artifactName": "game",
-      "output": "E:\\UnityProjects\\PassthroughAPIOwn\\Library\\PramData\\AndroidApplicationController\\Cache\\com.StickimediaProductions.ColorblindSample\\gradle-project\\unityLibrary\\build\\intermediates\\cxx\\Debug\\5j59i4u1\\obj\\arm64-v8a\\libgame.so",
+      "output": "E:\\UnityProjects\\PassthroughAPIOwn\\Library\\Bee\\Android\\Prj\\IL2CPP\\Gradle\\unityLibrary\\build\\intermediates\\cxx\\Debug\\5j59i4u1\\obj\\arm64-v8a\\libgame.so",
       "runtimeFiles": []
     },
     "swappywrapper::@7e25bd1f32ce224db4e9": {
       "toolchain": "toolchain",
       "abi": "arm64-v8a",
       "artifactName": "swappywrapper",
-      "output": "E:\\UnityProjects\\PassthroughAPIOwn\\Library\\PramData\\AndroidApplicationController\\Cache\\com.StickimediaProductions.ColorblindSample\\gradle-project\\unityLibrary\\build\\intermediates\\cxx\\Debug\\5j59i4u1\\obj\\arm64-v8a\\libswappywrapper.so",
+      "output": "E:\\UnityProjects\\PassthroughAPIOwn\\Library\\Bee\\Android\\Prj\\IL2CPP\\Gradle\\unityLibrary\\build\\intermediates\\cxx\\Debug\\5j59i4u1\\obj\\arm64-v8a\\libswappywrapper.so",
       "runtimeFiles": []
     }
   },

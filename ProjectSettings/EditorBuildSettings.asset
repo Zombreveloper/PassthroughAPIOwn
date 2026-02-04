@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/PassthroughCameraApiSamples/SimView/SimView.unity
+    guid: 29f1824e39aa63e4ca3eab26f08a3b6d
+  - enabled: 1
     path: Assets/PassthroughCameraApiSamples/StartScene/StartScene.unity
     guid: 69e1b31c45bac42f88f75017ee404de1
   - enabled: 0
@@ -26,9 +29,6 @@ EditorBuildSettings:
   - enabled: 0
     path: "Assets/Samples/Meta XR Interaction \u200BSDK/78.0.0/Example Scenes/RayExamples.unity"
     guid: 1b2d3f90c0f50b94cb910c66c773d00d
-  - enabled: 1
-    path: Assets/PassthroughCameraApiSamples/SimView/SimView.unity
-    guid: 29f1824e39aa63e4ca3eab26f08a3b6d
   - enabled: 1
     path: Assets/PassthroughCameraApiSamples/SaveGameManager/SaveManagement.unity
     guid: eddb0fae3ff7f70439d776e3f7b3c079

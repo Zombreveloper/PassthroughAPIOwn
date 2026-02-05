@@ -12,7 +12,7 @@ public abstract class CVDTypeData : ScriptableObject
 {
     public abstract string Name { get; }
     public abstract Vector2 CopunctPoint { get; }
-    [SerializeField] public Vector2 gamutCP ; //{ get; private set; }
+    [SerializeField] public Vector2 gamutCP ; //adjusted CopunctPoint to match the current gamut
     public float maxPossibleScore;
     //Test response variables
     public float Threshold;
